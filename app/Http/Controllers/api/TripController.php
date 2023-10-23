@@ -30,6 +30,8 @@ class TripController extends Controller
     public function store(Request $request)
     {
         //
+        $trip = Trip::create($request->all());
+        return response($trip, 201);;
     }
 
     /**
@@ -53,6 +55,8 @@ class TripController extends Controller
     public function update(Request $request, Trip $trip)
     {
         //
+        $trip->update($request->all());
+        return response($trip, 200);
     }
 
     /**
@@ -64,5 +68,7 @@ class TripController extends Controller
     public function destroy(Trip $trip)
     {
         //
+        $trip->delete();
+        return 'deleted';
     }
 }
