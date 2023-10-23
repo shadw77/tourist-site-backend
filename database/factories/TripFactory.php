@@ -1,7 +1,7 @@
 <?php
 
 namespace Database\Factories;
-
+use App\Models\Trip;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TripFactory extends Factory
 {
+    protected $model = Trip::class;
     /**
      * Define the model's default state.
      *
@@ -20,10 +21,10 @@ class TripFactory extends Factory
             //
             'name' => fake()->name(),
             'government' => fake()->text(),
-            'duration' => fake()->randomFloat(2, 1, 100),
-            'cost' => fake()->randomFloat(2, 1, 100),
+            'duration' => fake()->text(),
+            'cost' => fake()->text(),
             'description' => fake()->text(),
-            'rating' => fake()->randomFloat(2, 1, 100),
+            'rating' => fake()->text(),
             'thumbnail' => $this->faker->image(public_path('images/trips'),400,300, null, false) ,
             'creator_id' => 1,
         ];
