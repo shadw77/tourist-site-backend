@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Trip;
 use Illuminate\Http\Request;
+use App\Http\Resources\TripResource;
 
 class TripController extends Controller
 {
@@ -18,7 +19,7 @@ class TripController extends Controller
         //
        $trips =  Trip::all();
     //    dd($trips);
-       return $trips;
+       return TripResource::collection($trips);
     }
 
     /**
@@ -31,7 +32,7 @@ class TripController extends Controller
     {
         //
         $trip = Trip::create($request->all());
-        return response($trip, 201);;
+        return new TripResource($trip);
     }
 
     /**
@@ -43,6 +44,8 @@ class TripController extends Controller
     public function show(Trip $trip)
     {
         //
+        return new TripResource($trip);
+    
     }
 
     /**
@@ -56,7 +59,7 @@ class TripController extends Controller
     {
         //
         $trip->update($request->all());
-        return response($trip, 200);
+        return new TripResource($trip);
     }
 
     /**
