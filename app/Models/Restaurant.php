@@ -33,9 +33,9 @@ class Restaurant extends Model
     }
 
     //relation Restaurant with Review
-    public function review()
+    public function reviews()
     {
-        return $this->hasMany(Review::class,"restaurant_id");
+        return $this->morphMany('App\Review', 'reviewable');
     }
 
     //relation Restaurant with vendors

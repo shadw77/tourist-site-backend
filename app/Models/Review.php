@@ -19,37 +19,11 @@ class Review extends Model
     protected $table="reviews";
 
     protected $fillable = [
-        'comment','userid','destid','hotid','tripid','restid'
+        'review','reviewable_id','reviewable_type'
     ];
 
-    //relation review with User
-    public function user()
+    public function reviewable()
     {
-        return $this->belongsTo(User::class,"user_id");
-    }
-
-    //relation review with Destination
-    public function destination()
-    {
-        return $this->belongsTo(Destination::class,"destination_id");
-    }
-
-    //relation review with Hotel
-    public function hotel()
-    {
-        return $this->belongsTo(Hotel::class,"hotel_id");
-    }
-
-    //relation review with Trip
-    public function trip()
-    {
-        return $this->belongsTo(Trip::class,"trip_id");
-    }
-
-
-    //relation review with restaurant
-    public function restaurant()
-    {
-        return $this->belongsTo(Restaurant::class,"restaurant_id");
+        return $this->morphTo();
     }
 }

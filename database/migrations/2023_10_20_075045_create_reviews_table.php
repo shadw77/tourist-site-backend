@@ -15,12 +15,9 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->text('comment');
-            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('restaurant_id')->constrained('restaurants')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('hotel_id')->constrained('hotels')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('trip_id')->constrained('trips')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('destination_id')->constrained('destinations')->onUpdate('cascade')->onDelete('cascade');
+            $table->text('review');
+            $table->integer('reviewable_id')->unsigned();
+            $table->string('reviewable_type');
             $table->timestamps();
         });
     }

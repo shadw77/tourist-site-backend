@@ -40,9 +40,9 @@ class Hotel extends Model
     }
 
     //relation Hotel with Review
-    public function review()
+    public function reviews()
     {
-        return $this->hasMany(Review::class,"hotel_id");
+        return $this->morphMany('App\Review', 'reviewable');
     }
 
     //relation hotels with vendors

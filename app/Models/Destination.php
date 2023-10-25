@@ -34,9 +34,9 @@ class Destination extends Model
     }
 
     //relation Destination with Review
-    public function review()
+    public function reviews()
     {
-        return $this->hasMany(Review::class,"destination_id");
+        return $this->morphMany('App\Review', 'reviewable');
     }
 
 

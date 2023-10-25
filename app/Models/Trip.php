@@ -33,9 +33,9 @@ class Trip extends Model
     }
 
     //relation Trip with Review
-    public function review()
+    public function reviews()
     {
-        return $this->hasMany(Review::class,"trip_id");
+        return $this->morphMany('App\Review', 'reviewable');
     }
 
     //relation trip with vendors
