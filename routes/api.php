@@ -2,9 +2,18 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\discover\discoverController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\destination\destinationController;
+
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\api\RestaurantController;
+use App\Http\Controllers\api\TripController;
+use App\Http\Controllers\api\HotelController;
+use App\Http\Controllers\api\HotelImageController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,6 +24,7 @@ use App\Http\Controllers\destination\destinationController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 
 
 Route::group(['middleware'=>['api']],function(){
@@ -37,4 +47,14 @@ Route::group(['middleware'=>['api']],function(){
 
 });
 
+
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+Route::apiResource('restaurants', RestaurantController::class);
+Route::apiResource('trips', TripController::class);
+Route::apiResource('hotels', HotelController::class);
+Route::apiResource('hotelImages', HotelImageController::class);
 
