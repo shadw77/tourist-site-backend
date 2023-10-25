@@ -22,9 +22,9 @@ class Destination extends Model
     ];
 
     //relation destination with DestinationImage
-    public function image(): HasMany
+    public function images()
     {
-        return $this->hasMany(DestinationImage::class,"destination_id");
+        return $this->morphMany('App\Image', 'imageable');
     }
 
     //relation destination with user

@@ -21,9 +21,9 @@ class Hotel extends Model
     ];
 
     //relation Hotel with HotelImage
-    public function image()
+    public function images()
     {
-        return $this->hasMany(HotelImage::class,"hotel_id");
+        return $this->morphMany('App\Image', 'imageable');
     }
 
     //relation Hotel with user

@@ -21,9 +21,9 @@ class Restaurant extends Model
 
 
     //relation Restaurant with RestaurantImage
-    public function image()
+    public function images()
     {
-        return $this->hasMany(RestaurantImage::class,"destination_id");
+        return $this->morphMany('App\Image', 'imageable');
     }
 
     //relation Restaurant with user

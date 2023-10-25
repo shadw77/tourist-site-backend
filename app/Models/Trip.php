@@ -21,9 +21,9 @@ class Trip extends Model
 
 
     //relation trip with TripImage
-    public function image(): HasMany
+    public function images()
     {
-        return $this->hasMany(TripImage::class,"trip_id");
+        return $this->morphMany('App\Image', 'imageable');
     }
 
     //relation trip with user
