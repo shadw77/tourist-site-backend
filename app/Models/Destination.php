@@ -22,7 +22,7 @@ class Destination extends Model
     ];
 
     //relation destination with DestinationImage
-    public function image(): HasMany
+    public function image()
     {
         return $this->hasMany(DestinationImage::class,"destination_id");
     }
