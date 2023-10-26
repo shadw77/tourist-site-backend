@@ -37,7 +37,7 @@ class Destination extends Model
     //relation Destination with Review
     public function reviews()
     {
-        return $this->morphMany('App\Review', 'reviewable');
+        return $this->morphMany('App\Models\Review', 'reviewable');
     }
 
 

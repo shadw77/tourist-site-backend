@@ -37,7 +37,7 @@ class Restaurant extends Model
     //relation Restaurant with Review
     public function reviews()
     {
-        return $this->morphMany('App\Review', 'reviewable');
+        return $this->morphMany('App\Models\Review', 'reviewable');
     }
 
     //relation Restaurant with vendors

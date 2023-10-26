@@ -41,7 +41,7 @@ class Hotel extends Model
     //relation Hotel with Review
     public function reviews()
     {
-        return $this->morphMany('App\Review', 'reviewable');
+        return $this->morphMany('App\Models\Review', 'reviewable');
     }
 
     //relation hotels with vendors

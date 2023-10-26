@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Trip;
-
+use App\Models\Review;
 use App\Models\Image;
 
 class UserTripsSeeder extends Seeder
@@ -28,6 +28,11 @@ class UserTripsSeeder extends Seeder
                     Image::factory()
                         ->count(3),
                     'images'
+                )
+                ->has(
+                    Review::factory()
+                        ->count(3),
+                    'reviews'
                 )
         )
         ->create();
