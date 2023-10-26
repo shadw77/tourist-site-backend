@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\Image;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\HotelImage;
 use App\Models\User;
 use App\Models\Room;
 use App\Models\Review;
@@ -21,9 +20,9 @@ class Hotel extends Model
     ];
 
     //relation Hotel with HotelImage
-    public function image()
+    public function images()
     {
-        return $this->hasMany(HotelImage::class,"hotel_id");
+        return $this->morphMany(Image::class, 'imageable');
     }
 
     //relation Hotel with user
@@ -40,9 +39,9 @@ class Hotel extends Model
     }
 
     //relation Hotel with Review
-    public function review()
+    public function reviews()
     {
-        return $this->hasMany(Review::class,"hotel_id");
+        return $this->morphMany('App\Models\Review', 'reviewable');
     }
 
     //relation hotels with vendors
