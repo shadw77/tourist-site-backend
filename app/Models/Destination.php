@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\DestinationImage;
 use App\Models\User;
 use App\Models\Review;
-namespace App;
+use App\Models\Image;
 
 class Destination extends Model
 {
@@ -25,7 +25,7 @@ class Destination extends Model
     //relation destination with DestinationImage
     public function images()
     {
-        return $this->morphMany('App\Image', 'imageable');
+        return $this->morphMany(Image::class, 'imageable');
     }
 
     //relation destination with user

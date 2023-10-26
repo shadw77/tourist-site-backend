@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Models;
-namespace App;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\RestaurantImage;
 use App\Models\User;
 use App\Models\Review;
+use App\Models\Image;
+
 
 class Restaurant extends Model
 {
@@ -24,7 +25,7 @@ class Restaurant extends Model
     //relation Restaurant with RestaurantImage
     public function images()
     {
-        return $this->morphMany('App\Image', 'imageable');
+        return $this->morphMany(Image::class, 'imageable');
     }
 
     //relation Restaurant with user
