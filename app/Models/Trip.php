@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\TripImage;
+use App\Models\Image;
 use App\Models\User;
 use App\Models\Review;
 
@@ -23,7 +23,7 @@ class Trip extends Model
     //relation trip with TripImage
     public function images()
     {
-        return $this->morphMany('App\Image', 'imageable');
+        return  $this->morphMany(Image::class, 'imageable');
     }
 
     //relation trip with user

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\DestinationImage;
 use App\Models\User;
 use App\Models\Review;
+namespace App;
 
 class Destination extends Model
 {

@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Trip;
 
+use App\Models\Image;
 
 class UserTripsSeeder extends Seeder
 {
@@ -19,8 +20,16 @@ class UserTripsSeeder extends Seeder
     {
         //
         User::factory()
-        ->has(Trip::factory()->count(5))
-        ->count(10)
+        ->count(2)
+        ->has(
+            Trip::factory()
+                ->count(2)
+                ->has(
+                    Image::factory()
+                        ->count(3),
+                    'images'
+                )
+        )
         ->create();
     }
 }
