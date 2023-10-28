@@ -43,7 +43,16 @@ class TripController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name'=>'required',
+            "government"=>'required',
+            "duration"=>'required',
+            "cost"=>'required',
+            "description"=>'required',
+            "rating"=>'required',
+            "thumbnail"=>'required',
+            "creator_id"=>'required',
+        ]);
         $trip = Trip::create($request->all());
         return new TripResource($trip);
     }
