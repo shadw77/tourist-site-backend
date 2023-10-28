@@ -28,15 +28,28 @@ use App\Http\Controllers\api\HotelImageController;
 
 
 Route::group(['middleware'=>['api']],function(){
-    Route::get('get-nearbyplaces',[discoverController::class,'index']);
 
+    Route::get('get-nearbyplaces',[discoverController::class,'index']);
     Route::post('login',[Controller::class,'login']);
 
     /*start endpoints that user  should be logged and send jwt token to access any of them*/
     Route::group([  'middleware'=>['jwt.verify']],function(){
-        Route::apiResource('destinations',destinationController::class)
-            ->middleware('admin-access')->only(['store','update','destroy']);
-        Route::get('destinations/{destination}',[destinationController::class,'show']);
+
+        /*start endpoints for destination that can anyone access*/
+        Route::get('destinations',[destinationController::class,'index']);
+        Route::get('destinations/{id}',[destinationController::class,'show']);
+        /*end endpoints for destination that can anyone access*/
+
+        /*start endpoints that can only admin access*/
+        Route::group([  'middleware'=>['admin-access']],function(){
+
+            /*start endpoints for destination*/
+            Route::delete('destinations/{destination}',[destinationController::class,'destroy']);
+            /*end endpoints for destination*/
+
+        });
+        /*end endpoints that can only admin access*/
+
 
 
         Route::post('logout',[Controller::class,'logout']);

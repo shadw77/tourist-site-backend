@@ -11,6 +11,7 @@ use App\Models\Trip;
 use App\Models\User;
 use App\Models\Review;
 use App\Models\Room;
+use App\Models\Image;
 use App\Traits\GeneralTrait;
 
 
@@ -35,5 +36,7 @@ class discoverController extends Controller
         );
     }
     /*end function that send nearbyplaces*/
+
+
 
 }

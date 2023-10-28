@@ -17,7 +17,7 @@ class destinationController extends Controller
      */
     public function index()
     {
-       $destinations=Destination::with('image')->get();
+       $destinations=Destination::with('images')->get();
         return $this->returnData('destinations',$destinations,'destinations found');
     }
 
@@ -38,8 +38,9 @@ class destinationController extends Controller
      * @param  \App\Models\Destination  $destination
      * @return \Illuminate\Http\Response
      */
-    public function show(Destination $destination)
+    public function show($id)
     {
+        $destination=Destination::with('images')->find($id);
         return $this->returnData('destination',$destination,'destination found');
     }
 
@@ -63,6 +64,7 @@ class destinationController extends Controller
      */
     public function destroy(Destination $destination)
     {
+        $destination->images()->delete();
         $destination->delete();
         return $this->returnSuccessMessage('destination deleted successfully');
     }
