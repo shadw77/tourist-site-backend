@@ -34,15 +34,24 @@ class HotelController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:10',
             'street' => 'required',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if($validator->fails()){
             return response($validator->errors()->all(), 422);
         }
+        if ($request->hasFile('thumbnail')) {
+            $image = $request->file('thumbnail');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads'), $imageName);
 
-        $hotel=Hotel::create($request->all());
+            // Save the image name in the database
+         $hotel = new Hotel();
+         $hotel->image = $imageName;
+         $hotel->create($request->all());
         // $hotel->creator_id = Auth::id();
         $hotel->save;
+        }
         return (new HotelResource($hotel))->response()->setStatusCode(201);
 
     }
