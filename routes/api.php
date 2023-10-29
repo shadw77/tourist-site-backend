@@ -13,6 +13,7 @@ use App\Http\Controllers\api\RestaurantController;
 use App\Http\Controllers\api\TripController;
 use App\Http\Controllers\api\HotelController;
 use App\Http\Controllers\api\HotelImageController;
+use App\Http\Controllers\review\reviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,8 +33,9 @@ Route::group(['middleware'=>['api']],function(){
     Route::get('get-nearbyplaces',[discoverController::class,'index']);
     Route::post('login',[Controller::class,'login']);
 
-    Route::post('destinations',[destinationController::class,'store']);
-    Route::put('destinations/{destination}',[destinationController::class,'update']);
+
+    Route::post('review',[discoverController::class,'store']);//for test
+    Route::get('get-review-nearbyplaces',[discoverController::class,'getReviewNearByPlaces']);//for test
 
 
     /*start endpoints that user  should be logged and send jwt token to access any of them*/
@@ -49,6 +51,9 @@ Route::group(['middleware'=>['api']],function(){
 
             /*start endpoints for destination*/
             Route::delete('destinations/{destination}',[destinationController::class,'destroy']);
+            Route::post('destinations',[destinationController::class,'store']);
+            Route::put('destinations/{destination}',[destinationController::class,'update']);
+
             /*end endpoints for destination*/
 
         });

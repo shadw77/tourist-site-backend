@@ -61,10 +61,16 @@ class destinationController extends Controller
 
         $destination=Destination::create($request->except('image'));
         foreach ($request->image as $index => $value) {
-            $image = new Image();
-            $image->image = $value;
-            $destination->images()->save($image);
+            $img = new Image();
+            $img->image = $value;
+            $destination->images()->save($img);
         }
+        /*
+        $filepath=null;
+        if($request->has('image')){
+            $file = $request->file('image');
+            $filepath = $file->store('product', 'products');
+        }*/
         return $this->returnSuccessMessage("Record Inserted Successfully","201");
 
     }
@@ -112,9 +118,9 @@ class destinationController extends Controller
 
         $destination->update($request->except('image'));
         foreach ($request->image as $index => $value) {
-            $image = new Image();
-            $image->image = $value;
-            $destination->images()->save($image);
+            $img = new Image();
+            $img->image = $value;
+            $destination->images()->save($img);
         }
         return $this->returnSuccessMessage("Record Updated Successfully","201");
 

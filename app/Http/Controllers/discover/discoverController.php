@@ -37,6 +37,55 @@ class discoverController extends Controller
     }
     /*end function that send nearbyplaces*/
 
+    /*start function that retrieve review that belong to nearbyplaces*/
+    public function getReviewNearByPlaces(){
+        $tripwithreview=Trip::where('government','luxor')->has('reviews')->with('reviews.user')->get();
+        $restaurantwithreview=Restaurant::where('government','luxor')->has('reviews')->with('reviews.user')->get();
+        $hotelwithreview=Hotel::where('government','luxor')->has('reviews')->with('reviews.user')->get();
 
+        /*start extract reviews from $tripwithreview*/
+        $tripreview = [];
+        foreach($tripwithreview as $trip) {
+            $tripreview = array_merge($tripreview, $trip->reviews->toArray());
+        }
+        /*end extract reviews from $tripwithreview*/
+
+        /*start extract reviews from $restaurantwithreview*/
+        $restaurantreview = [];
+        foreach($restaurantwithreview as $trip) {
+            $restaurantreview = array_merge($restaurantreview, $trip->reviews->toArray());
+        }
+        /*end extract reviews from $restaurantwithreview*/
+
+        /*start extract reviews from $hotelwithreview*/
+        $hotelreview = [];
+        foreach($hotelwithreview as $trip) {
+            $hotelreview = array_merge($hotelreview, $trip->reviews->toArray());
+        }
+        /*end extract reviews from $hotelwithreview*/
+
+        return $this->returnData(
+            "reviews",
+            [
+                'tripreview' => $tripreview,
+                'restaurantreview' => $restaurantreview,
+                'hotelreview' => $hotelreview
+            ]
+            ,'data Found'
+        );
+    }
+    /*end function that retrieve review that belong to nearbyplaces*/
+
+    /*start testing function that insert review*/
+    public function store(Request $request){
+        $trip=Trip::find($request->trip_id);
+        $review = new Review();
+        $review->review = $request->review;
+        $review->user_id=$request->user_id;
+        $trip->reviews()->save($review);
+
+        $this->returnSuccessMessage("comment Inserted successuflly","E001");
+    }
+    /*end testing function that insert review*/
 
 }
