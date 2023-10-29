@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\RestaurantImage;
 use App\Models\User;
 use App\Models\Review;
+use App\Models\Image;
+
 
 class Restaurant extends Model
 {
@@ -21,9 +23,9 @@ class Restaurant extends Model
 
 
     //relation Restaurant with RestaurantImage
-    public function image()
+    public function images()
     {
-        return $this->hasMany(RestaurantImage::class,"destination_id");
+        return $this->morphMany(Image::class, 'imageable');
     }
 
     //relation Restaurant with user
@@ -33,9 +35,9 @@ class Restaurant extends Model
     }
 
     //relation Restaurant with Review
-    public function review()
+    public function reviews()
     {
-        return $this->hasMany(Review::class,"restaurant_id");
+        return $this->morphMany('App\Models\Review', 'reviewable');
     }
 
     //relation Restaurant with vendors

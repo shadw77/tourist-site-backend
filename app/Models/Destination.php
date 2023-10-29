@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\DestinationImage;
 use App\Models\User;
 use App\Models\Review;
+use App\Models\Image;
 
 class Destination extends Model
 {
@@ -22,9 +23,9 @@ class Destination extends Model
     ];
 
     //relation destination with DestinationImage
-    public function image()
+    public function images()
     {
-        return $this->hasMany(DestinationImage::class,"destination_id");
+        return $this->morphMany(Image::class, 'imageable');
     }
 
     //relation destination with user
@@ -34,9 +35,9 @@ class Destination extends Model
     }
 
     //relation Destination with Review
-    public function review()
+    public function reviews()
     {
-        return $this->hasMany(Review::class,"destination_id");
+        return $this->morphMany('App\Models\Review', 'reviewable');
     }
 
 

@@ -17,8 +17,21 @@ class TripController extends Controller
     public function index()
     {
         //
-       $trips =  Trip::all();
-    //    dd($trips);
+        $trips = Trip::with('images')->get();
+        // $trip = Trip::create([
+        //     'name'=> 'test'.rand(0,1999),
+        //     'government'=> 'gtest'.rand(0,1999),
+        //     'duration'=> 'dtest'.rand(0,1999),
+        //     'cost'=> 'ctest'.rand(0,1999),
+        //     'description'=> 'ddtest'.rand(0,1999),
+        //     'rating'=> 'rtest'.rand(0,1999),
+        //     'thumbnail'=> 'test'.rand(0,1999).'.png',
+        //     'creator_id'=> 1
+
+
+        // ])->images()->create([
+        //     'image'=> 'images/url/image'.rand(0,1111).'.png',
+        // ]);
        return TripResource::collection($trips);
     }
 

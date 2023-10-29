@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Models;
+namespace App;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Hotel;
-use App\Models\RoomImage;
+use App\Models\Image;
 
 class Room extends Model
 {
@@ -25,9 +26,9 @@ class Room extends Model
 
 
     //relation hotel with  room image
-    public function room()
+    public function images()
     {
-        return $this->hasMany(RoomImage::class,"room_id");
+        return $this->morphMany(Image::class, 'imageable');
     }
 
 }
