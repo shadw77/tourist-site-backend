@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\api\RestaurantController;
 use App\Http\Controllers\api\TripController;
+use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\HotelController;
 use App\Http\Controllers\api\HotelImageController;
 
@@ -53,8 +54,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('restaurants', RestaurantController::class);
 Route::apiResource('trips', TripController::class);
+Route::apiResource('users', UserController::class);
+Route::apiResource('restaurants', RestaurantController::class);
 Route::apiResource('hotels', HotelController::class);
 Route::apiResource('hotelImages', HotelImageController::class);
 
