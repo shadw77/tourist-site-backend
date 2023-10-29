@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Trip;
+use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Resources\TripResource;
+use App\Http\Resources\UserResource;
 
-class TripController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +16,8 @@ class TripController extends Controller
      */
     public function index()
     {
-        
-        $trips = Trip::with('images')->get();
-       return TripResource::collection($trips);
+        $users = User::all();
+        return UserResource::collection($users);
     }
 
     /**
@@ -32,54 +31,49 @@ class TripController extends Controller
         $request->validate([
             'name'=>'required',
             "government"=>'required',
-            "duration"=>'required',
-            "cost"=>'required',
-            "description"=>'required',
-            "rating"=>'required',
-            "thumbnail"=>'required',
-            "creator_id"=>'required',
+            "email"=>'required',
+            "password"=>'required',
+            "street"=>'required',
+            "mobile"=>'required',
+            "role"=>'required',
         ]);
-        $trip = Trip::create($request->all());
-        return new TripResource($trip);
+        $user = User::create($request->all());
+        return new UserResource($user);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Trip  $trip
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(Trip $trip)
+    public function show(User $user)
     {
-        //
-        return new TripResource($trip);
-    
+        return new UserResource($user);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Trip  $trip
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Trip $trip)
+    public function update(Request $request, User $user)
     {
-        //
-        $trip->update($request->all());
-        return new TripResource($trip);
+        $user->update($request->all());
+        return new UserResource($user);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Trip  $trip
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Trip $trip)
+    public function destroy(User $user)
     {
-        //
-        $trip->delete();
+        $user->delete();
         return 'deleted';
     }
 }
