@@ -31,13 +31,6 @@ trait GeneralTrait{
 
 
 
-    //handle validation functions
-    public function returnValidationError($validator,$code = "E001")
-    {
-        return $this->returnError($validator->errors()->first(),$code.'11' );
-    }
-
-
     public function returnCodeAccordingToInput($validator)
     {
         $inputs = array_keys($validator->errors()->toArray());

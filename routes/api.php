@@ -32,6 +32,10 @@ Route::group(['middleware'=>['api']],function(){
     Route::get('get-nearbyplaces',[discoverController::class,'index']);
     Route::post('login',[Controller::class,'login']);
 
+    Route::post('destinations',[destinationController::class,'store']);
+    Route::put('destinations/{destination}',[destinationController::class,'update']);
+
+
     /*start endpoints that user  should be logged and send jwt token to access any of them*/
     Route::group([  'middleware'=>['jwt.verify']],function(){
 
@@ -41,7 +45,7 @@ Route::group(['middleware'=>['api']],function(){
         /*end endpoints for destination that can anyone access*/
 
         /*start endpoints that can only admin access*/
-        Route::group([  'middleware'=>['admin-access']],function(){
+        Route::group([  'middleware'=>['admin-access'] ],function(){
 
             /*start endpoints for destination*/
             Route::delete('destinations/{destination}',[destinationController::class,'destroy']);
