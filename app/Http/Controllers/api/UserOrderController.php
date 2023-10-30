@@ -10,6 +10,7 @@ use App\Models\Trip;
 use App\Models\Hotel;
 use App\Models\Restaurant;
 use App\Models\Destination;
+use App\Http\Resources\UserOrderResource;
 
 
 
@@ -19,7 +20,7 @@ class UserOrderController extends Controller
     public function index()
     {
         $orders = UserOrder::all();
-        return response()->json(['orders' => $orders]);
+        return UserOrderResource::collection($orders);
 }
 
   
@@ -34,24 +35,20 @@ class UserOrderController extends Controller
     
         $user = User::find($validatedData['user_id']);
     
-        // Create an order for a hotel
         $hotel = Hotel::find($validatedData['hotel_id']);
         $user->orders()->attach($hotel);
     
-        // Create an order for a trip
         $trip = Trip::find($validatedData['trip_id']);
         $user->orders()->attach($trip);
     
-        // Create an order for a restaurant
         $restaurant = Restaurant::find($validatedData['restaurant_id']);
         $user->orders()->attach($restaurant);
 
-        // Create an order for a restaurant
         $destination = Destination::find($validatedData['destination_id']);
         $user->orders()->attach($destination);
         
     
-        return response()->json(['message' => 'Order created successfully']);
+        return new UserOrderResource($user->orders());
     
     }
 
@@ -59,13 +56,14 @@ class UserOrderController extends Controller
     public function show(UserOrder $userOrder)
     {
         $order = UserOrder::find($id);
-        return response()->json(['order' => $order]);    
+        return new UserOrderResource($order);
     }
 
   
     public function update(Request $request, UserOrder $userOrder)
     {
-        //
+        $order->update($request->all());
+        return new UserOrderResource($order);
     }
 
     public function destroy(UserOrder $userOrder)
@@ -74,3 +72,4 @@ class UserOrderController extends Controller
         $order->delete();
         return response()->json(['message' => 'Order deleted successfully']);    }
 }
+
