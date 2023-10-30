@@ -30,12 +30,17 @@ use App\Http\Controllers\review\reviewController;
 
 Route::group(['middleware'=>['api']],function(){
 
-    Route::get('get-nearbyplaces',[discoverController::class,'index']);
-    Route::post('login',[Controller::class,'login']);
-
-
+    Route::post('login',[Controller::class,'login']);//for test
+    Route::post('logout',[Controller::class,'logout']);//for test
     Route::post('review',[discoverController::class,'store']);//for test
-    Route::get('get-review-nearbyplaces',[discoverController::class,'getReviewNearByPlaces']);//for test
+
+
+    /*start endpoints for discover*/
+    Route::get('get-nearbyplaces/{city}',[discoverController::class,'index']);
+    Route::get('get-review-nearbyplaces/{city}',[discoverController::class,'getReviewNearByPlaces']);
+    Route::get('get-topattractions-places',[discoverController::class,'getTopAttractions']);
+    Route::get('get-review-topattractions-places',[discoverController::class,'getReviewTopAttractions']);
+    /*end endpoints for discover*/
 
 
     /*start endpoints that user  should be logged and send jwt token to access any of them*/
@@ -61,7 +66,6 @@ Route::group(['middleware'=>['api']],function(){
 
 
 
-        Route::post('logout',[Controller::class,'logout']);
     });
     /*end endpoints that user  should be logged and send jwt token to access any of them*/
 

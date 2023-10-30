@@ -16,7 +16,7 @@ class Hotel extends Model
 
 
     protected $fillable = [
-        'name','street','government','description','thumbnail','creator_id'
+        'name','street','government','description','thumbnail','rating','creator_id'
     ];
 
     //relation Hotel with HotelImage
