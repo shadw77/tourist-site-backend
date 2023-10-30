@@ -21,52 +21,69 @@ class UserOrderController extends Controller
     {
         $orders = UserOrder::all();
         return UserOrderResource::collection($orders);
-}
+    }
 
   
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'user_id' => 'required|exists:users,id',
-            'hotel_id' => 'required|exists:hotels,id',
-            'trip_id' => 'required|exists:trips,id',
-            'restaurant_id' => 'required|exists:restaurants,id',
-        ]);
-    
-        $user = User::find($validatedData['user_id']);
-    
-        $hotel = Hotel::find($validatedData['hotel_id']);
-        $user->orders()->attach($hotel);
-    
-        $trip = Trip::find($validatedData['trip_id']);
-        $user->orders()->attach($trip);
-    
-        $restaurant = Restaurant::find($validatedData['restaurant_id']);
-        $user->orders()->attach($restaurant);
+            'service_type'=>'required',
+            'service_id'=>'required'
 
-        $destination = Destination::find($validatedData['destination_id']);
-        $user->orders()->attach($destination);
+        ]);
+        $user = User::find($validatedData['user_id']);
+
+        if($request->get('service_type') == "Hotel"){
+            $hotel = Hotel::find($request->get('service_id'));
+            $order = new UserOrder();
+            $order->service_id = $hotel->id;
+            $order->service()->associate($hotel);
+            $user->orders()->save($order);
+
+        }
+        elseif($request->get('service_type') == 'Trip'){
+             $trip = Trip::find($request->get('service_id'));
+             $order = new UserOrder();
+             $order->service_id = $trip->id;
+             $order->service()->associate($trip);
+             $user->orders()->save($order);    
+        }
+        elseif($request->get('service_type') == 'Destination'){  
+            $destination = Destination::find($request->get('service_id'));
+            $order = new UserOrder();
+            $order->service_id = $destination->id;
+            $order->service()->associate($destination);
+            $user->orders()->save($order);  
+        }
+        elseif($request->get('service_type') == 'Restaurent'){  
+            $restaurant = Restaurant::find($request->get('service_id'));
+            $order = new UserOrder();
+            $order->service_id = $restaurant->id;
+            $order->service()->associate($restaurant);
+            $user->orders()->save($order);          }
+
         
-    
-        return new UserOrderResource($user->orders());
+        return new UserOrderResource($user->orders);
     
     }
 
-  
-    public function show(UserOrder $userOrder)
+    public function show(Request $request, $id)
     {
         $order = UserOrder::find($id);
         return new UserOrderResource($order);
     }
-
-  
-    public function update(Request $request, UserOrder $userOrder)
+    
+ 
+    
+    public function update(Request $request, $id)
     {
+        $order = UserOrder::find($id);
         $order->update($request->all());
         return new UserOrderResource($order);
     }
 
-    public function destroy(UserOrder $userOrder)
+    public function destroy(Request $request, $id)
     {
         $order = UserOrder::find($id);
         $order->delete();
