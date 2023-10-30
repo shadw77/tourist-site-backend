@@ -29,10 +29,10 @@ class Destination extends Model
     }
 
     //relation destination with user
-    public function user()
-    {
-        return $this->belongsToMany(User::class,"user_destination","destination_id","user_id");
-    }
+    // public function user()
+    // {
+    //     return $this->belongsToMany(User::class,"user_destination","destination_id","user_id");
+    // }
 
     //relation Destination with Review
     public function reviews()
@@ -45,6 +45,12 @@ class Destination extends Model
     public function vendor()
     {
         return $this->belongsTo(User::class,"creator_id");
+    }
+
+    public function orders()
+    {
+        return $this->morphToMany(User::class, 'service', 'user_order')
+            ->withTimestamps();
     }
 
 }

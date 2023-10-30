@@ -25,11 +25,18 @@ class Hotel extends Model
         return $this->morphMany(Image::class, 'imageable');
     }
 
-    //relation Hotel with user
-    public function user()
+    public function orders()
     {
-        return $this->belongsToMany(User::class,"user_hotels","hotel_id","user_id");
+        return $this->morphToMany(User::class, 'service', 'user_order')
+            ->withTimestamps();
     }
+
+
+    //relation Hotel with user
+    // public function user()
+    // {
+    //     return $this->belongsToMany(User::class,"user_hotels","hotel_id","user_id");
+    // }
 
 
     //relation Hotel with room
