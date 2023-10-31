@@ -27,15 +27,21 @@ class Trip extends Model
     }
 
     //relation trip with user
-    public function user()
-    {
-        return $this->belongsToMany(User::class,"user_trips","trip_id","user_id");
-    }
+    // public function user()
+    // {
+    //     return $this->belongsToMany(User::class,"user_trips","trip_id","user_id");
+    // }
 
     //relation Trip with Review
     public function reviews()
     {
         return $this->morphMany('App\Models\Review', 'reviewable');
+    }
+
+    public function orders()
+    {
+        return $this->morphToMany(User::class, 'service', 'user_order')
+            ->withTimestamps();
     }
 
     //relation trip with vendors

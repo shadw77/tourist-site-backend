@@ -14,7 +14,7 @@ use App\Http\Controllers\api\TripController;
 use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\HotelController;
 use App\Http\Controllers\api\HotelImageController;
-
+use App\Http\Controllers\api\UserOrderController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -58,3 +58,4 @@ Route::apiResource('restaurants', RestaurantController::class);
 Route::apiResource('hotelImages', HotelImageController::class);
 
 Route::post('vendor-hotel/{hotel}',[HotelController::class,'updateImage']);
+Route::apiResource('orders', UserOrderController::class);
