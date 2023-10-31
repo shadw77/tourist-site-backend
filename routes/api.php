@@ -32,8 +32,12 @@ use App\Http\Controllers\api\UserOrderController;
 
 Route::group(['middleware'=>['api']],function(){
 
-    Route::post('login',[Controller::class,'login']);//for test
-    Route::post('logout',[Controller::class,'logout']);//for test
+    /*start endpoints for authentication*/
+    Route::post('register',[Controller::class,'register']);
+    Route::post('login',[Controller::class,'login']);
+    Route::post('logout',[Controller::class,'logout']);
+    /*end endpoints for authentication*/
+
     Route::post('review',[discoverController::class,'store']);//for test
 
 
@@ -48,6 +52,8 @@ Route::group(['middleware'=>['api']],function(){
     /*start endpoints that user  should be logged and send jwt token to access any of them*/
     Route::group([  'middleware'=>['jwt.verify']],function(){
 
+        Route::get("get-test-data",[Controller::class,'testdata']);//for test
+
         /*start endpoints for destination that can anyone access*/
         Route::get('destinations',[destinationController::class,'index']);
         Route::get('destinations/{id}',[destinationController::class,'show']);
@@ -60,19 +66,13 @@ Route::group(['middleware'=>['api']],function(){
             Route::delete('destinations/{destination}',[destinationController::class,'destroy']);
             Route::post('destinations',[destinationController::class,'store']);
             Route::put('destinations/{destination}',[destinationController::class,'update']);
-
             /*end endpoints for destination*/
 
         });
         /*end endpoints that can only admin access*/
 
-
-
     });
     /*end endpoints that user  should be logged and send jwt token to access any of them*/
-
-
-
 });
 
 
