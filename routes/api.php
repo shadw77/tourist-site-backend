@@ -43,9 +43,6 @@ Route::group(['middleware'=>['api']],function(){
         Route::post('logout',[Controller::class,'logout']);
     });
     /*end endpoints that user  should be logged and send jwt token to access any of them*/
-
-
-
 });
 
 
@@ -57,6 +54,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('trips', TripController::class);
 Route::apiResource('users', UserController::class);
 Route::apiResource('restaurants', RestaurantController::class);
-Route::apiResource('hotels', HotelController::class);
+ Route::apiResource('hotels', HotelController::class);
 Route::apiResource('hotelImages', HotelImageController::class);
 
+Route::post('vendor-hotel/{hotel}',[HotelController::class,'updateImage']);
