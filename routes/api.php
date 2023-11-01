@@ -19,6 +19,8 @@ use App\Http\Controllers\review\reviewController;
 use App\Http\Controllers\api\UserOrderController;
 use App\Http\Controllers\api\DestinationController;
 
+use App\Http\Controllers\api\VendorHotelsController;
+use App\Http\Controllers\api\ImageController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -90,9 +92,6 @@ Route::group(['middleware'=>['api']],function(){
     });
     /*end endpoints that user  should be logged and send jwt token to access any of them*/
 });
-
-
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -103,6 +102,21 @@ Route::get('/destinations', [DestinationController::class, 'getDestinations']);
 Route::apiResource('trips', TripController::class);
 Route::apiResource('users', UserController::class);
 Route::apiResource('restaurants', RestaurantController::class);
-Route::apiResource('hotels', HotelController::class);
-Route::apiResource('hotelImages', HotelImageController::class);
+// Route::apiResource('hotels', HotelController::class);
+// Route::post('vendor-hotel/{hotel}',[HotelController::class,'updateImage']);
 Route::apiResource('orders', UserOrderController::class);
+// Route::apiResource('vendor-hotels', VendorHotelsController::class);
+
+
+     Route::post('hotels', [HotelController::class,'store']);
+     Route::get('hotels',  [HotelController::class,'index']);
+     Route::get('hotels/{hotel}',  [HotelController::class,'show']);
+     Route::post('hotels/{hotel}', [HotelController::class,'update']);
+     Route::delete('hotels/{hotel}',  [HotelController::class,'destroy']);
+
+     Route::post('images', [ImageController::class,'store']);
+     Route::get('images',  [ImageController::class,'index']);
+     Route::get('images/{image}',  [ImageController::class,'show']);
+     Route::post('images/{image}', [ImageController::class,'updateImage']);
+     Route::delete('images/{image}',  [ImageController::class,'destroy']);
+    
