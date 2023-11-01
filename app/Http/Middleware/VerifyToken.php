@@ -21,10 +21,11 @@ class VerifyToken
     public function handle(Request $request, Closure $next)
     {
         try {
-            $token = $request->header('authorization');
+            //if($request->header){}
+            $token = $request->header('Authorization');
 
             if (!$token) {
-                return  $this -> returnError('Token not provided','401');
+                return  $this -> returnError('Token not provided From MiddleWare','401');
             }
             $user = JWTAuth::parseToken()->authenticate();
             if (!$user) {

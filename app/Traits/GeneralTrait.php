@@ -5,17 +5,18 @@ namespace App\Traits;
 trait GeneralTrait{
 
     //function to return data in json
-    public function returnData($key,$value,$mssg=""){
+    public function returnData($key,$value,$mssg="",$code=200){
         return response()->json([
+            'status' => $code,
             'mssg' => $mssg,
             $key => $value
         ]);
     }
 
-    public function returnError($mssg='',$errnum='E000'){
+    public function returnError($mssg='',$code='E000'){
         return response()->json([
+            'status' => $code,
             'mssg' => $mssg,
-            'errorcode' => $errnum,
         ]);
     }
 
@@ -24,18 +25,11 @@ trait GeneralTrait{
     public function returnSuccessMessage($mssg='',$succnum='S000'){
         return response()->json([
             'mssg' => $mssg,
-            'successcode' =>$succnum,
+            'status' =>$succnum,
         ]);
     }
 
 
-
-
-    //handle validation functions
-    public function returnValidationError($validator,$code = "E001")
-    {
-        return $this->returnError($validator->errors()->first(),$code.'11' );
-    }
 
 
     public function returnCodeAccordingToInput($validator)
