@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\discover\discoverController;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\destination\destinationController;
+// use App\Http\Controllers\destination\destinationController;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -15,6 +15,8 @@ use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\HotelController;
 use App\Http\Controllers\api\HotelImageController;
 use App\Http\Controllers\api\UserOrderController;
+use App\Http\Controllers\api\DestinationController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,25 +30,25 @@ use App\Http\Controllers\api\UserOrderController;
 
 
 
-Route::group(['middleware'=>['api']],function(){
-    Route::get('get-nearbyplaces',[discoverController::class,'index']);
+// Route::group(['middleware'=>['api']],function(){
+//     Route::get('get-nearbyplaces',[discoverController::class,'index']);
 
-    Route::post('login',[Controller::class,'login']);
+//     Route::post('login',[Controller::class,'login']);
 
-    /*start endpoints that user  should be logged and send jwt token to access any of them*/
-    Route::group([  'middleware'=>['jwt.verify']],function(){
-        Route::apiResource('destinations',destinationController::class)
-            ->middleware('admin-access')->only(['store','update','destroy']);
-        Route::get('destinations/{destination}',[destinationController::class,'show']);
-
-
-        Route::post('logout',[Controller::class,'logout']);
-    });
-    /*end endpoints that user  should be logged and send jwt token to access any of them*/
+//     /*start endpoints that user  should be logged and send jwt token to access any of them*/
+//     Route::group([  'middleware'=>['jwt.verify']],function(){
+//         Route::apiResource('destinations',destinationController::class)
+//             ->middleware('admin-access')->only(['store','update','destroy']);
+//         Route::get('destinations/{destination}',[destinationController::class,'show']);
 
 
+//         Route::post('logout',[Controller::class,'logout']);
+//     });
+//     /*end endpoints that user  should be logged and send jwt token to access any of them*/
 
-});
+
+
+// });
 
 
 
@@ -54,6 +56,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+Route::apiResource('destinations', DestinationController::class);
+Route::get('/destinations', [DestinationController::class, 'getDestinations']);
 Route::apiResource('trips', TripController::class);
 Route::apiResource('users', UserController::class);
 Route::apiResource('restaurants', RestaurantController::class);
