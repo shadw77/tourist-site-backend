@@ -24,7 +24,7 @@ class RestaurantController extends Controller
     public function index()
     {
         //
-        $restaurants = Restaurant::all();
+        $restaurants = Restaurant::with('images')->get();
                 return RestaurantResource::collection($restaurants);
     }
 

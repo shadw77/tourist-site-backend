@@ -53,3 +53,4 @@ class Restaurant extends Model
     }
 
 }
+

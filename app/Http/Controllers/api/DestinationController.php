@@ -22,6 +22,7 @@ class DestinationController extends Controller
     public function index()
     {
         $destinations = Destination::with('images')->get();
+
         return $destinations;
     }
 
@@ -112,4 +113,6 @@ class DestinationController extends Controller
         $destination->delete();
         return response()->json(['message' => 'Restaurant deleted successfully'], 204);
     }
+
 }
+
