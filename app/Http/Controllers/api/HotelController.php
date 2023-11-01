@@ -56,8 +56,6 @@ class HotelController extends Controller
             $imageName = time() . '_' . $originalFilename;
             $thumbnail = $image->storeAs('thumbnails', $imageName, 'hotel_uploads');
             $hotel->thumbnail = $imageName;
-           
-           
         }
          
         if ($request->hasFile('images')) {
@@ -66,8 +64,9 @@ class HotelController extends Controller
                 $originalFilename = $uploadedImage->getClientOriginalName();
                 $imageName = time() . '_' . $originalFilename;
                 $path = $uploadedImage->storeAs('images', $imageName, 'hotel_uploads');
-    
-                $image = new Image(['path' => $imageName]);
+                 
+                $image = new Image(['image' => $imageName]);
+                
                 $hotel->images()->save($image);
             }
         }
@@ -115,17 +114,12 @@ class HotelController extends Controller
                 $imageName = time() . '_' . $originalFilename;
                 $path = $uploadedImage->storeAs('images', $imageName, 'hotel_uploads');
     
-                 $image = new Image(['path' => $imageName]);
+                 $image = new Image(['image' => $imageName]);
                 $hotel->images()->save($image);
             }
         }
         $hotel->save();
-        // try {
-        //     $hotel->update($request->all());
-
-        // } catch (\Exception $e) {
-        //     dd($e);
-        // }
+        
         return (new HotelResource($hotel))->response()->setStatusCode(200);
     }
 

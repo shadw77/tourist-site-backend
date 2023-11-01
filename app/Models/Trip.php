@@ -16,7 +16,7 @@ class Trip extends Model
 
 
     protected $fillable = [
-        'name','government','image','duration','cost','description','rating','thumbnail','creator_id'
+        'name','government','image','duration','cost','description','rating','thumbnail','creator_id','discount'
     ];
 
 

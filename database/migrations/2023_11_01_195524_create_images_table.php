@@ -13,10 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('restaurants', function (Blueprint $table) {
-            $table->string("rating")->nullable();
-
+        Schema::create('images', function (Blueprint $table) {
+            $table->id();
+            $table->string('image',255);
+            $table->integer('imageable_id')->unsigned();
+            $table->string('imageable_type');
+            $table->timestamps();
         });
+      
     }
 
     /**
@@ -26,8 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('restaurants', function (Blueprint $table) {
-            $table->dropColumn('rating');
-        });
+        Schema::dropIfExists('images');
     }
 };

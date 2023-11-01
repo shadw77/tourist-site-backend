@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('rating');
             $table->string('thumbnail');
+            $table->string("discount")->nullable();
             $table->foreignId('creator_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
