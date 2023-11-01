@@ -52,7 +52,7 @@ Route::group(['middleware'=>['api']],function(){
     Route::group([  'middleware'=>['jwt.verify']],function(){
 
         Route::get("get-test-data",[Controller::class,'testdata']);//for test
-        Route::get('logout',[Controller::class,'logout']);
+        Route::get('logout',[Controller::class,'logout']);//function that logout
 
         /*start endpoints for destination that can anyone access*/
         Route::get('destinations',[destinationController::class,'index']);
@@ -70,6 +70,12 @@ Route::group(['middleware'=>['api']],function(){
 
         });
         /*end endpoints that can only admin access*/
+
+        /*start endpoints that admin or vendor can access*/
+        Route::group([  'middleware'=>['admin-vendor-access'] ],function(){
+
+        });
+        /*end endpoints that admin or vendor can access*/
 
     });
     /*end endpoints that user  should be logged and send jwt token to access any of them*/
