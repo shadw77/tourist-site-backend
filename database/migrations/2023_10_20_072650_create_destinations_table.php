@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name',255);
             $table->text('description');
             $table->string('thumbnail',255);
+            $table->string('rating');
             $table->foreignId('creator_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });

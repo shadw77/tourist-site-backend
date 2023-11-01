@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('government');
             $table->string('phone');
             $table->string('thumbnail');
+            $table->string("rating")->nullable();
             $table->foreignId('creator_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });

@@ -19,7 +19,8 @@ class Destination extends Model
         'name',
         'description',
         'thumbnail',
-        'creator_id'
+        'creator_id',
+        'rating'
     ];
 
     //relation destination with DestinationImage

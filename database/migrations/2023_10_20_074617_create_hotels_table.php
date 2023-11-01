@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('street');
             $table->string('government');
             $table->string('thumbnail');
+            $table->string("rating")->nullable();
             $table->foreignId('creator_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
