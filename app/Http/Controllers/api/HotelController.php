@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\api;
 use App\Http\Resources\HotelResource;
+use App\Models\Image;
 use App\Http\Controllers\Controller;
 use App\Models\Hotel;
-use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -25,7 +25,7 @@ class HotelController extends Controller
     }
 
     public function index()
-    {
+  {
           $hotels=Hotel::all();
           return HotelResource::collection($hotels);
     }
@@ -38,6 +38,7 @@ class HotelController extends Controller
      */
    public function store(Request $request)
     {
+       
         $validator = Validator::make($request->all(), [
             // 'name' => 'required|min:10',
             // 'street' => 'required',
@@ -55,6 +56,8 @@ class HotelController extends Controller
             $imageName = time() . '_' . $originalFilename;
             $thumbnail = $image->storeAs('thumbnails', $imageName, 'hotel_uploads');
             $hotel->thumbnail = $imageName;
+           
+           
         }
          
         if ($request->hasFile('images')) {
@@ -68,6 +71,7 @@ class HotelController extends Controller
                 $hotel->images()->save($image);
             }
         }
+       
        return (new HotelResource($hotel))->response()->setStatusCode(201);
     }
 
@@ -82,7 +86,7 @@ class HotelController extends Controller
      return (new HotelResource($hotel))->response()->setStatusCode(201);
     }
 
-    public function updateImage(Request $request, Hotel $hotel)
+    public function update(Request $request, Hotel $hotel)
     {
         
         $validator = Validator::make($request->all(), [
@@ -111,7 +115,7 @@ class HotelController extends Controller
                 $imageName = time() . '_' . $originalFilename;
                 $path = $uploadedImage->storeAs('images', $imageName, 'hotel_uploads');
     
-                $image = new Image(['path' => $imageName]);
+                 $image = new Image(['path' => $imageName]);
                 $hotel->images()->save($image);
             }
         }
