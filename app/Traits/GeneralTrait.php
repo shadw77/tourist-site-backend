@@ -25,7 +25,7 @@ trait GeneralTrait{
     public function returnSuccessMessage($mssg='',$succnum='S000'){
         return response()->json([
             'mssg' => $mssg,
-            'successcode' =>$succnum,
+            'status' =>$succnum,
         ]);
     }
 

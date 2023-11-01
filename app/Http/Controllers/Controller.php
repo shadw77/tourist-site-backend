@@ -64,18 +64,35 @@ class Controller extends BaseController
     public function login(Request $request){
         try {
             //return $request;
+        // Validate the request data
+        $rules=[
+            'email' => 'required|email|exists:users',
+            'password' => 'required|max:4',
+        ];
+
+        $messages=[
+            "required"          =>  "This Field Is Required",
+            "max"               =>  "This Field Minimum 4 Characters",
+            "exists"            =>   "This Email Is Not Exists"
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return $this->returnError($validator->errors(), 400);
+        }
 
             //if no errors start make tokens
             $credentials = $request->only(['email', 'password']);//get email,password from request
             $token =   Auth::guard('api')->attempt($credentials);//save credentials in session  generate tokens
             //return $token;
             if (!$token)
-                return $this->returnError('data is incorrect','E001');
+                return $this->returnError('data is incorrect',401);
 
             $users =  Auth::guard('api')->user();//get credentials data from session admin-api
             $users->api_token = $token;//insert into admin new property
             //return token
-            return $this->returnData('users', $users,'user found');
+            return $this->returnData('userdata', $users,'User Has Successfully Logged',200);
 
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
@@ -86,18 +103,19 @@ class Controller extends BaseController
     /*start logout function*/
     public function logout(Request $request)
     {
-         $token = $request -> header('authorization');//get token from header request
+
+         $token = $request -> header('Authorization');//get token from header request
 
         if($token){
             try {
 
                 JWTAuth::setToken($token)->invalidate(); //make token destroy and logout
             }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
-                return  $this -> returnError('','some thing went wrongs');
+                $this -> returnError('some thing went wrongs',400);
             }
-            return $this->returnSuccessMessage('Logged out successfully');
+            return $this->returnSuccessMessage('Logged out successfully',200);
         }else{
-            $this -> returnError('','some thing went wrongs');
+            $this -> returnError('Token Not Provided',400);
         }
 
     }

@@ -136,6 +136,6 @@ class destinationController extends Controller
     {
         $destination->images()->delete();
         $destination->delete();
-        return $this->returnSuccessMessage('destination deleted successfully');
+        return $this->returnSuccessMessage('destination deleted successfully',201);
     }
 }

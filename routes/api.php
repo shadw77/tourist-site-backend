@@ -35,7 +35,6 @@ Route::group(['middleware'=>['api']],function(){
     /*start endpoints for authentication*/
     Route::post('register',[Controller::class,'register']);
     Route::post('login',[Controller::class,'login']);
-    Route::post('logout',[Controller::class,'logout']);
     /*end endpoints for authentication*/
 
     Route::post('review',[discoverController::class,'store']);//for test
@@ -53,6 +52,7 @@ Route::group(['middleware'=>['api']],function(){
     Route::group([  'middleware'=>['jwt.verify']],function(){
 
         Route::get("get-test-data",[Controller::class,'testdata']);//for test
+        Route::get('logout',[Controller::class,'logout']);
 
         /*start endpoints for destination that can anyone access*/
         Route::get('destinations',[destinationController::class,'index']);
