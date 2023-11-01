@@ -114,6 +114,12 @@ Route::apiResource('orders', UserOrderController::class);
      Route::post('hotels/{hotel}', [HotelController::class,'update']);
      Route::delete('hotels/{hotel}',  [HotelController::class,'destroy']);
 
+     Route::post('restaurants', [RestaurantController::class,'store']);
+     Route::get('restaurants',  [RestaurantController::class,'index']);
+     Route::get('restaurants/{restaurantl}',  [RestaurantController::class,'show']);
+     Route::post('restaurants/{restaurant}', [RestaurantController::class,'update']);
+     Route::delete('restaurants/{restaurant}',  [RestaurantController::class,'destroy']);
+
      Route::post('images', [ImageController::class,'store']);
      Route::get('images',  [ImageController::class,'index']);
      Route::get('images/{image}',  [ImageController::class,'show']);
