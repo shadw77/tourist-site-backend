@@ -18,7 +18,7 @@ class Restaurant extends Model
 
 
     protected $fillable = [
-        'name','rating','email','street','government','description','phone','thumbnail','creator_id'
+        'name','rating','email','street','government','description','phone','discount','thumbnail','creator_id'
     ];
 
 
@@ -29,10 +29,10 @@ class Restaurant extends Model
     }
 
     //relation Restaurant with user
-    public function user()
-    {
-        return $this->belongsToMany(User::class,"user_restaurants","restaurant_id","user_id");
-    }
+    // public function user()
+    // {
+    //     return $this->belongsToMany(User::class,"user_restaurants","restaurant_id","user_id");
+    // }
 
     //relation Restaurant with Review
     public function reviews()
@@ -44,6 +44,12 @@ class Restaurant extends Model
     public function vendor()
     {
         return $this->belongsTo(User::class,"creator_id");
+    }
+
+    public function orders()
+    {
+        return $this->morphToMany(User::class, 'service', 'user_order')
+            ->withTimestamps();
     }
 
 }

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Trip;
 use Illuminate\Http\Request;
 use App\Http\Resources\TripResource;
-
+use Illuminate\Support\Facades\Storage;
 class TripController extends Controller
 {
     /**
@@ -16,22 +16,8 @@ class TripController extends Controller
      */
     public function index()
     {
-        //
+        
         $trips = Trip::with('images')->get();
-        // $trip = Trip::create([
-        //     'name'=> 'test'.rand(0,1999),
-        //     'government'=> 'gtest'.rand(0,1999),
-        //     'duration'=> 'dtest'.rand(0,1999),
-        //     'cost'=> 'ctest'.rand(0,1999),
-        //     'description'=> 'ddtest'.rand(0,1999),
-        //     'rating'=> 'rtest'.rand(0,1999),
-        //     'thumbnail'=> 'test'.rand(0,1999).'.png',
-        //     'creator_id'=> 1
-
-
-        // ])->images()->create([
-        //     'image'=> 'images/url/image'.rand(0,1111).'.png',
-        // ]);
        return TripResource::collection($trips);
     }
 
@@ -43,10 +29,30 @@ class TripController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $file = $request->file("thumbnail");
+        if($request->hasFile('thumbnail')){
+            $originalName = $file->getClientOriginalName();
+            $filenameonly= pathinfo($originalName,PATHINFO_FILENAME);
+            $extenshion = $file->getClientOriginalExtension();
+            $compic = str_replace('','_',$filenameonly).'-'.rand().'_'.time().'.'.$extenshion;
+            $path = $file->storeAs('public/images/trips',$compic);      
+            // Storage::disk('google')->put('GP Images', $file);
+            $path = Storage::disk('google')->putFile('images/trips', $file, 'public');
+        $request->validate([
+            'name'=>'required',
+            "government"=>'required',
+            "duration"=>'required',
+            "cost"=>'required',
+            "description"=>'required',
+            "rating"=>'required',
+            "thumbnail"=>'required',
+            "creator_id"=>'required',
+        ]);
         $trip = Trip::create($request->all());
+        $trip->thumbnail=$compic;
+        $trip->save();
         return new TripResource($trip);
-    }
+    }}
 
     /**
      * Display the specified resource.

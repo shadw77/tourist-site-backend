@@ -1,11 +1,10 @@
 <?php
 
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DestinationResource extends JsonResource
+class UserOrderResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,18 +14,13 @@ class DestinationResource extends JsonResource
      */
     public function toArray($request)
     {
-        // return parent::toArray($request);
-
         return[
             "id"=>$this->id,
-            "name"=>$this->name,
-            "description"=>$this->description,
-            "thumbnail"=>$this->thumbnail,
-            "creator_id"=>$this->creator_id,
-            "rating"=>$this->rating,
-            "images"=>$this->images,
-            "reviews"=>$this->reviews,
+            "user_id"=>$this->user_id,
+            "service_id"=>$this->service_id,
+            "service_type"=>$this->service_type,
+          
         ];
+        // return parent::toArray($request);
     }
 }
-

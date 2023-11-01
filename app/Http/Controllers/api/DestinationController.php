@@ -22,8 +22,22 @@ class DestinationController extends Controller
     public function index()
     {
         $destinations = Destination::with('images')->get();
-        return DestinationResource::collection($destinations);
+
+        return $destinations;
     }
+
+    public function getDestinations()
+{
+    $sort = request()->get('sort');
+    
+    if ($sort == 'rating') {
+        $destinations = Destination::orderBy('rating', 'desc')->get();
+    } else {
+        $destinations = Destination::all();
+    }
+    
+    return $destinations;
+}
 
     /**
      * Store a newly created resource in storage.
@@ -99,4 +113,6 @@ class DestinationController extends Controller
         $destination->delete();
         return response()->json(['message' => 'Restaurant deleted successfully'], 204);
     }
+
 }
+

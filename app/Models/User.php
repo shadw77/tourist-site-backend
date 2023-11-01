@@ -11,6 +11,7 @@ use App\Models\Destination;
 use App\Models\Trip;
 use App\Models\Restaurant;
 use App\Models\Hotel;
+use App\Models\UserOrder;
 use App\Models\Review;
 use App\Models\Transaction;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -57,29 +58,34 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    //relation user with destination
-    public function destination()
+    public function orders()
     {
-        return $this->belongsToMany(Destination::class,"user_destinations","user_id","destination_id");
+        return $this->hasMany(UserOrder::class);
     }
+
+    //relation user with destination
+    // public function destination()
+    // {
+    //     return $this->belongsToMany(Destination::class,"user_destinations","user_id","destination_id");
+    // }
 
     //relation user with trip
-    public function trip()
-    {
-        return $this->belongsToMany(Trip::class,"user_trips","user_id","trip_id");
-    }
+    // public function trip()
+    // {
+    //     return $this->belongsToMany(Trip::class,"user_trips","user_id","trip_id");
+    // }
 
     //relation user with Restaurant
-    public function restaurant()
-    {
-        return $this->belongsToMany(Restaurant::class,"user_restaurants","user_id","restaurant_id");
-    }
+    // public function restaurant()
+    // {
+    //     return $this->belongsToMany(Restaurant::class,"user_restaurants","user_id","restaurant_id");
+    // }
 
     //relation user with Hotel
-    public function hotel()
-    {
-        return $this->belongsToMany(Hotel::class,"user_hotels","user_id","hotel_id");
-    }
+    // public function hotel()
+    // {
+    //     return $this->belongsToMany(Hotel::class,"user_hotels","user_id","hotel_id");
+    // }
 
     //relation user with Review
     public function review()
