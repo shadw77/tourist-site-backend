@@ -75,7 +75,27 @@ return [
             'refreshToken' => env('GOOGLE_DRIVE_REFRESH_TOKEN'),
             'folderId' => env('GOOGLE_DRIVE_FOLDER_ID'),
         ],
-
+        'restaurant_uploads' => [
+            'driver' => 'local',
+            'root' => public_path('images/Restaurant_images'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+        'destination_uploads'=> [
+            'driver' => 'local',
+            'root' => public_path('images/Destination_images'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+        'trips_uploads'=> [
+            'driver' => 'local',
+            'root' => public_path('images/trips_images'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
     ],
 
     /*

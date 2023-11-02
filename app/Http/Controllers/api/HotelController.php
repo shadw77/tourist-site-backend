@@ -56,6 +56,7 @@ class HotelController extends Controller
             $imageName = time() . '_' . $originalFilename;
             $thumbnail = $image->storeAs('thumbnails', $imageName, 'hotel_uploads');
             $hotel->thumbnail = $imageName;
+            $hotel->save();
         }
          
         if ($request->hasFile('images')) {

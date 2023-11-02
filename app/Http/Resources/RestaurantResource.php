@@ -22,6 +22,7 @@ class RestaurantResource extends JsonResource
             "rating"=>$this->rating,
             "street"=>$this->street,
             "government"=>$this->government,
+            "discount"=>$this->discount,
             "phone" =>$this->phone,
             "description"=>$this->description,
             "thumbnail"=>$this->thumbnail,
