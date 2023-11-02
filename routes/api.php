@@ -99,7 +99,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('destinations', DestinationController::class);
 Route::get('/destinations', [DestinationController::class, 'getDestinations']);
+
 // Route::apiResource('trips', TripController::class);
+
+
+
+Route::get('/searchTrip', [TripController::class, 'searchTrips']);
+Route::get('/searchDestination', [DestinationController::class, 'searchDestinations']);
+Route::get('/searchRestaurant', [RestaurantController::class, 'searchRestaurants']);
+Route::get('/searchHotel', [HotelController::class, 'searchHotels']);
+
+
+
+
+Route::apiResource('trips', TripController::class);
 Route::apiResource('users', UserController::class);
 Route::apiResource('restaurants', RestaurantController::class);
 // Route::apiResource('hotels', HotelController::class);
@@ -119,6 +132,12 @@ Route::apiResource('orders', UserOrderController::class);
      Route::get('hotels/{hotel}',  [HotelController::class,'show']);
      Route::post('hotels/{hotel}', [HotelController::class,'update']);
      Route::delete('hotels/{hotel}',  [HotelController::class,'destroy']);
+
+     Route::post('restaurants', [RestaurantController::class,'store']);
+     Route::get('restaurants',  [RestaurantController::class,'index']);
+     Route::get('restaurants/{restaurantl}',  [RestaurantController::class,'show']);
+     Route::post('restaurants/{restaurant}', [RestaurantController::class,'update']);
+     Route::delete('restaurants/{restaurant}',  [RestaurantController::class,'destroy']);
 
      Route::post('images', [ImageController::class,'store']);
      Route::get('images',  [ImageController::class,'index']);

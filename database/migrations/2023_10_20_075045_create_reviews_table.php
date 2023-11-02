@@ -19,7 +19,6 @@ return new class extends Migration
             $table->morphs('reviewable');
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
-            
         });
     }
 

@@ -13,15 +13,28 @@ use Ramsey\Collection\Collection;
 class TripController extends Controller
 {
 
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function searchTrips(Request $request)
     {
-        $trips=Trip::paginate(2);
-        // $trips = Trip::with('images')->get();
+
+        $query = Trip::query();
+        $data = $request->input('search_service');        
+        if($data){
+            $query->whereRaw("name LIKE '%" .$data."%'");
+        }
+        return $query->get();
+    }
+
+
+    public function index(Request $request)
+    {
+         $trips=Trip::paginate(2);
+        //$trips = Trip::with('images')->get();
        return TripResource::collection($trips);
     }
 
