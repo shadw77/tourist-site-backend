@@ -82,6 +82,20 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'destination_uploads'=> [
+            'driver' => 'local',
+            'root' => public_path('images/Destination_images'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+        'trips_uploads'=> [
+            'driver' => 'local',
+            'root' => public_path('images/trips_images'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
     ],
 
     /*
