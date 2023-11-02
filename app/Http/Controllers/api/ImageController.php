@@ -15,7 +15,7 @@ class ImageController extends Controller
      */
     public function index()
     {
-        //
+       
     }
 
     /**
@@ -32,9 +32,21 @@ class ImageController extends Controller
             $image = $request->file('path');
             $originalFilename = $image->getClientOriginalName();
             $imageName = time() . '_' . $originalFilename;
-            $path = $image->storeAs('images', $imageName, 'hotel_uploads');
-            $image->path = $imageName;
-            $image->save();
+            if( $image->imageable_type=="Hotel"){
+                $imagePath = $imageFile->storeAs('images', $imageName, 'hotel_uploads');
+                $image->image = $imageName;
+                $image->save();
+            }
+            if($image->imageable_type=="Trip"){
+                $imagePath = $imageFile->storeAs('images', $imageName, 'trip_uploads');
+                $image->image = $imageName;
+                $image->save();
+            }
+            if($image->imageable_type=="Restaurant"){
+                $imagePath = $imageFile->storeAs('images', $imageName, 'restaurant_uploads');
+                $image->image = $imageName;
+                $image->save();
+            }
         }
     }
 
@@ -56,21 +68,31 @@ class ImageController extends Controller
      * @param  \App\Models\Image  $image
      * @return \Illuminate\Http\Response
      */
-   
     public function updateImage(Request $request, Image $image)
     {
         $validatedData = $request->validate([
             // 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        if ($request->hasFile('path')) {
-            $imageFile = $request->file('path');
+        if ($request->hasFile('image')) {
+            $imageFile = $request->file('image');
             $originalFilename = $imageFile->getClientOriginalName();
              $imageName = time() . '_' . $originalFilename;
-            // Save the new image file
+             if( $image->imageable_type=="Hotel"){
             $imagePath = $imageFile->storeAs('images', $imageName, 'hotel_uploads');
-            // Update the image model with the new image path
-            $image->path = $imageName;
+            $image->image = $imageName;
             $image->save();
+        }
+        
+            if($image->imageable_type=="Trip"){
+                $imagePath = $imageFile->storeAs('images', $imageName, 'trip_uploads');
+                $image->image = $imageName;
+                $image->save();
+            }
+            if($image->imageable_type=="Restaurant"){
+                $imagePath = $imageFile->storeAs('images', $imageName, 'restaurant_uploads');
+                $image->image = $imageName;
+                $image->save();
+            }
         }
     //    return $image;
         return response()->json(['message' => 'Image updated successfully']);
