@@ -16,11 +16,17 @@ use App\Http\Resources\RestaurantResource;
 
 class RestaurantController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function searchRestaurants(Request $request)
+    {
+        $query = Restaurant::query();
+        $data = $request->input('search_service');        
+
+        if($data){
+            $query->whereRaw("name LIKE '%" .$data."%'");
+        }
+        return $query->get();
+    }
+
     public function index()
     {
         //

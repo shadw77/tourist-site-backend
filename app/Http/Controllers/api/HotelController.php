@@ -12,11 +12,16 @@ use App\Http\Requests\StoreHotelRequest;
 
 class HotelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function searchHotels(Request $request)
+    {
+        $query = Hotel::query();
+        $data = $request->input('search_service');        
+
+        if($data){
+            $query->whereRaw("name LIKE '%" .$data."%'");
+        }
+        return $query->get();
+    }
     public function index()
     {
           $hotels=Hotel::all();
