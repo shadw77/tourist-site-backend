@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string("discount")->nullable();
             $table->foreignId('creator_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
+           
         });
     }
 
