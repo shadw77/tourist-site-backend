@@ -100,6 +100,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('destinations', DestinationController::class);
 Route::get('/destinations', [DestinationController::class, 'getDestinations']);
 
+// Route::apiResource('trips', TripController::class);
+
+
 
 Route::get('/searchTrip', [TripController::class, 'searchTrips']);
 Route::get('/searchDestination', [DestinationController::class, 'searchDestinations']);
@@ -117,6 +120,12 @@ Route::apiResource('restaurants', RestaurantController::class);
 Route::apiResource('orders', UserOrderController::class);
 // Route::apiResource('vendor-hotels', VendorHotelsController::class);
 
+
+     Route::post('trips', [TripController::class,'store']);
+     Route::get('trips',  [TripController::class,'index']);
+     Route::get('trips/{trip}',  [TripController::class,'show']);
+     Route::post('trips/{trip}', [TripController::class,'update']);
+     Route::delete('trips/{trip}',  [TripController::class,'destroy']);
 
      Route::post('hotels', [HotelController::class,'store']);
      Route::get('hotels',  [HotelController::class,'index']);
