@@ -16,13 +16,14 @@ return new class extends Migration
         Schema::create('restaurants', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('rating');
             $table->text('description');
             $table->string('email');
             $table->string('street');
             $table->string('government');
             $table->string('phone');
             $table->string('thumbnail');
+            $table->string("rating")->nullable();
+            $table->string("discount")->nullable();
             $table->foreignId('creator_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });

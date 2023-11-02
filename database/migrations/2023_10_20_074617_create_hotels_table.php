@@ -16,14 +16,18 @@ return new class extends Migration
         Schema::create('hotels', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('cost');
             $table->text('description');
             $table->string('street');
             $table->string('government');
             $table->string('thumbnail');
+            $table->string("rating")->nullable();
+            $table->string("discount")->nullable();
             $table->foreignId('creator_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.
