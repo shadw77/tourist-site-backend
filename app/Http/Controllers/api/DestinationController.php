@@ -14,11 +14,16 @@ use Ramsey\Collection\Collection;
 
 class DestinationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function searchDestinations(Request $request)
+    {
+        $query = Destination::query();
+        $data = $request->input('search_service');        
+
+        if($data){
+            $query->whereRaw("name LIKE '%" .$data."%'");
+        }
+        return $query->get();
+    }
     public function index()
     {
         $destinations = Destination::with('images')->get();

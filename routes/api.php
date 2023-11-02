@@ -99,6 +99,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('destinations', DestinationController::class);
 Route::get('/destinations', [DestinationController::class, 'getDestinations']);
+
+
+Route::get('/searchTrip', [TripController::class, 'searchTrips']);
+Route::get('/searchDestination', [DestinationController::class, 'searchDestinations']);
+Route::get('/searchRestaurant', [RestaurantController::class, 'searchRestaurants']);
+Route::get('/searchHotel', [HotelController::class, 'searchHotels']);
+
+
+
+
 Route::apiResource('trips', TripController::class);
 Route::apiResource('users', UserController::class);
 Route::apiResource('restaurants', RestaurantController::class);

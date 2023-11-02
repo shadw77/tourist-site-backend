@@ -9,15 +9,30 @@ use App\Http\Resources\TripResource;
 use Illuminate\Support\Facades\Storage;
 class TripController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function searchTrips(Request $request)
+    {
+
+        $query = Trip::query();
+        $data = $request->input('search_service');        
+        if($data){
+            $query->whereRaw("name LIKE '%" .$data."%'");
+        }
+        return $query->get();
+    }
+
+
+    public function index(Request $request)
     {
         
         $trips = Trip::with('images')->get();
+        // $keyword = $request->input('keyword');
+        //         if ($request->filled('keyword')) {
+        //     $keyword = $request->input('keyword');
+        //     $Products = Product::where('name', 'LIKE', "%$keyword%")->where('availability', 'available')->paginate(3);
+        // } else {
+        //     $Products = Product::where('availability', 'available')->paginate(3);
+        // }
        return TripResource::collection($trips);
     }
 
