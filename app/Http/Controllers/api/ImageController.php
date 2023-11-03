@@ -26,8 +26,7 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
-       
-        //  dd($request->all());
+
         $image = new Image();
         $image->imageable_id = $request->input('imageable_id');
         $image->imageable_type = $request->input('imageable_type');
@@ -41,13 +40,12 @@ class ImageController extends Controller
                     $image->image = $imageName;
                     $image->save();
                 }
-                   
+
                 if($image->imageable_type=="Trip"){
                     $imagePath = $imageFile->storeAs('images', $imageName, 'trip_uploads');
                     $image->image = $imageName;
                     $image->save();
-                }
-                if($image->imageable_type=="Restaurant"){
+                }                if($image->imageable_type=="Restaurant"){
                     $imagePath = $imageFile->storeAs('images', $imageName, 'restaurant_uploads');
                     $image->image = $imageName;
                     $image->save();
@@ -96,7 +94,7 @@ class ImageController extends Controller
             $imagePath = $imageFile->storeAs('images', $imageName, 'hotel_uploads');
             $image->image = $imageName;
             $image->save();
-        }
+             }
         
             if($image->imageable_type=="Trip"){
                 $imagePath = $imageFile->storeAs('images', $imageName, 'trip_uploads');
@@ -115,6 +113,7 @@ class ImageController extends Controller
             }
         }
     //    return $image;
+
         return response()->json(['message' => 'Image updated successfully']);
     }
 
