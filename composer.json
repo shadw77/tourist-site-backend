@@ -12,8 +12,6 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
-        "league/flysystem": "^1.1",
-        "masbug/flysystem-google-drive-ext": "^1.1",
         "mcamara/laravel-localization": "^1.8",
         "tymon/jwt-auth": "^2.0"
     },
