@@ -84,12 +84,12 @@ return [
         ],
         'destination_uploads'=> [
             'driver' => 'local',
-            'root' => public_path('images/Destination_images'),
+            'root' => public_path('images/destination_images'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
         ],
-        'trips_uploads'=> [
+        'trip_uploads'=> [
             'driver' => 'local',
             'root' => public_path('images/trips_images'),
             'url' => env('APP_URL').'/storage',

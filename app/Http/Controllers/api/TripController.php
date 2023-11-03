@@ -26,13 +26,6 @@ class TripController extends Controller
     {
         
         $trips = Trip::with('images')->get();
-        // $keyword = $request->input('keyword');
-        //         if ($request->filled('keyword')) {
-        //     $keyword = $request->input('keyword');
-        //     $Products = Product::where('name', 'LIKE', "%$keyword%")->where('availability', 'available')->paginate(3);
-        // } else {
-        //     $Products = Product::where('availability', 'available')->paginate(3);
-        // }
        return TripResource::collection($trips);
     }
 
@@ -43,16 +36,7 @@ class TripController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $file = $request->file("thumbnail");
-        if($request->hasFile('thumbnail')){
-            $originalName = $file->getClientOriginalName();
-            $filenameonly= pathinfo($originalName,PATHINFO_FILENAME);
-            $extenshion = $file->getClientOriginalExtension();
-            $compic = str_replace('','_',$filenameonly).'-'.rand().'_'.time().'.'.$extenshion;
-            $path = $file->storeAs('public/images/trips',$compic);      
-            // Storage::disk('google')->put('GP Images', $file);
-            $path = Storage::disk('google')->putFile('images/trips', $file, 'public');
+    {   
         $request->validate([
             'name'=>'required',
             "government"=>'required',
@@ -64,8 +48,44 @@ class TripController extends Controller
             "creator_id"=>'required',
         ]);
         $trip = Trip::create($request->all());
-        $trip->thumbnail=$compic;
-        $trip->save();
+
+        // $file = $request->file("thumbnail");
+        // if($request->hasFile('thumbnail'))
+        {
+            // $originalName = $file->getClientOriginalName();
+            // $filenameonly= pathinfo($originalName,PATHINFO_FILENAME);
+            // $extenshion = $file->getClientOriginalExtension();
+            // $compic = str_replace('','_',$filenameonly).'-'.rand().'_'.time().'.'.$extenshion;
+            // $path = $file->storeAs('public/images/trips',$compic);      
+            // // Storage::disk('google')->put('GP Images', $file);
+            // $path = Storage::disk('google')->putFile('images/trips', $file, 'public');
+
+
+            if ($request->hasFile('thumbnail')) {
+                $image = $request->file('thumbnail');
+                $originalFilename = $image->getClientOriginalName();
+                $imageName = time() . '_' . $originalFilename;
+                $thumbnail = $image->storeAs('thumbnails', $imageName, 'trip_uploads');
+                $trip->thumbnail = $imageName;
+                $trip->save();
+            }
+             
+            if ($request->hasFile('images')) {
+                $uploadedImages = $request->file('images');
+                foreach ($uploadedImages as $uploadedImage) {
+                    $originalFilename = $uploadedImage->getClientOriginalName();
+                    $imageName = time() . '_' . $originalFilename;
+                    $path = $uploadedImage->storeAs('images', $imageName, 'trip_uploads');
+                     
+                    $image = new Image(['image' => $imageName]);
+                    
+                    $trip->images()->save($image);
+                }
+            }
+    
+     
+        // $trip->thumbnail=$compic;
+        // $trip->save();
         return new TripResource($trip);
     }}
 
