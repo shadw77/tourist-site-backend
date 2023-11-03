@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class updateMethodVaild
 {
@@ -16,9 +17,18 @@ class updateMethodVaild
      */
     public function handle(Request $request, Closure $next)
     {
-       header('Access-Control-Allow-Origin: *');
-       header('Access-Control-Allow-Methods: *');
-       header('Access-Control-Allow-Headers: *');
-        return $next($request);
+        $response = $next($request);
+
+        $response->header('Access-Control-Allow-Origin', 'http://localhost:4200');
+    
+        $response->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, UPDATE');
+    
+        $response->header('Access-Control-Allow-Headers', '*');
+    
+        return $response;
+    //    header('Access-Control-Allow-Origin: *');
+    //    header('Access-Control-Allow-Methods: *');
+    //    header('Access-Control-Allow-Headers: *');
+    //     return $next($request);
     }
 }

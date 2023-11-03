@@ -11,12 +11,38 @@ use App\Models\Hotel;
 use App\Models\Restaurant;
 use App\Models\Destination;
 use App\Http\Resources\UserOrderResource;
-
-
+use Auth;
+use Log;
 
 class UserOrderController extends Controller
 {
+    public function checkout(Request $request)
+    {
+        $user = Auth::user();
+        
+        $cartItems = $request->input('cartProducts');
+
+        $totalAmount = 0;            
+        foreach ($cartItems as $cartItem) {
+            $totalAmount += $cartItem['quantity'] * 50;//$cartItem['item']['cost'];
+            $service_id = $cartItem['item']['id'];
+            $service_type  = $cartItem['type'];
+
+            $order = new UserOrder([
+                'amount' => $totalAmount,
+                'service_id'=>$service_id,
+                'service_type'=>$service_type
+            ]);
     
+    
+            // Log::info('My Cart: ' . $cartItem['quantity']);
+        }
+
+        $user->orders()->save($order);
+
+        return response()->json(['message' => 'Order placed successfully'], 200);
+    }
+
     public function index()
     {
         $orders = UserOrder::all();
