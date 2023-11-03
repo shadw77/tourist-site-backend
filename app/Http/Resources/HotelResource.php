@@ -23,6 +23,7 @@ class HotelResource extends JsonResource
             'government' => $this->government,
             'description'=>$this->description,
             'thumbnail'=> $this->thumbnail,
+            'discount'=> $this->discount,
             "images"=>$this->images,
             "reviews"=>$this->reviews,
         ];

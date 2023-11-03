@@ -19,7 +19,6 @@ class UserOrderController extends Controller
     public function checkout(Request $request)
     {
         $user = Auth::user();
-        
         $cartItems = $request->input('cartProducts');
 
         foreach ($cartItems as $cartItem) {        
@@ -27,6 +26,9 @@ class UserOrderController extends Controller
             $totalAmount += $cartItem['quantity'] * 50;//$cartItem['item']['cost'];
             $service_id = $cartItem['item']['id'];
             $service_type  = $cartItem['type'];
+            if($cartItem['item']['discount']){
+                $totalAmount-=$cartItem['item']['discount'];
+            }
 
             $order = new UserOrder([
                 'amount' => $totalAmount,
