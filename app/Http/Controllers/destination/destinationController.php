@@ -38,6 +38,16 @@ class destinationController extends Controller
         
         return $destinations;
     }
+    public function searchDestinations(Request $request)
+    {
+        $query = Destination::query();
+        $data = $request->input('search_service');        
+
+        if($data){
+            $query->whereRaw("name LIKE '%" .$data."%'");
+        }
+        return $query->get();
+    }
     
     /**
      * Store a newly created resource in storage.
