@@ -26,14 +26,16 @@ class Controller extends BaseController
         $rules=[
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
-            'password' => 'required|max:4',
+            'mobile' => 'required|max:11|unique:users',
+            'password' => 'required|max:9',
         ];
 
         $messages=[
             "required"          =>  "This Field Is Required",
             "string"            =>  "This Field Must Be String",
-            "max"               =>  "This Field Minimum 4 Characters",
-            "unique"            =>   "This Email Is Already Taken"
+            "mobile.max"        =>  "This Field Maximum 11 Characters",
+            "password.max"      =>  "This Field Maximum 9 Characters",
+            "unique"            =>   "This Field Is Already Taken"
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -67,12 +69,12 @@ class Controller extends BaseController
         // Validate the request data
         $rules=[
             'email' => 'required|email|exists:users',
-            'password' => 'required|max:4',
+            'password' => 'required|max:9',
         ];
 
         $messages=[
             "required"          =>  "This Field Is Required",
-            "max"               =>  "This Field Minimum 4 Characters",
+            "max"               =>  "This Field Maximun 9 Characters",
             "exists"            =>   "This Email Is Not Exists"
         ];
 
