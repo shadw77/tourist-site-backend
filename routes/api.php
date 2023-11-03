@@ -77,7 +77,7 @@ Route::group(['middleware'=>['api']],function(){
         /*end endpoints for destination that can anyone access*/
 
         /*start endpoints that can only admin access*/
-        Route::group([  'middleware'=>['admin-access'] ],function(){
+ Route::group([  'middleware'=>['admin-access'] ],function(){
 
             /*start endpoints for destination*/
   
@@ -88,6 +88,11 @@ Route::group(['middleware'=>['api']],function(){
 
 // });
     });
+    Route::get('destinations',[destinationController::class,'index']);
+     Route::get('destinations/{id}',[destinationController::class,'show']);
+     Route::delete('destinations/{destination}',[destinationController::class,'destroy']);
+     Route::post('destinations',[destinationController::class,'store']);
+     Route::put('destinations/{destination}',[destinationController::class,'update']);
     /*end endpoints that user  should be logged and send jwt token to access any of them*/
       
 Route::get('destinations',[destinationController::class,'index']);
@@ -150,3 +155,4 @@ Route::apiResource('orders', UserOrderController::class);
      Route::post('images/{image}', [ImageController::class,'updateImage']);
      Route::delete('images/{image}',  [ImageController::class,'destroy']);
     
+     

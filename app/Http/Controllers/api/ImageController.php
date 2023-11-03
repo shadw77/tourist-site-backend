@@ -16,6 +16,7 @@ class ImageController extends Controller
     public function index()
     {
        
+       
     }
 
     /**
@@ -40,17 +41,16 @@ class ImageController extends Controller
                     $image->image = $imageName;
                     $image->save();
                 }
-
                 if($image->imageable_type=="Trip"){
                     $imagePath = $imageFile->storeAs('images', $imageName, 'trip_uploads');
                     $image->image = $imageName;
                     $image->save();
-                }                if($image->imageable_type=="Restaurant"){
+                }
+                if($image->imageable_type=="Restaurant"){
                     $imagePath = $imageFile->storeAs('images', $imageName, 'restaurant_uploads');
                     $image->image = $imageName;
                     $image->save();
                 }
-              
                 if($image->imageable_type=="Destination"){
                     $imagePath = $imageFile->storeAs('images', $imageName, 'destination_uploads');
                     $image->image = $imageName;
@@ -94,26 +94,23 @@ class ImageController extends Controller
             $imagePath = $imageFile->storeAs('images', $imageName, 'hotel_uploads');
             $image->image = $imageName;
             $image->save();
-             }
-        
-            if($image->imageable_type=="Trip"){
-                $imagePath = $imageFile->storeAs('images', $imageName, 'trip_uploads');
-                $image->image = $imageName;
-                $image->save();
-            }
-            if($image->imageable_type=="Restaurant"){
-                $imagePath = $imageFile->storeAs('images', $imageName, 'restaurant_uploads');
-                $image->image = $imageName;
-                $image->save();
-            }
-            if($image->imageable_type=="Destination"){
-                $imagePath = $imageFile->storeAs('images', $imageName, 'destination_uploads');
-                $image->image = $imageName;
-                $image->save();
-            }
         }
-    //    return $image;
-
+        if($image->imageable_type=="Trip"){
+            $imagePath = $imageFile->storeAs('images', $imageName, 'trip_uploads');
+            $image->image = $imageName;
+            $image->save();
+        }
+        if($image->imageable_type=="Restaurant"){
+            $imagePath = $imageFile->storeAs('images', $imageName, 'restaurant_uploads');
+            $image->image = $imageName;
+            $image->save();
+        }
+        if($image->imageable_type=="Destination"){
+            $imagePath = $imageFile->storeAs('images', $imageName, 'destination_uploads');
+            $image->image = $imageName;
+            $image->save();
+        }
+        }
         return response()->json(['message' => 'Image updated successfully']);
     }
 
