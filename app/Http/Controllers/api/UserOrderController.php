@@ -22,8 +22,8 @@ class UserOrderController extends Controller
         
         $cartItems = $request->input('cartProducts');
 
-        $totalAmount = 0;            
-        foreach ($cartItems as $cartItem) {
+        foreach ($cartItems as $cartItem) {        
+            $totalAmount = 0;            
             $totalAmount += $cartItem['quantity'] * 50;//$cartItem['item']['cost'];
             $service_id = $cartItem['item']['id'];
             $service_type  = $cartItem['type'];
@@ -34,11 +34,11 @@ class UserOrderController extends Controller
                 'service_type'=>$service_type
             ]);
     
-    
+            $user->orders()->save($order);
+
             // Log::info('My Cart: ' . $cartItem['quantity']);
         }
 
-        $user->orders()->save($order);
 
         return response()->json(['message' => 'Order placed successfully'], 200);
     }
