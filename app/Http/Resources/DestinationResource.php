@@ -1,5 +1,8 @@
 <?php
 
+
+namespace App\Http\Resources;
+
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class DestinationResource extends JsonResource
@@ -26,3 +29,4 @@ class DestinationResource extends JsonResource
         ];
     }
 }
+

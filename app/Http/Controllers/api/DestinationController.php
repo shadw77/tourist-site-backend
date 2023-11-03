@@ -14,14 +14,20 @@ use Ramsey\Collection\Collection;
 
 class DestinationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function searchDestinations(Request $request)
+    {
+        $query = Destination::query();
+        $data = $request->input('search_service');        
+
+        if($data){
+            $query->whereRaw("name LIKE '%" .$data."%'");
+        }
+        return $query->get();
+    }
     public function index()
     {
         $destinations = Destination::with('images')->get();
+
         return $destinations;
     }
 
@@ -63,6 +69,8 @@ class DestinationController extends Controller
         return (new DestinationResource($destination))->response()->setStatusCode(201);
     
     }
+
+    
 
     /**
      * Display the specified resource.
@@ -112,4 +120,6 @@ class DestinationController extends Controller
         $destination->delete();
         return response()->json(['message' => 'Restaurant deleted successfully'], 204);
     }
+
 }
+

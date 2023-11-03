@@ -25,6 +25,7 @@ class HotelResource extends JsonResource
             'thumbnail'=> $this->thumbnail,
             "creator_id"=>$this->creator_id,
             "images"=>$this->images,
+            "reviews"=>$this->reviews,
         ];
     }
 

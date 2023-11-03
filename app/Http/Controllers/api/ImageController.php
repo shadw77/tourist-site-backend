@@ -16,6 +16,7 @@ class ImageController extends Controller
     public function index()
     {
        
+       
     }
 
     /**
@@ -26,7 +27,7 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
-        //  dd($request->all());
+
         $image = new Image();
         $image->imageable_id = $request->input('imageable_id');
         $image->imageable_type = $request->input('imageable_type');
@@ -79,9 +80,9 @@ class ImageController extends Controller
      * @param  \App\Models\Image  $image
      * @return \Illuminate\Http\Response
      */
-   
     public function updateImage(Request $request, Image $image)
-    {
+    { 
+       // dd($request);
         $validatedData = $request->validate([
             // 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);

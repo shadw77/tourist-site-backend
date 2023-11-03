@@ -14,14 +14,15 @@ use Illuminate\Support\Facades\Storage;
 
 class HotelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function __construct()
+    public function searchHotels(Request $request)
     {
-        // $this->middleware('update-Method')->only('update');
+        $query = Hotel::query();
+        $data = $request->input('search_service');        
+
+        if($data){
+            $query->whereRaw("name LIKE '%" .$data."%'");
+        }
+        return $query->get();
     }
 
     public function index()
