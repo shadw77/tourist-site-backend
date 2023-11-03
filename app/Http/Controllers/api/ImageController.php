@@ -15,7 +15,7 @@ class ImageController extends Controller
      */
     public function index()
     {
-        //
+       
     }
 
     /**
@@ -35,8 +35,23 @@ class ImageController extends Controller
                $imageFile = $request->file('image');
                $originalFilename = $imageFile->getClientOriginalName();
                  $imageName = time() . '_' . $originalFilename;
+                 if($image->imageable_type=="Hotel"){
+                    $imagePath = $imageFile->storeAs('images', $imageName, 'hotel_uploads');
+                    $image->image = $imageName;
+                    $image->save();
+                }
                 if($image->imageable_type=="Trip"){
                     $imagePath = $imageFile->storeAs('images', $imageName, 'trip_uploads');
+                    $image->image = $imageName;
+                    $image->save();
+                }
+                if($image->imageable_type=="Restaurant"){
+                    $imagePath = $imageFile->storeAs('images', $imageName, 'restaurant_uploads');
+                    $image->image = $imageName;
+                    $image->save();
+                }
+                if($image->imageable_type=="Destination"){
+                    $imagePath = $imageFile->storeAs('images', $imageName, 'destination_uploads');
                     $image->image = $imageName;
                     $image->save();
                 }
@@ -81,6 +96,16 @@ class ImageController extends Controller
         }
         if($image->imageable_type=="Trip"){
             $imagePath = $imageFile->storeAs('images', $imageName, 'trip_uploads');
+            $image->image = $imageName;
+            $image->save();
+        }
+        if($image->imageable_type=="Restaurant"){
+            $imagePath = $imageFile->storeAs('images', $imageName, 'restaurant_uploads');
+            $image->image = $imageName;
+            $image->save();
+        }
+        if($image->imageable_type=="Destination"){
+            $imagePath = $imageFile->storeAs('images', $imageName, 'destination_uploads');
             $image->image = $imageName;
             $image->save();
         }

@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\discover\discoverController;
 use App\Http\Controllers\Controller;
-// use App\Http\Controllers\destination\destinationController;
+use App\Http\Controllers\destination\destinationController;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -17,7 +17,7 @@ use App\Http\Controllers\api\HotelImageController;
 use App\Http\Controllers\review\reviewController;
 
 use App\Http\Controllers\api\UserOrderController;
-use App\Http\Controllers\api\DestinationController;
+// use App\Http\Controllers\api\DestinationController;
 
 use App\Http\Controllers\api\VendorHotelsController;
 use App\Http\Controllers\api\ImageController;
@@ -72,17 +72,14 @@ Route::group(['middleware'=>['api']],function(){
 //     });
 //     /*end endpoints that user  should be logged and send jwt token to access any of them*/
         /*start endpoints for destination that can anyone access*/
-        Route::get('destinations',[destinationController::class,'index']);
-        Route::get('destinations/{id}',[destinationController::class,'show']);
+       
         /*end endpoints for destination that can anyone access*/
 
         /*start endpoints that can only admin access*/
-        Route::group([  'middleware'=>['admin-access'] ],function(){
+ Route::group([  'middleware'=>['admin-access'] ],function(){
 
             /*start endpoints for destination*/
-            Route::delete('destinations/{destination}',[destinationController::class,'destroy']);
-            Route::post('destinations',[destinationController::class,'store']);
-            Route::put('destinations/{destination}',[destinationController::class,'update']);
+           
             /*end endpoints for destination*/
 
         });
@@ -90,6 +87,11 @@ Route::group(['middleware'=>['api']],function(){
 
 // });
     });
+    Route::get('destinations',[destinationController::class,'index']);
+     Route::get('destinations/{id}',[destinationController::class,'show']);
+     Route::delete('destinations/{destination}',[destinationController::class,'destroy']);
+     Route::post('destinations',[destinationController::class,'store']);
+     Route::put('destinations/{destination}',[destinationController::class,'update']);
     /*end endpoints that user  should be logged and send jwt token to access any of them*/
 });
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -97,8 +99,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::apiResource('destinations', DestinationController::class);
-Route::get('/destinations', [DestinationController::class, 'getDestinations']);
+// Route::apiResource('destinations', DestinationController::class);
+// Route::get('/destinations', [DestinationController::class, 'getDestinations']);
 // Route::apiResource('trips', TripController::class);
 Route::apiResource('users', UserController::class);
 Route::apiResource('restaurants', RestaurantController::class);
@@ -126,3 +128,4 @@ Route::apiResource('orders', UserOrderController::class);
      Route::post('images/{image}', [ImageController::class,'updateImage']);
      Route::delete('images/{image}',  [ImageController::class,'destroy']);
     
+     
