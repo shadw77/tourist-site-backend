@@ -61,10 +61,9 @@ class UserOrderController extends Controller
 
         ]);
         $user = User::find($validatedData['user_id']);
-
+        $order = new UserOrder();
         if($request->get('service_type') == "Hotel"){
             $hotel = Hotel::find($request->get('service_id'));
-            $order = new UserOrder();
             $order->service_id = $hotel->id;
             $order->service()->associate($hotel);
             $user->orders()->save($order);
@@ -72,27 +71,25 @@ class UserOrderController extends Controller
         }
         elseif($request->get('service_type') == 'Trip'){
              $trip = Trip::find($request->get('service_id'));
-             $order = new UserOrder();
              $order->service_id = $trip->id;
              $order->service()->associate($trip);
              $user->orders()->save($order);    
         }
         elseif($request->get('service_type') == 'Destination'){  
             $destination = Destination::find($request->get('service_id'));
-            $order = new UserOrder();
             $order->service_id = $destination->id;
             $order->service()->associate($destination);
             $user->orders()->save($order);  
         }
         elseif($request->get('service_type') == 'Restaurent'){  
             $restaurant = Restaurant::find($request->get('service_id'));
-            $order = new UserOrder();
             $order->service_id = $restaurant->id;
             $order->service()->associate($restaurant);
-            $user->orders()->save($order);          }
+            $user->orders()->save($order);       
+           }
 
-        
-        return new UserOrderResource($user->orders);
+        return $order;
+        // return new UserOrderResource($user->orders);
     
     }
 

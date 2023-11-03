@@ -20,10 +20,25 @@ class destinationController extends Controller
      */
     public function index()
     {
-       $destinations=Destination::with('images')->get();
-        return $this->returnData('destinations',$destinations,'destinations found');
-    }
 
+       $destinations=Destination::with('images')->get();
+    //    return $destinations;
+         return $this->returnData('destinations',$destinations,'destinations found');
+    }
+ 
+    public function getDestinations()
+    {
+        $sort = request()->get('sort');
+        
+        if ($sort == 'rating') {
+            $destinations = Destination::orderBy('rating', 'desc')->get();
+        } else {
+            $destinations = Destination::all();
+        }
+        
+        return $destinations;
+    }
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -32,17 +47,12 @@ class destinationController extends Controller
      */
     public function store(Request $request)
     {
-        /*return $request;
-        $validator= $request->validated();
-        return $validator->errors();
-        //$validator = Validator::make($request->all(), $request->rules(), $request->messages());
-
-        */
+      
 
         $rules=[
             'name'          => 'required|string',
             'description'   => 'required|string|max:255',
-            'creator_id'    => 'required|numeric|exists:users,id',
+             'creator_id'    => 'required|numeric|exists:users,id',
         ];
 
         $messages=[
@@ -59,18 +69,30 @@ class destinationController extends Controller
         }
 
 
-        $destination=Destination::create($request->except('image'));
-        foreach ($request->image as $index => $value) {
-            $img = new Image();
-            $img->image = $value;
-            $destination->images()->save($img);
+        $destination=Destination::create($request->all());
+       
+        if ($request->hasFile('thumbnail')) {
+            $image = $request->file('thumbnail');
+            $originalFilename = $image->getClientOriginalName();
+            $imageName = time() . '_' . $originalFilename;
+            $thumbnail = $image->storeAs('thumbnails', $imageName, 'destination_uploads');
+            $destination->thumbnail = $imageName;
+            $destination->save();
         }
-        /*
-        $filepath=null;
-        if($request->has('image')){
-            $file = $request->file('image');
-            $filepath = $file->store('product', 'products');
-        }*/
+        if ($request->hasFile('images')) {
+            $uploadedImages = $request->file('images');
+            foreach ($uploadedImages as $uploadedImage) {
+                $originalFilename = $uploadedImage->getClientOriginalName();
+                $imageName = time() . '_' . $originalFilename;
+                $path = $uploadedImage->storeAs('images', $imageName, 'destination_uploads');
+                 
+                $image = new Image(['image' => $imageName]);
+                
+                $destination->images()->save($image);
+            }
+        }
+    
+
         return $this->returnSuccessMessage("Record Inserted Successfully","201");
 
     }
@@ -116,11 +138,26 @@ class destinationController extends Controller
         }
 
 
-        $destination->update($request->except('image'));
-        foreach ($request->image as $index => $value) {
-            $img = new Image();
-            $img->image = $value;
-            $destination->images()->save($img);
+        $destination->update($request->all());
+        if ($request->hasFile('thumbnail')) {
+            $image = $request->file('thumbnail');
+            $originalFilename = $image->getClientOriginalName();
+            $imageName = time() . '_' . $originalFilename;
+            $thumbnail = $image->storeAs('thumbnails', $imageName, 'destination_uploads');
+            $destination->thumbnail = $imageName;
+            $destination->save();
+        }
+        if ($request->hasFile('images')) {
+            $uploadedImages = $request->file('images');
+            foreach ($uploadedImages as $uploadedImage) {
+                $originalFilename = $uploadedImage->getClientOriginalName();
+                $imageName = time() . '_' . $originalFilename;
+                $path = $uploadedImage->storeAs('images', $imageName, 'destination_uploads');
+                 
+                $image = new Image(['image' => $imageName]);
+                
+                $destination->images()->save($image);
+            }
         }
         return $this->returnSuccessMessage("Record Updated Successfully","201");
 
