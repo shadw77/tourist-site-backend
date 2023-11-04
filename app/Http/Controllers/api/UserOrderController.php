@@ -23,7 +23,7 @@ class UserOrderController extends Controller
 
         foreach ($cartItems as $cartItem) {        
             $totalAmount = 0;            
-            $totalAmount += $cartItem['quantity'] * 50;//$cartItem['item']['cost'];
+            $totalAmount += $cartItem['quantity'] *$cartItem['item']['cost'];;
             $service_id = $cartItem['item']['id'];
             $service_type  = $cartItem['type'];
             if($cartItem['item']['discount']){
