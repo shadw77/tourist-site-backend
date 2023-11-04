@@ -13,7 +13,13 @@ use Ramsey\Collection\Collection;
 class TripController extends Controller
 {
 
-
+    public function getDiscountedTrips()
+    {
+        $trips = Trip::whereNotNull('discount')
+                     ->orWhere('discount', '>', 0)
+                     ->get();
+        return response()->json($trips);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -122,7 +128,6 @@ class TripController extends Controller
         return new TripResource($trip);
     
     }
-
     /**
      * Update the specified resource in storage.
      *

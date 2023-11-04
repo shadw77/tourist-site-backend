@@ -93,10 +93,15 @@ class RestaurantController extends Controller
      */
     public function show(Restaurant $restaurant)
     {
-        //
-        return new RestaurantResource($restaurant);
+        return (new RestaurantResource($restaurant))->response()->setStatusCode(200);
     }
-
+    public function getDiscountedRestaurant()
+    {
+        $restaurant = Restaurant::whereNotNull('discount')
+                     ->orWhere('discount', '>', 0)
+                     ->get();
+        return response()->json($restaurant);
+    }
     /**
      * Update the specified resource in storage.
      *
