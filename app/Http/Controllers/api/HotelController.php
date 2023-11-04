@@ -76,6 +76,13 @@ class HotelController extends Controller
        return (new HotelResource($hotel))->response()->setStatusCode(201);
     }
 
+    public function getDiscountedHotels()
+    {
+    $hotels = Hotel::whereNotNull('discount')
+                 ->orWhere('discount', '>', 0)
+                 ->get();
+         return response()->json($hotels);
+     }
     /**
      * Display the specified resource.
      *
