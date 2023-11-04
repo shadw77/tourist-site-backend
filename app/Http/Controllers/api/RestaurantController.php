@@ -108,14 +108,14 @@ class RestaurantController extends Controller
      {   
         $validator = Validator::make($request->all(), [
             "name" => "required|max:255",
-            "email" => Rule::unique('restaurants')->ignore($restaurant->email),
+            "email" => "required|email",
             "rating" => "required",
             "street" => "required|max:255",
             "government" => "required|max:255",
             "phone" => "required",
             "thumbnail" => "required",
         ]);
-     
+        
         if ($validator->fails()) {
             return response($validator->errors()->all(), 422);
         }
