@@ -17,6 +17,8 @@ use App\Http\Controllers\api\HotelImageController;
 use App\Http\Controllers\review\reviewController;
 
 use App\Http\Controllers\api\UserOrderController;
+use App\Http\Controllers\PasswordResetRequestController;
+use App\Http\Controllers\chagePasswordController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,12 +31,18 @@ use App\Http\Controllers\api\UserOrderController;
 */
 
 
-
 Route::group(['middleware'=>['api']],function(){
+
 
     /*start endpoints for authentication*/
     Route::post('register',[Controller::class,'register']);
     Route::post('login',[Controller::class,'login']);
+    Route::post('sendPasswordResetLink',[PasswordResetRequestController::class,'sendPasswordResetEmail']);
+    Route::post('resetPassword',[chagePasswordController::class,'process']);
+    Route::get('auth/redirect', [Controller::class,'githubLogin']);//for github login
+    Route::get('auth/callback', [Controller::class,'githubredirect']);//for github login
+    Route::get('google/auth/redirect', [Controller::class,'googleLogin']);//for google login
+    Route::get('google/auth/callback', [Controller::class,'googleredirect']);//for google login
     /*end endpoints for authentication*/
 
     Route::post('review',[discoverController::class,'store']);//for test

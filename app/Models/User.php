@@ -30,7 +30,8 @@ class User extends Authenticatable implements JWTSubject
     protected $table="users";
 
     protected $fillable = [
-        'name','email','password','age','street','government','mobile','role'
+        'name','email','password','age','street','government','mobile','role','github_id','github_token'
+        ,'github_refresh_token','google_id','google_token','google_refresh_token'
     ];
 
     /**
@@ -44,6 +45,9 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array<string, string>
      */
+
+     protected $hidden=['password'];
+
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];

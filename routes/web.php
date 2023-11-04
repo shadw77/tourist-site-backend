@@ -19,7 +19,3 @@ use Illuminate\Support\Facades\Route;
     'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
 ], function () {});
 */
-
-Route::get('/',function(){
-    return view("welcome");
-});
