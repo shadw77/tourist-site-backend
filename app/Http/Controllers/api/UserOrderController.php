@@ -45,11 +45,17 @@ class UserOrderController extends Controller
         return response()->json(['message' => 'Order placed successfully'], 200);
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        if($request->query('userId')){
+            $userId = $request->query('userId');
+            $orders = UserOrder::where('user_id', $userId)->get();
+            return UserOrderResource::collection($orders);
+        }
         $orders = UserOrder::all();
         return UserOrderResource::collection($orders);
     }
+    
 
   
     public function store(Request $request)

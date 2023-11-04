@@ -20,6 +20,10 @@ class UserOrderResource extends JsonResource
             "service_id"=>$this->service_id,
             "service_type"=>$this->service_type,
             "amount"=>$this->amount,
+            "service_name" => $this->service->name,
+            "discount" => $this->service->discount,
+            "service_thumbnail" => $this->service->thumbnail,
+            "created_at"=>$this->created_at,
 
           
         ];
