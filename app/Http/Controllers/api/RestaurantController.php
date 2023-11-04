@@ -32,7 +32,7 @@ class RestaurantController extends Controller
     public function index()
     {
         //
-        $restaurants = Restaurant::all();;
+        $restaurants = Restaurant::paginate(3);
                 return RestaurantResource::collection($restaurants);
     }
 
@@ -46,14 +46,14 @@ class RestaurantController extends Controller
     {    
         //Validate the incoming request data
         $validator = Validator::make($request->all(), [
-            // "name" => "required|max:255", 
-            // "email" => "required|email|unique:restaurants", 
-            // "rating"=>"required",
-            // "street" => "required|max:255", 
-            // "government" => "required|max:255", 
-            // "phone" => "required", 
-            // "creator_id" => "required",
-            // "thumbnail"=>"required"
+            "name" => "required|max:255", 
+            "email" => "required|email|unique:restaurants", 
+            "rating"=>"required",
+            "street" => "required|max:255", 
+            "government" => "required|max:255", 
+            "phone" => "required", 
+            "creator_id" => "required",
+            "thumbnail"=>"required"
         ]); 
         if ($validator->fails()) {
             return response($validator->errors()->all(), 422);
@@ -107,13 +107,13 @@ class RestaurantController extends Controller
     public function update(Request $request, Restaurant $restaurant)
      {   
         $validator = Validator::make($request->all(), [
-            // "name" => "required|max:255",
-            // "email" => Rule::unique('restaurants')->ignore($restaurant->email),
-            // "rating" => "required",
-            // "street" => "required|max:255",
-            // "government" => "required|max:255",
-            // "phone" => "required",
-            // "thumbnail" => "required",
+            "name" => "required|max:255",
+            "email" => Rule::unique('restaurants')->ignore($restaurant->email),
+            "rating" => "required",
+            "street" => "required|max:255",
+            "government" => "required|max:255",
+            "phone" => "required",
+            "thumbnail" => "required",
         ]);
      
         if ($validator->fails()) {

@@ -145,7 +145,7 @@ Route::apiResource('orders', UserOrderController::class);
 
      Route::post('restaurants', [RestaurantController::class,'store']);
      Route::get('restaurants',  [RestaurantController::class,'index']);
-     Route::get('restaurants/{restaurantl}',  [RestaurantController::class,'show']);
+     Route::get('restaurants/{restaurant}',  [RestaurantController::class,'show']);
      Route::post('restaurants/{restaurant}', [RestaurantController::class,'update']);
      Route::delete('restaurants/{restaurant}',  [RestaurantController::class,'destroy']);
 

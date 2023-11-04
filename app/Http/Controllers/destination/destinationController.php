@@ -22,7 +22,6 @@ class destinationController extends Controller
     {
 
        $destinations=Destination::with('images')->get();
-    //    return $destinations;
          return $this->returnData('destinations',$destinations,'destinations found');
     }
  
