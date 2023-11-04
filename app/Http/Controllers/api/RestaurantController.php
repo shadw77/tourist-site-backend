@@ -13,18 +13,26 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Ramsey\Collection\Collection;
 use App\Http\Resources\RestaurantResource;
-
+use App\Models\Image;
+use App\Models\Review;
+use Illuminate\Support\Facades\Storage;
 class RestaurantController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function searchRestaurants(Request $request)
+    {
+        $query = Restaurant::query();
+        $data = $request->input('search_service');        
+
+        if($data){
+            $query->whereRaw("name LIKE '%" .$data."%'");
+        }
+        return $query->get();
+    }
+
     public function index()
     {
         //
-        $restaurants = Restaurant::all();
+        $restaurants = Restaurant::paginate(3);
                 return RestaurantResource::collection($restaurants);
     }
 
@@ -47,17 +55,31 @@ class RestaurantController extends Controller
             "creator_id" => "required",
             "thumbnail"=>"required"
         ]); 
-    
         if ($validator->fails()) {
             return response($validator->errors()->all(), 422);
         }
-    
-        // Create a new restaurant instance and set the creator_id
-       $restaurant = Restaurant::create($request->all());
-        // dd(Auth::id());
-    //    $restaurant->creator_id = Auth::id();  
-    $restaurant->user->creator_id = Auth::id();
-       $restaurant->save();
+        $restaurant = Restaurant::create($request->all());
+        if ($request->hasFile('thumbnail')) {
+            $image = $request->file('thumbnail');
+            $originalFilename = $image->getClientOriginalName();
+            $imageName = time() . '_' . $originalFilename;
+            $thumbnail = $image->storeAs('thumbnails', $imageName, 'restaurant_uploads');
+            $restaurant->thumbnail = $imageName;
+            $restaurant->save();
+        }
+         
+        if ($request->hasFile('images')) {
+            $uploadedImages = $request->file('images');
+            foreach ($uploadedImages as $uploadedImage) {
+                $originalFilename = $uploadedImage->getClientOriginalName();
+                $imageName = time() . '_' . $originalFilename;
+                $path = $uploadedImage->storeAs('images', $imageName, 'restaurant_uploads');
+                 
+                $image = new Image(['image' => $imageName]);
+                
+                $restaurant->images()->save($image);
+            }
+        }
     
         return (new RestaurantResource($restaurant))->response()->setStatusCode(201);
     
@@ -71,10 +93,15 @@ class RestaurantController extends Controller
      */
     public function show(Restaurant $restaurant)
     {
-        //
-        return new RestaurantResource($restaurant);
+        return (new RestaurantResource($restaurant))->response()->setStatusCode(200);
     }
-
+    public function getDiscountedRestaurant()
+    {
+        $restaurant = Restaurant::whereNotNull('discount')
+                     ->orWhere('discount', '>', 0)
+                     ->get();
+        return response()->json($restaurant);
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -86,22 +113,44 @@ class RestaurantController extends Controller
      {   
         $validator = Validator::make($request->all(), [
             "name" => "required|max:255",
-            "email" => Rule::unique('restaurants')->ignore($restaurant->email),
+            "email" => "required|email",
             "rating" => "required",
             "street" => "required|max:255",
             "government" => "required|max:255",
             "phone" => "required",
             "thumbnail" => "required",
         ]);
-     
+        
         if ($validator->fails()) {
             return response($validator->errors()->all(), 422);
         }
     
-        $restaurant->update($request->all());
+       
         // $restaurant->creator_id = Auth::id();
         // $restaurant->user->creator_id = Auth::id();
         // $restaurant->update();
+
+         $restaurant->fill($request->all());
+        if ($request->hasFile('thumbnail')) {
+            $image = $request->file('thumbnail');
+            $originalFilename = $image->getClientOriginalName();
+            $imageName = time() . '_' . $originalFilename;
+            $thumbnail = $image->storeAs('thumbnails', $imageName, 'restaurant_uploads');
+             $restaurant->thumbnail = $imageName;
+        }
+         
+        if ($request->hasFile('images')) {
+            $uploadedImages = $request->file('images');
+            foreach ($uploadedImages as $uploadedImage) {
+                $originalFilename = $uploadedImage->getClientOriginalName();
+                $imageName = time() . '_' . $originalFilename;
+                $path = $uploadedImage->storeAs('images', $imageName, 'restaurant_uploads');
+    
+                 $image = new Image(['image' => $imageName]);
+                $restaurant->images()->save($image);
+            }
+        }
+        $restaurant->save();
         return (new RestaurantResource($restaurant))->response()->setStatusCode(200);
     }
     

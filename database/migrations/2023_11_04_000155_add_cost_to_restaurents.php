@@ -13,12 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('reviews', function (Blueprint $table) {
-            $table->id();
-            $table->text('review');
-            $table->morphs('reviewable');
-            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->timestamps();
+        Schema::table('restaurants', function (Blueprint $table) {
+            $table->string('cost');
         });
     }
 
@@ -29,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reviews');
+        Schema::table('restaurent', function (Blueprint $table) {
+            //
+        });
     }
 };

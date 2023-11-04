@@ -43,7 +43,20 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
-
+        'hotel_uploads' => [
+            'driver' => 'local',
+            'root' => public_path('images/Hotel_images'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+        'trip_uploads' => [
+            'driver' => 'local',
+            'root' => public_path('images/trip_images'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -62,6 +75,34 @@ return [
             'visibility' => 'public',
         ],
 
+        'google' => [
+            'driver' => 'google',
+            'clientId' => env('GOOGLE_DRIVE_CLIENT_ID'),
+            'clientSecret' => env('GOOGLE_DRIVE_CLIENT_SECRET'),
+            'refreshToken' => env('GOOGLE_DRIVE_REFRESH_TOKEN'),
+            'folderId' => env('GOOGLE_DRIVE_FOLDER_ID'),
+        ],
+        'restaurant_uploads' => [
+            'driver' => 'local',
+            'root' => public_path('images/Restaurant_images'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+        'destination_uploads'=> [
+            'driver' => 'local',
+            'root' => public_path('images/destination_images'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+        'trip_uploads'=> [
+            'driver' => 'local',
+            'root' => public_path('images/trips_images'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
     ],
 
     /*

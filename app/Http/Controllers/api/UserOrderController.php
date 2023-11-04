@@ -11,17 +11,51 @@ use App\Models\Hotel;
 use App\Models\Restaurant;
 use App\Models\Destination;
 use App\Http\Resources\UserOrderResource;
-
-
+use Auth;
+use Log;
 
 class UserOrderController extends Controller
 {
-    
-    public function index()
+    public function checkout(Request $request)
     {
+        $user = Auth::user();
+        $cartItems = $request->input('cartProducts');
+
+        foreach ($cartItems as $cartItem) {        
+            $totalAmount = 0;            
+            $totalAmount += $cartItem['quantity'] *$cartItem['item']['cost'];;
+            $service_id = $cartItem['item']['id'];
+            $service_type  = $cartItem['type'];
+            if($cartItem['item']['discount']){
+                $totalAmount-=$cartItem['item']['discount'];
+            }
+
+            $order = new UserOrder([
+                'amount' => $totalAmount,
+                'service_id'=>$service_id,
+                'service_type'=>$service_type
+            ]);
+    
+            $user->orders()->save($order);
+
+            // Log::info('My Cart: ' . $cartItem['quantity']);
+        }
+
+
+        return response()->json(['message' => 'Order placed successfully'], 200);
+    }
+
+    public function index(Request $request)
+    {
+        if($request->query('userId')){
+            $userId = $request->query('userId');
+            $orders = UserOrder::where('user_id', $userId)->get();
+            return UserOrderResource::collection($orders);
+        }
         $orders = UserOrder::all();
         return UserOrderResource::collection($orders);
     }
+    
 
   
     public function store(Request $request)
@@ -33,10 +67,9 @@ class UserOrderController extends Controller
 
         ]);
         $user = User::find($validatedData['user_id']);
-
+        $order = new UserOrder();
         if($request->get('service_type') == "Hotel"){
             $hotel = Hotel::find($request->get('service_id'));
-            $order = new UserOrder();
             $order->service_id = $hotel->id;
             $order->service()->associate($hotel);
             $user->orders()->save($order);
@@ -44,27 +77,25 @@ class UserOrderController extends Controller
         }
         elseif($request->get('service_type') == 'Trip'){
              $trip = Trip::find($request->get('service_id'));
-             $order = new UserOrder();
              $order->service_id = $trip->id;
              $order->service()->associate($trip);
              $user->orders()->save($order);    
         }
         elseif($request->get('service_type') == 'Destination'){  
             $destination = Destination::find($request->get('service_id'));
-            $order = new UserOrder();
             $order->service_id = $destination->id;
             $order->service()->associate($destination);
             $user->orders()->save($order);  
         }
         elseif($request->get('service_type') == 'Restaurent'){  
             $restaurant = Restaurant::find($request->get('service_id'));
-            $order = new UserOrder();
             $order->service_id = $restaurant->id;
             $order->service()->associate($restaurant);
-            $user->orders()->save($order);          }
+            $user->orders()->save($order);       
+           }
 
-        
-        return new UserOrderResource($user->orders);
+        return $order;
+        // return new UserOrderResource($user->orders);
     
     }
 
