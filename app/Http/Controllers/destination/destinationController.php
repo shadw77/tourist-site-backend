@@ -21,8 +21,7 @@ class destinationController extends Controller
     public function index()
     {
 
-       $destinations=Destination::with('images')->get();
-    //    return $destinations;
+        $destinations = Destination::with('images')->get();
          return $this->returnData('destinations',$destinations,'destinations found');
     }
  
