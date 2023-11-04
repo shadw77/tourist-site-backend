@@ -26,6 +26,7 @@ class RestaurantResource extends JsonResource
             "phone" =>$this->phone,
             "description"=>$this->description,
             "thumbnail"=>$this->thumbnail,
+            "cost"=>$this->cost,
             "creator_id"=>$this->creator_id,
             "images"=>$this->images,
             "reviews"=>$this->reviews,

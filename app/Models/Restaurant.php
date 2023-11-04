@@ -18,7 +18,7 @@ class Restaurant extends Model
 
 
     protected $fillable = [
-        'name','rating','email','street','government','description','phone','discount','thumbnail','creator_id'
+        'name','rating','email','street','government','description','phone','discount','cost','thumbnail','creator_id'
     ];
 
 
