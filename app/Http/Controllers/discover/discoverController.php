@@ -25,9 +25,9 @@ class discoverController extends Controller
     /*start function that send nearbyplaces*/
     public function index($city){
         //return $city;
-        $restaurantnearbyplaces=Restaurant::with('images');
-        $tripnearbyplaces=Trip::with('images');
-        $hotelnearbyplaces=Hotel::with('images');
+        $restaurantnearbyplaces=Restaurant::with(['images', 'reviews.user']);
+        $tripnearbyplaces=Trip::with(['images', 'reviews.user']);
+        $hotelnearbyplaces=Hotel::with(['images', 'reviews.user']);
 
         if ($city !== 'null') {
             $restaurantnearbyplaces = $restaurantnearbyplaces->where('government', $city);
@@ -145,11 +145,23 @@ class discoverController extends Controller
 
     /*start testing function that insert review*/
     public function store(Request $request){
-        $trip=Trip::find($request->trip_id);
-        $review = new Review();
-        $review->review = $request->review;
-        $review->user_id=$request->user_id;
-        $trip->reviews()->save($review);
+        $object;
+        //return $request;
+        if($request['object']['reviews'][0]['reviewable_type'] == "Restaurant"){
+            $object=Restaurant::find($request['object']['id']);
+        }
+        else if($request['object']['reviews'][0]['reviewable_type'] == "Trip"){
+            $object=Trip::find($request['object']['id']);
+
+        }
+        else{
+            $object=Hotel::find($request['object']['id']);
+        }
+
+        $comment = new Review();
+        $comment->review = $request->review;
+        $comment->user_id=1;
+        $object->reviews()->save($comment);
 
         return $this->returnSuccessMessage("comment Inserted successuflly","E001");
     }
