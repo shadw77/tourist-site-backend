@@ -43,7 +43,7 @@ class Trip extends Model
         return $this->morphToMany(User::class, 'service', 'user_order')
             ->withTimestamps();
     }
-    public function timeSlots()
+    public function timeSlot()
     {
         return $this->morphMany(TimeSlot::class, 'service');
     }
