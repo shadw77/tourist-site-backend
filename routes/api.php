@@ -65,7 +65,19 @@ Route::group(['middleware'=>['api']],function(){
     Route::get('google/auth/callback', [Controller::class,'googleredirect']);//for google login
     /*end endpoints for authentication*/
 
-    Route::post('review',[discoverController::class,'store']);//for test
+    /*start endpoint that deal with payment gateway*/
+    Route::get('callback', [OrderProductController::class, 'paymentCallBack']);
+    Route::get('error', function () {
+        return view('payment.failed');
+    });
+    /*end endpoint that deal with payment gateway*/
+
+
+    /*start endpoints that handled in detail component*/
+    Route::post('review',[discoverController::class,'store']);
+    Route::post('get-review',[discoverController::class,'reviewById']);
+    /*end endpoints that handled in detail component*/
+
 
 
     /*start endpoints for discover*/

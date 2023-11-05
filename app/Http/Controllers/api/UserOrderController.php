@@ -13,6 +13,7 @@ use App\Models\Destination;
 use App\Http\Resources\UserOrderResource;
 use Auth;
 use Log;
+use App\Http\Services\FatoorahServices;
 
 class UserOrderController extends Controller
 {
@@ -21,8 +22,8 @@ class UserOrderController extends Controller
         $user = Auth::user();
         $cartItems = $request->input('cartProducts');
 
-        foreach ($cartItems as $cartItem) {        
-            $totalAmount = 0;            
+        foreach ($cartItems as $cartItem) {
+            $totalAmount = 0;
             $totalAmount += $cartItem['quantity'] *$cartItem['item']['cost'];;
             $service_id = $cartItem['item']['id'];
             $service_type  = $cartItem['type'];
@@ -35,7 +36,7 @@ class UserOrderController extends Controller
                 'service_id'=>$service_id,
                 'service_type'=>$service_type
             ]);
-    
+
             $user->orders()->save($order);
 
             // Log::info('My Cart: ' . $cartItem['quantity']);
@@ -55,9 +56,9 @@ class UserOrderController extends Controller
         $orders = UserOrder::all();
         return UserOrderResource::collection($orders);
     }
-    
 
-  
+
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -79,24 +80,24 @@ class UserOrderController extends Controller
              $trip = Trip::find($request->get('service_id'));
              $order->service_id = $trip->id;
              $order->service()->associate($trip);
-             $user->orders()->save($order);    
+             $user->orders()->save($order);
         }
-        elseif($request->get('service_type') == 'Destination'){  
+        elseif($request->get('service_type') == 'Destination'){
             $destination = Destination::find($request->get('service_id'));
             $order->service_id = $destination->id;
             $order->service()->associate($destination);
-            $user->orders()->save($order);  
+            $user->orders()->save($order);
         }
-        elseif($request->get('service_type') == 'Restaurent'){  
+        elseif($request->get('service_type') == 'Restaurent'){
             $restaurant = Restaurant::find($request->get('service_id'));
             $order->service_id = $restaurant->id;
             $order->service()->associate($restaurant);
-            $user->orders()->save($order);       
+            $user->orders()->save($order);
            }
 
         return $order;
         // return new UserOrderResource($user->orders);
-    
+
     }
 
     public function show(Request $request, $id)
@@ -104,9 +105,9 @@ class UserOrderController extends Controller
         $order = UserOrder::find($id);
         return new UserOrderResource($order);
     }
-    
- 
-    
+
+
+
     public function update(Request $request, $id)
     {
         $order = UserOrder::find($id);
@@ -118,6 +119,42 @@ class UserOrderController extends Controller
     {
         $order = UserOrder::find($id);
         $order->delete();
-        return response()->json(['message' => 'Order deleted successfully']);    }
+        return response()->json(['message' => 'Order deleted successfully']);
+    }
+
+
+    public function confirm_order(Request $request)
+    {
+
+        $data = [
+            'CustomerName' => $order->user->name,
+            'NotificationOption' => 'LNK',
+            'InvoiceValue' => $order->amount,
+            'CustomerEmail' => $order->user->email,
+            'CallBackUrl' => 'http://localhost:8000/api/callback',
+            'ErrorUrl' => 'http://localhost:8000/api/error',
+            'Language' => 'en',
+            'DisplayCurrencyIso' => 'SAR'
+        ];
+        $info = $this->fatoorahServices->sendPayment($data);
+        Transaction::create([
+            'user_id' => $order->user_id,
+            'invoiceid' => $info['Data']['InvoiceId']
+        ]);
+
+        return redirect($info['Data']['InvoiceURL']);
+    }
+    public function paymentCallBack(Request $request)
+    {
+
+        $data = [];
+        $data['Key'] = $request->paymentId;
+        $data['KeyType'] = 'paymentId';
+
+        $paymentData = $this->fatoorahServices->getPaymentStatus($data);
+        $usertrans = Transaction::where('invoiceid', $paymentData['Data']['InvoiceId'])->first();
+        $usertrans->update(['paymentid' => $request->paymentId]);
+
+    }
 }
 

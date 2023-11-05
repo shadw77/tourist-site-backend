@@ -67,6 +67,7 @@ class discoverController extends Controller
         $restaurantwithreview = $restaurantwithreview->take($this->numberofRecords)->get();
         $hotelwithreview = $hotelwithreview->take($this->numberofRecords)->get();
 
+
         //start extract reviews from $tripwithreview
         $tripreview = $this->getReview($tripwithreview);
 
@@ -79,9 +80,9 @@ class discoverController extends Controller
         return $this->returnData(
             "reviews",
             [
-                'tripreview' => $tripreview,
-                'restaurantreview' => $restaurantreview,
-                'hotelreview' => $hotelreview
+                'tripreview' => array_slice($tripreview, 0, 2),
+                'restaurantreview' => array_slice($restaurantreview, 0, 2),
+                'hotelreview' => array_slice($hotelreview, 0, 2)
             ]
             ,'data Found'
         );
@@ -123,9 +124,9 @@ class discoverController extends Controller
         return $this->returnData(
             "reviews",
             [
-                'tripreview' => $tripreview,
-                'restaurantreview' => $restaurantreview,
-                'hotelreview' => $hotelreview
+                'tripreview' => array_slice($tripreview, 0, 2),
+                'restaurantreview' => array_slice($tripreview, 0, 2),
+                'hotelreview' => array_slice($tripreview, 0, 2)
             ]
             ,'Data Found'
         );
@@ -160,11 +161,32 @@ class discoverController extends Controller
 
         $comment = new Review();
         $comment->review = $request->review;
-        $comment->user_id=1;
+        $comment->user_id=$request->userID;
         $object->reviews()->save($comment);
+        $object=$object->reviews()->with('user')->latest()->first();
+       // $object=$this->getReview($)
+        return $this->returnData("reviews", $object,'comment Inserted successuflly',200);
 
-        return $this->returnSuccessMessage("comment Inserted successuflly","E001");
     }
     /*end testing function that insert review*/
+
+
+    /*start function that get review by id*/
+    public function reviewById(Request $request){
+        $object;
+
+        if($request['reviews'][0]['reviewable_type'] == "Restaurant"){
+            $object=Restaurant::where('id',$request['id'])->with('reviews.user')->get();
+        }
+        else if($request['reviews'][0]['reviewable_type'] == "Trip"){
+            $object=Trip::where('id',$request['id'])->with('reviews.user')->get();
+        }
+        else{
+            $object=Hotel::where('id',$request['id'])->with('reviews.user')->get();
+        }
+        $object=$this->getReview($object);
+        return $this->returnData("reviews", $object,'Data Found',200);
+    }
+    /*end function that get review by id*/
 
 }
