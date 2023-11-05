@@ -11,12 +11,15 @@ use App\Models\Hotel;
 use App\Models\Restaurant;
 use App\Models\Destination;
 use App\Http\Resources\UserOrderResource;
+use App\Notifications\OrderPlacedNotification;
+use Illuminate\Support\Facades\Notification;
 
 
 
 class UserOrderController extends Controller
 {
     
+
     public function index()
     {
         $orders = UserOrder::all();
@@ -33,14 +36,18 @@ class UserOrderController extends Controller
 
         ]);
         $user = User::find($validatedData['user_id']);
+
         $order = new UserOrder();
         if($request->get('service_type') == "Hotel"){
             $hotel = Hotel::find($request->get('service_id'));
             $order->service_id = $hotel->id;
-            $order->service()->associate($hotel);
+             $order->service()->associate($hotel);
             $user->orders()->save($order);
-
+            $hotel->orders()->save($order);
+            $creator = User::find($hotel->creator_id);
+            $hotel->vendor->notify(new OrderPlacedNotification($order));
         }
+
         elseif($request->get('service_type') == 'Trip'){
              $trip = Trip::find($request->get('service_id'));
              $order->service_id = $trip->id;
@@ -59,12 +66,31 @@ class UserOrderController extends Controller
             $order->service()->associate($restaurant);
             $user->orders()->save($order);       
            }
-
+        //    $user->notify(new OrderPlacedNotification($order));
         return $order;
         // return new UserOrderResource($user->orders);
     
     }
+    public function getNotifications()
+    {
+        $user = User::all();
+        $notifications = $user->unreadNotifications;
+        return response()->json(['notifications' => $notifications]);
+    }
 
+    public function markNotificationAsRead(Request $request)
+    {
+        $user = Auth::user(); 
+        $notificationId = $request->input('notification_id');
+
+        $notification = $user->notifications()->where('id', $notificationId)->first();
+        if ($notification) {
+            $notification->markAsRead();
+            return response()->json(['message' => 'Notification marked as read']);
+        } else {
+            return response()->json(['error' => 'Notification not found'], 404);
+        }
+    }
     public function show(Request $request, $id)
     {
         $order = UserOrder::find($id);

@@ -157,4 +157,4 @@ Route::apiResource('orders', UserOrderController::class);
      Route::post('images/{image}', [ImageController::class,'updateImage']);
      Route::delete('images/{image}',  [ImageController::class,'destroy']);
      
-     
+     Route::get('/notifications/{id}', [UserOrderController::class, 'getNotifications']);

@@ -15,6 +15,7 @@ use App\Models\UserOrder;
 use App\Models\Review;
 use App\Models\Transaction;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Models\Notification;
 
 
 class User extends Authenticatable implements JWTSubject
@@ -123,5 +124,9 @@ class User extends Authenticatable implements JWTSubject
     public function transaction()
     {
         return $this->hasMany(Transaction::class,"user_id");
+    }
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable');
     }
 }

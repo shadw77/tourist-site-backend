@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Room;
 use App\Models\Review;
+use App\Models\Notification;
+use App\Models\Reservation;
 
 class Hotel extends Model
 {
@@ -56,5 +58,9 @@ class Hotel extends Model
     {
         return $this->belongsTo(User::class,"creator_id");
     }
-
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable');
+    }
+    
 }
