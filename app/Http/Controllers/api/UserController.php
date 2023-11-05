@@ -31,7 +31,7 @@ class UserController extends Controller
         $request->validate([
             'name'=>'required',
             "government"=>'required',
-            "email"=>'required',
+            "email"=>'required|email|unique:users',
             "password"=>'required',
             "street"=>'required',
             "mobile"=>'required',
@@ -61,6 +61,15 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        $request->validate([
+            'name'=>'required',
+            "government"=>'required',
+            "email"=>'required|email',
+            "password"=>'required',
+            "street"=>'required',
+            "mobile"=>'required',
+            "role"=>'required',
+        ]);
         $user->update($request->all());
         return new UserResource($user);
     }
