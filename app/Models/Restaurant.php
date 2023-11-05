@@ -27,7 +27,10 @@ class Restaurant extends Model
     {
         return $this->morphMany(Image::class, 'imageable');
     }
-
+    public function timeSlots()
+    {
+        return $this->morphMany(TimeSlot::class, 'service');
+    }
     //relation Restaurant with user
     // public function user()
     // {
