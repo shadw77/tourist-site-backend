@@ -13,6 +13,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Redirect;
 
 class Controller extends BaseController
 {
@@ -26,14 +28,16 @@ class Controller extends BaseController
         $rules=[
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
-            'password' => 'required|max:4',
+            'mobile' => 'required|max:11|unique:users',
+            'password' => 'required|max:9',
         ];
 
         $messages=[
             "required"          =>  "This Field Is Required",
             "string"            =>  "This Field Must Be String",
-            "max"               =>  "This Field Minimum 4 Characters",
-            "unique"            =>   "This Email Is Already Taken"
+            "mobile.max"        =>  "This Field Maximum 11 Characters",
+            "password.max"      =>  "This Field Maximum 9 Characters",
+            "unique"            =>   "This Field Is Already Taken"
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -67,12 +71,12 @@ class Controller extends BaseController
         // Validate the request data
         $rules=[
             'email' => 'required|email|exists:users',
-            'password' => 'required|max:4',
+            'password' => 'required|max:9',
         ];
 
         $messages=[
             "required"          =>  "This Field Is Required",
-            "max"               =>  "This Field Minimum 4 Characters",
+            "max"               =>  "This Field Maximun 9 Characters",
             "exists"            =>   "This Email Is Not Exists"
         ];
 
@@ -103,12 +107,9 @@ class Controller extends BaseController
     /*start logout function*/
     public function logout(Request $request)
     {
-
          $token = $request -> header('Authorization');//get token from header request
-
         if($token){
             try {
-
                 JWTAuth::setToken($token)->invalidate(); //make token destroy and logout
             }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
                 $this -> returnError('some thing went wrongs',400);
@@ -117,10 +118,76 @@ class Controller extends BaseController
         }else{
             $this -> returnError('Token Not Provided',400);
         }
-
     }
     /*end logout function*/
 
+    /*start login with github function*/
+    public function githubLogin(){
+        return Socialite::driver('github')->stateless()->redirect();
+    }
+    public function githubredirect(){
+        $githubUser = Socialite::driver('github')->stateless()->user();
+        $user = User::where("email", $githubUser->email)->first();
+        if(! $user){
+                $user = User::updateOrCreate([
+                'github_id' => $githubUser->id,
+            ], [
+                'name' => $githubUser->name,
+                'email' => $githubUser->email,
+                'password'=> null,
+                "government"=>'null',
+                'github_token' => $githubUser->token,
+                'github_refresh_token' => $githubUser->refreshToken,
+            ]);
+        }
+        $token = auth('api')->login($user);
+        $user->api_token = $token;
+        $response=response()->json([
+            'status' => 200,
+            'mssg' => "User Has Successfully Logged",
+            "userdata" => $user
+        ]);
+        $redirectUrl = 'http://localhost:4200/?response='.urlencode(json_encode($response));
+        return Redirect::away($redirectUrl);
+    }
+    /*end login with github function*/
+
+    /*start login with google function*/
+   public function googleLogin(){
+    return Socialite::driver('google')->stateless()->redirect();
+   }
+
+   public function googleredirect(){
+    $googleUser = Socialite::driver('google')->stateless()->user();
+    $user = User::where('email', $googleUser->email)->first();
+    if (!$user) {
+        $user = User::updateOrCreate([
+            'google_id' => $googleUser->id,
+        ], [
+            'name' => $googleUser->name,
+            'email' => $googleUser->email,
+            'password' => null,
+            "government"=>'null',
+            'google_token' => $googleUser->token,
+            'google_refresh_token' => $googleUser->refreshToken,
+        ]);
+    }
+
+    $token = auth('api')->login($user);
+    $user->api_token = $token;
+
+
+    $response=response()->json([
+        'status' => 200,
+        'mssg' => "User Has Successfully Logged",
+        "userdata" => $user
+    ]);
+
+    $redirectUrl = 'http://localhost:4200/?response='.urlencode(json_encode($response));
+
+    return Redirect::away($redirectUrl);
+   }
+    /*end login with google function*/
 
     /*start testing function*/
     public function testdata(){

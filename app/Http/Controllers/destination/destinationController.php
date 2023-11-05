@@ -21,8 +21,7 @@ class destinationController extends Controller
     public function index()
     {
 
-       $destinations=Destination::with('images')->get();
-    //    return $destinations;
+        $destinations = Destination::with('images')->get();
          return $this->returnData('destinations',$destinations,'destinations found');
     }
  
@@ -37,6 +36,16 @@ class destinationController extends Controller
         }
         
         return $destinations;
+    }
+    public function searchDestinations(Request $request)
+    {
+        $query = Destination::query();
+        $data = $request->input('search_service');        
+
+        if($data){
+            $query->whereRaw("name LIKE '%" .$data."%'");
+        }
+        return $query->get();
     }
     
     /**

@@ -57,12 +57,36 @@ class DestinationController extends Controller
             "creator_id" => "required",
             "thumbnail"=>"required"
         ]); 
-    
         if ($validator->fails()) {
             return response($validator->errors()->all(), 422);
         }
 
        $destination = Destination::create($request->all());
+
+
+        if ($request->hasFile('thumbnail')) {
+            $image = $request->file('thumbnail');
+            $originalFilename = $image->getClientOriginalName();
+            $imageName = time() . '_' . $originalFilename;
+            $thumbnail = $image->storeAs('thumbnails', $imageName, 'destination_uploads');
+            $destination->thumbnail = $imageName;
+            $destination->save();
+        }
+         
+        if ($request->hasFile('images')) {
+            $uploadedImages = $request->file('images');
+            foreach ($uploadedImages as $uploadedImage) {
+                $originalFilename = $uploadedImage->getClientOriginalName();
+                $imageName = time() . '_' . $originalFilename;
+                $path = $uploadedImage->storeAs('images', $imageName, 'destination_uploads');
+                 
+                $image = new Image(['image' => $imageName]);
+                
+                $destination->images()->save($image);
+            }
+        }
+
+    
     $destination->user->creator_id = Auth::id();
        $destination->save();
     

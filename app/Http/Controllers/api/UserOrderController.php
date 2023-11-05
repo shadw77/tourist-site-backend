@@ -13,18 +13,52 @@ use App\Models\Destination;
 use App\Http\Resources\UserOrderResource;
 use App\Notifications\OrderPlacedNotification;
 use Illuminate\Support\Facades\Notification;
-
-
+use Auth;
+use Log;
 
 class UserOrderController extends Controller
 {
-    
-
-    public function index()
+    public function checkout(Request $request)
     {
+        $user = Auth::user();
+        $cartItems = $request->input('cartProducts');
+
+        foreach ($cartItems as $cartItem) {        
+            $totalAmount = 0;            
+            $totalAmount += $cartItem['quantity'] *$cartItem['item']['cost'];;
+            $service_id = $cartItem['item']['id'];
+            $service_type  = $cartItem['type'];
+            if($cartItem['item']['discount']){
+                $totalAmount-=$cartItem['item']['discount'];
+            }
+
+            $order = new UserOrder([
+                'amount' => $totalAmount,
+                'service_id'=>$service_id,
+                'service_type'=>$service_type
+            ]);
+
+            $user->orders()->save($order);
+
+            // Log::info('My Cart: ' . $cartItem['quantity']);
+        }
+
+
+        return response()->json(['message' => 'Order placed successfully'], 200);
+    }
+
+    public function index(Request $request)
+
+    {
+        if($request->query('userId')){
+            $userId = $request->query('userId');
+            $orders = UserOrder::where('user_id', $userId)->get();
+            return UserOrderResource::collection($orders);
+        }
         $orders = UserOrder::all();
         return UserOrderResource::collection($orders);
     }
+    
 
   
     public function store(Request $request)

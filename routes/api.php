@@ -22,6 +22,8 @@ use App\Http\Controllers\api\UserOrderController;
 
 use App\Http\Controllers\api\VendorHotelsController;
 use App\Http\Controllers\api\ImageController;
+use App\Http\Controllers\PasswordResetRequestController;
+use App\Http\Controllers\chagePasswordController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -34,6 +36,10 @@ use App\Http\Controllers\api\ImageController;
 */
 
 
+// Route::group(['middleware'=>['api']],function(){
+//     Route::get('get-nearbyplaces',[discoverController::class,'index']);
+
+//     Route::post('login',[Controller::class,'login']);
 
 // Route::group(['middleware'=>['api']],function(){
 //     Route::get('get-nearbyplaces',[discoverController::class,'index']);
@@ -47,9 +53,16 @@ use App\Http\Controllers\api\ImageController;
 //         Route::get('destinations/{destination}',[destinationController::class,'show']);
 Route::group(['middleware'=>['api']],function(){
 
+
     /*start endpoints for authentication*/
     Route::post('register',[Controller::class,'register']);
     Route::post('login',[Controller::class,'login']);
+    Route::post('sendPasswordResetLink',[PasswordResetRequestController::class,'sendPasswordResetEmail']);
+    Route::post('resetPassword',[chagePasswordController::class,'process']);
+    Route::get('auth/redirect', [Controller::class,'githubLogin']);//for github login
+    Route::get('auth/callback', [Controller::class,'githubredirect']);//for github login
+    Route::get('google/auth/redirect', [Controller::class,'googleLogin']);//for google login
+    Route::get('google/auth/callback', [Controller::class,'googleredirect']);//for google login
     /*end endpoints for authentication*/
 
     Route::post('review',[discoverController::class,'store']);//for test
@@ -67,24 +80,36 @@ Route::group(['middleware'=>['api']],function(){
     Route::group([  'middleware'=>['jwt.verify']],function(){
 
         Route::get("get-test-data",[Controller::class,'testdata']);//for test
-        Route::get('logout',[Controller::class,'logout']);
+        Route::get('logout',[Controller::class,'logout']);//function that logout
 
 //         Route::post('logout',[Controller::class,'logout']);
 //     });
 //     /*end endpoints that user  should be logged and send jwt token to access any of them*/
         /*start endpoints for destination that can anyone access*/
-     
+
         /*end endpoints for destination that can anyone access*/
 
         /*start endpoints that can only admin access*/
- Route::group([  'middleware'=>['admin-access'] ],function(){
+        Route::group([  'middleware'=>['admin-access'] ],function(){
 
             /*start endpoints for destination*/
-  
+
             /*end endpoints for destination*/
 
         });
         /*end endpoints that can only admin access*/
+
+
+        /*start endpoints that admin or vendor can access*/
+        Route::group([  'middleware'=>['admin-vendor-access'] ],function(){
+
+        });
+        /*end endpoints that admin or vendor can access*/
+
+
+
+    Route::post('/checkout', [UserOrderController::class,'checkout']);
+
 
 // });
     });
@@ -94,25 +119,28 @@ Route::group(['middleware'=>['api']],function(){
      Route::post('destinations',[destinationController::class,'store']);
      Route::put('destinations/{destination}',[destinationController::class,'update']);
     /*end endpoints that user  should be logged and send jwt token to access any of them*/
-      
-Route::get('destinations',[destinationController::class,'index']);
-Route::get('destinations/{id}',[destinationController::class,'show']);
-Route::delete('destinations/{destination}',[destinationController::class,'destroy']);
-Route::post('destinations',[destinationController::class,'store']);
-Route::post('destinations/{destination}',[destinationController::class,'update']);
+
+    Route::get('destinations',[destinationController::class,'index']);
+    Route::get('destinations/{id}',[destinationController::class,'show']);
+    Route::delete('destinations/{destination}',[destinationController::class,'destroy']);
+    Route::post('destinations',[destinationController::class,'store']);
+    Route::post('destinations/{destination}',[destinationController::class,'update']);
 });
+
+
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 
+
 // Route::apiResource('destinations', DestinationController::class);
- Route::get('/topDestinations', [destinationController::class, 'getDestinations']);
+Route::get('/topDestinations', [destinationController::class, 'getDestinations']);
 // Route::apiResource('destinations', DestinationController::class);
 // Route::get('/destinations', [DestinationController::class, 'getDestinations']);
-
 // Route::apiResource('trips', TripController::class);
-
 
 
 Route::get('/searchTrip', [TripController::class, 'searchTrips']);
@@ -156,5 +184,8 @@ Route::apiResource('orders', UserOrderController::class);
      Route::get('images/{image}',  [ImageController::class,'show']);
      Route::post('images/{image}', [ImageController::class,'updateImage']);
      Route::delete('images/{image}',  [ImageController::class,'destroy']);
+
      
      Route::get('/notifications/{id}', [UserOrderController::class, 'getNotifications']);
+
+

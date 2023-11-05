@@ -11,7 +11,7 @@ class UserOrder extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id', 'service_id', 'service_type'
+        'user_id', 'service_id', 'service_type','amount'
     ];
 
     protected $table="user_orders";

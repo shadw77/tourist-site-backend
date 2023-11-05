@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\GeneralTrait;
-
+use Log;
 class VerifyToken
 {    use GeneralTrait;
 
@@ -22,6 +22,7 @@ class VerifyToken
     {
         try {
             //if($request->header){}
+            
             $token = $request->header('Authorization');
 
             if (!$token) {
