@@ -10,7 +10,7 @@ class UserOrder extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id', 'service_id', 'service_type','amount'
+        'user_id', 'service_id', 'service_type','amount','quantity'
     ];
 
 

@@ -13,7 +13,7 @@ use App\Models\Review;
 use App\Models\Room;
 use App\Models\Image;
 use App\Traits\GeneralTrait;
-
+use Log;
 
 class discoverController extends Controller
 {
@@ -30,6 +30,7 @@ class discoverController extends Controller
         $hotelnearbyplaces=Hotel::with('images');
 
         if ($city !== 'null') {
+            Log::info($city);
             $restaurantnearbyplaces = $restaurantnearbyplaces->where('government', $city);
             $tripnearbyplaces = $tripnearbyplaces->where('government', $city);
             $hotelnearbyplaces = $hotelnearbyplaces->where('government', $city);

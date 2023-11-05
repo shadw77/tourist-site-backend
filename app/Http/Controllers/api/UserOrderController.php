@@ -26,6 +26,7 @@ class UserOrderController extends Controller
             $totalAmount += $cartItem['quantity'] *$cartItem['item']['cost'];;
             $service_id = $cartItem['item']['id'];
             $service_type  = $cartItem['type'];
+            $quantity = $cartItem['quantity']; 
             if($cartItem['item']['discount']){
                 $totalAmount-=$cartItem['item']['discount'];
             }
@@ -33,7 +34,8 @@ class UserOrderController extends Controller
             $order = new UserOrder([
                 'amount' => $totalAmount,
                 'service_id'=>$service_id,
-                'service_type'=>$service_type
+                'service_type'=>$service_type,
+                'quantity'=>$quantity,
             ]);
     
             $user->orders()->save($order);
