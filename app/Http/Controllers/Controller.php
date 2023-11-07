@@ -15,6 +15,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Redirect;
+use Log;
 
 class Controller extends BaseController
 {
@@ -52,6 +53,8 @@ class Controller extends BaseController
             'email' => $request->email,
             'password' => bcrypt($request->password), // Hash the password
             "government" => $request->government,
+            "street" => $request->street,
+            "mobile" =>$request->mobile,
         ]);
 
         $user=User::find($id);
@@ -108,15 +111,17 @@ class Controller extends BaseController
     public function logout(Request $request)
     {
          $token = $request -> header('Authorization');//get token from header request
-        if($token){
+        // Log::info('Received token: ' . $token);
+        if(!empty($token)){
             try {
                 JWTAuth::setToken($token)->invalidate(); //make token destroy and logout
+                return $this->returnSuccessMessage('Logged out successfully',200);
+
             }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
-                $this -> returnError('some thing went wrongs',400);
+                return $this -> returnError($e->getMessage(),400);
             }
-            return $this->returnSuccessMessage('Logged out successfully',200);
         }else{
-            $this -> returnError('Token Not Provided',400);
+           return $this -> returnError('Token Not Provided',400);
         }
     }
     /*end logout function*/
@@ -190,7 +195,9 @@ class Controller extends BaseController
     /*end login with google function*/
 
     /*start testing function*/
-    public function testdata(){
+    public function testdata(Request $request){
+        return $request->header("authorization");
+        //return $request;
         $users=User::get();
         return $this->returnData('users', $users,'All Users in database');
     }

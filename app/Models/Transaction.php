@@ -12,7 +12,7 @@ class Transaction extends Model
     protected $table="transactions";
 
     protected $fillable = [
-        'invoiceid','payment','user_id'
+        'invoiceid','paymentid','user_id'
     ];
 
    //relation Transaction with user

@@ -14,9 +14,20 @@ use App\Http\Resources\UserOrderResource;
 use Auth;
 use Log;
 use App\Http\Services\FatoorahServices;
+use App\Models\Transaction;
+use Illuminate\Support\Facades\Redirect;
+
 
 class UserOrderController extends Controller
 {
+
+    private $fatoorahServices;
+
+    public function __construct(FatoorahServices $fatoorahServices)
+    {
+        $this->fatoorahServices = $fatoorahServices;
+    }
+
     public function checkout(Request $request)
     {
         $user = Auth::user();
@@ -51,10 +62,10 @@ class UserOrderController extends Controller
         if($request->query('userId')){
             $userId = $request->query('userId');
             $orders = UserOrder::where('user_id', $userId)->get();
-            return UserOrderResource::collection($orders);
+            //return UserOrderResource::collection($orders);
         }
         $orders = UserOrder::all();
-        return UserOrderResource::collection($orders);
+        //return UserOrderResource::collection($orders);
     }
 
 
@@ -103,7 +114,7 @@ class UserOrderController extends Controller
     public function show(Request $request, $id)
     {
         $order = UserOrder::find($id);
-        return new UserOrderResource($order);
+       /// return new UserOrderResource($order);
     }
 
 
@@ -123,9 +134,11 @@ class UserOrderController extends Controller
     }
 
 
-    public function confirm_order(Request $request)
+    public function confirm_order()
     {
 
+
+        $order = UserOrder::latest()->first();
         $data = [
             'CustomerName' => $order->user->name,
             'NotificationOption' => 'LNK',
@@ -138,7 +151,7 @@ class UserOrderController extends Controller
         ];
         $info = $this->fatoorahServices->sendPayment($data);
         Transaction::create([
-            'user_id' => $order->user_id,
+            'user_id' => $order->user->id,
             'invoiceid' => $info['Data']['InvoiceId']
         ]);
 
@@ -152,8 +165,18 @@ class UserOrderController extends Controller
         $data['KeyType'] = 'paymentId';
 
         $paymentData = $this->fatoorahServices->getPaymentStatus($data);
+
         $usertrans = Transaction::where('invoiceid', $paymentData['Data']['InvoiceId'])->first();
+
         $usertrans->update(['paymentid' => $request->paymentId]);
+        $redirectUrl = 'http://localhost:4200/';
+        return Redirect::away($redirectUrl);
+        /*$response=response()->json([
+            'status' => 200,
+            'mssg' => "User Has Successfully Logged",
+            "userdata" => $user
+        ]);
+        $redirectUrl = 'http://localhost:4200/?response='.urlencode(json_encode($response));*/
 
     }
 }
