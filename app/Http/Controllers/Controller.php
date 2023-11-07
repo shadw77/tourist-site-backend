@@ -112,6 +112,7 @@ class Controller extends BaseController
     {
          $token = $request -> header('Authorization');//get token from header request
         // Log::info('Received token: ' . $token);
+        ///return Auth::guard("api")->user();
         if(!empty($token)){
             try {
                 JWTAuth::setToken($token)->invalidate(); //make token destroy and logout
