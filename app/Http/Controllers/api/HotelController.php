@@ -14,6 +14,30 @@ use Illuminate\Support\Facades\Storage;
 
 class HotelController extends Controller
 {
+    public function searchHotelByTime(Request $request)
+    {
+        $keyword = $request->input('search_service');
+        $endDate = $request->input('endDate');
+
+        $timeSlot = $request->input('time_slot');
+
+
+        $hotels = Hotel::
+        whereHas('timeSlot', function ($query) use ($keyword, $endDate) {
+            $query->whereDate('start_date', '<=', $keyword)
+            ->whereDate('end_date', '>=', $endDate)
+            ->whereDate('end_date', '>=', $keyword)
+            ->where('available_slots', '>', 0);
+        })
+        ->get();
+    
+        
+        // dd( $hotels);        
+
+        return HotelResource::collection($hotels);
+    }
+
+
     public function searchHotels(Request $request)
     {
         $query = Hotel::query();
