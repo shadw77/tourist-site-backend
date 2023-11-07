@@ -65,7 +65,19 @@ Route::group(['middleware'=>['api']],function(){
     Route::get('google/auth/callback', [Controller::class,'googleredirect']);//for google login
     /*end endpoints for authentication*/
 
-    Route::post('review',[discoverController::class,'store']);//for test
+    /*start endpoint that deal with payment gateway*/
+    Route::get('orders/payment', [UserOrderController::class,'confirm_order']);
+    Route::get('callback', [UserOrderController::class, 'paymentCallBack']);
+    Route::get('error', function () {
+        return view('payment.failed');
+    });
+    /*end endpoint that deal with payment gateway*/
+
+
+    /*start endpoints that handled in detail component*/
+    Route::post('review',[discoverController::class,'store']);
+    Route::post('get-review',[discoverController::class,'reviewById']);
+    /*end endpoints that handled in detail component*/
 
 
     /*start endpoints for discover*/
@@ -73,13 +85,15 @@ Route::group(['middleware'=>['api']],function(){
     Route::get('get-review-nearbyplaces/{city}',[discoverController::class,'getReviewNearByPlaces']);
     Route::get('get-topattractions-places',[discoverController::class,'getTopAttractions']);
     Route::get('get-review-topattractions-places',[discoverController::class,'getReviewTopAttractions']);
+    Route::get('get-offers-places',[discoverController::class,'getOffers']);
+    Route::get('get-review-offers-places',[discoverController::class,'getReviewOffers']);
     /*end endpoints for discover*/
 
 
     /*start endpoints that user  should be logged and send jwt token to access any of them*/
     Route::group([  'middleware'=>['jwt.verify']],function(){
 
-        Route::get("get-test-data",[Controller::class,'testdata']);//for test
+        Route::post("get-test-data",[Controller::class,'testdata']);//for test
         Route::post('logout',[Controller::class,'logout']);//function that logout
 
 //         Route::post('logout',[Controller::class,'logout']);
@@ -157,6 +171,10 @@ Route::apiResource('users', UserController::class);
 // Route::apiResource('hotels', HotelController::class);
 // Route::post('vendor-hotel/{hotel}',[HotelController::class,'updateImage']);
 Route::apiResource('orders', UserOrderController::class);
+
+
+
+
 // Route::apiResource('vendor-hotels', VendorHotelsController::class);
      Route::get('hotels/discounted', [HotelController::class,'getDiscountedHotels']);
      Route::get('trips/discounted',  [TripController::class,'getDiscountedTrips']);

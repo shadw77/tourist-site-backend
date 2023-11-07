@@ -15,6 +15,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Redirect;
+use Log;
 
 class Controller extends BaseController
 {
@@ -52,6 +53,8 @@ class Controller extends BaseController
             'email' => $request->email,
             'password' => bcrypt($request->password), // Hash the password
             "government" => $request->government,
+            "street" => $request->street,
+            "mobile" =>$request->mobile,
         ]);
 
         $user=User::find($id);
@@ -112,7 +115,6 @@ class Controller extends BaseController
             try {
                 JWTAuth::setToken($token)->invalidate(); //make token destroy and logout     
                 return $this->returnSuccessMessage('Logged out successfully',200);
-
             }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
                 return  $this -> returnError($e->getMessage(), 400);
             }
@@ -191,7 +193,9 @@ class Controller extends BaseController
     /*end login with google function*/
 
     /*start testing function*/
-    public function testdata(){
+    public function testdata(Request $request){
+        return $request->header("authorization");
+        //return $request;
         $users=User::get();
         return $this->returnData('users', $users,'All Users in database');
     }

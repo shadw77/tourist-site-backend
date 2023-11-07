@@ -25,9 +25,9 @@ class discoverController extends Controller
     /*start function that send nearbyplaces*/
     public function index($city){
         //return $city;
-        $restaurantnearbyplaces=Restaurant::with('images');
-        $tripnearbyplaces=Trip::with('images');
-        $hotelnearbyplaces=Hotel::with('images');
+        $restaurantnearbyplaces=Restaurant::with(['images', 'reviews.user']);
+        $tripnearbyplaces=Trip::with(['images', 'reviews.user']);
+        $hotelnearbyplaces=Hotel::with(['images', 'reviews.user']);
 
         if ($city !== 'null') {
             Log::info($city);
@@ -68,6 +68,7 @@ class discoverController extends Controller
         $restaurantwithreview = $restaurantwithreview->take($this->numberofRecords)->get();
         $hotelwithreview = $hotelwithreview->take($this->numberofRecords)->get();
 
+
         //start extract reviews from $tripwithreview
         $tripreview = $this->getReview($tripwithreview);
 
@@ -80,9 +81,9 @@ class discoverController extends Controller
         return $this->returnData(
             "reviews",
             [
-                'tripreview' => $tripreview,
-                'restaurantreview' => $restaurantreview,
-                'hotelreview' => $hotelreview
+                'tripreview' => array_slice($tripreview, 0, 2),
+                'restaurantreview' => array_slice($restaurantreview, 0, 2),
+                'hotelreview' => array_slice($hotelreview, 0, 2)
             ]
             ,'data Found'
         );
@@ -124,9 +125,9 @@ class discoverController extends Controller
         return $this->returnData(
             "reviews",
             [
-                'tripreview' => $tripreview,
-                'restaurantreview' => $restaurantreview,
-                'hotelreview' => $hotelreview
+                'tripreview' => array_slice($tripreview, 0, 2),
+                'restaurantreview' => array_slice($restaurantreview, 0, 2),
+                'hotelreview' => array_slice($hotelreview, 0, 2)
             ]
             ,'Data Found'
         );
@@ -134,8 +135,55 @@ class discoverController extends Controller
     /*end function that retrieve review that belong to  top attractions*/
 
 
+    /*start function that send offers*/
+    public function getOffers(){
+        $hotelOffers=Hotel::where('discount','<>','null')->take($this->numberofRecords)->get();
+        $restaurantOffers=Restaurant::where('discount','<>','null')->take($this->numberofRecords)->get();
+        $tripOffers=Trip::where('discount','<>','null')->take($this->numberofRecords)->get();
+
+        return $this->returnData(
+            "topAttractions",
+            [
+                'hotels' => $hotelOffers,
+                'restaurants' => $restaurantOffers,
+                'trips' => $tripOffers
+            ]
+            ,'Data Found'
+        );
+    }
+    /*end function that send offers*/
+
+    /*start function that retrieve review that belong to offers*/
+    public function getReviewOffers(){
+        $tripwithreview=Trip::where('discount','<>','null')->has('reviews')->with('reviews.user')->get();
+        $restaurantwithreview=Restaurant::where('discount','<>','null')->has('reviews')->with('reviews.user')->get();
+        $hotelwithreview=Hotel::where('discount','<>','null')->has('reviews')->with('reviews.user')->get();
+
+        //start extract reviews from $tripwithreview
+        $tripreview = $this->getReview($tripwithreview);
+
+        //start extract reviews from $restaurantwithreview
+        $restaurantreview = $this->getReview($restaurantwithreview);
+
+        //start extract reviews from $hotelwithreview
+        $hotelreview = $this->getReview($hotelwithreview);
+
+        return $this->returnData(
+            "reviews",
+            [
+                'tripreview' => array_slice($tripreview, 0, 2),
+                'restaurantreview' => array_slice($restaurantreview, 0, 2),
+                'hotelreview' => array_slice($hotelreview, 0, 2)
+            ]
+            ,'Data Found'
+        );
+    }
+    /*end function that retrieve review that belong to  offers*/
+
+
     /*start function that get review from passed object*/
     public function getReview($passedObject){
+
         $review=[];
         foreach($passedObject as $bject) {
             $review = array_merge($review, $bject->reviews->toArray());
@@ -144,16 +192,72 @@ class discoverController extends Controller
     }
     /*end function that get review from passed object*/
 
+
+    /*start function that get review from passed object*/
+    public function getModifiedReview($passedObject){
+
+        $review=[];
+        foreach($passedObject->reviews as $bject) {
+            array_push($review,  $bject);
+        }
+        return $review;
+    }
+    /*end function that get review from passed object*/
+
+
+
+
     /*start testing function that insert review*/
     public function store(Request $request){
-        $trip=Trip::find($request->trip_id);
-        $review = new Review();
-        $review->review = $request->review;
-        $review->user_id=$request->user_id;
-        $trip->reviews()->save($review);
+        $object;
+        $hotel=Hotel::where(["name"=>$request['object']['name'] , "government"=>$request['object']['government']])->first();
+        $restaurant=Restaurant::where(["name"=>$request['object']['name'] , "government"=>$request['object']['government']])->first();
+        $trip=Trip::where(["name"=>$request['object']['name'] , "government"=>$request['object']['government']])->first();
+        //return $request;
 
-        return $this->returnSuccessMessage("comment Inserted successuflly","E001");
+        if($trip){
+            $object=$trip;
+        }
+        else if($restaurant){
+            $object=$restaurant;
+        }
+        else{
+            $object= $hotel;
+        }
+
+        $comment = new Review();
+        $comment->review = $request->review;
+        $comment->user_id=$request->userID;
+        $object->reviews()->save($comment);
+        $object=$object->reviews()->with('user')->latest()->first();
+       // $object=$this->getReview($)
+        return $this->returnData("reviews", $object,'comment Inserted successuflly',200);
+
     }
     /*end testing function that insert review*/
+
+
+    /*start function that get review by id*/
+    public function reviewById(Request $request){
+        $object;
+        $hotel=Hotel::where(["name"=>$request['name'] , "government"=>$request['government']])->with('reviews.user')->first();
+        $restaurant=Restaurant::where(["name"=>$request['name'] , "government"=>$request['government']])->with('reviews.user')->first();
+        $trip=Trip::where(["name"=>$request['name'] , "government"=>$request['government']])->with('reviews.user')->first();
+        //return $request;
+
+        if($trip){
+            $object=$trip;
+        }
+        else if($restaurant){
+            $object=$restaurant;
+        }
+        else{
+            $object= $hotel;
+        }
+       // return $object;
+        $object=$this->getModifiedReview($object);
+        return $this->returnData("reviews", $object,'Data Found',200);
+    }
+    /*end function that get review by id*/
 
 }
