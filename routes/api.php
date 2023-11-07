@@ -80,7 +80,7 @@ Route::group(['middleware'=>['api']],function(){
     Route::group([  'middleware'=>['jwt.verify']],function(){
 
         Route::get("get-test-data",[Controller::class,'testdata']);//for test
-        Route::get('logout',[Controller::class,'logout']);//function that logout
+        Route::post('logout',[Controller::class,'logout']);//function that logout
 
 //         Route::post('logout',[Controller::class,'logout']);
 //     });

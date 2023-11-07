@@ -57,7 +57,8 @@ class UserOrderController extends Controller
             $orders = UserOrder::where('user_id', $userId)->get();
             return UserOrderResource::collection($orders);
         }
-        $orders = UserOrder::all();
+        // $orders = UserOrder::all();
+        $orders = UserOrder::paginate(2); 
         return UserOrderResource::collection($orders);
     }
     
