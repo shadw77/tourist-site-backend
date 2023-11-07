@@ -111,18 +111,15 @@ class Controller extends BaseController
     public function logout(Request $request)
     {
          $token = $request -> header('Authorization');//get token from header request
-        // Log::info('Received token: ' . $token);
-        ///return Auth::guard("api")->user();
-        if(!empty($token)){
+         if($token){
             try {
                 JWTAuth::setToken($token)->invalidate(); //make token destroy and logout
                 return $this->returnSuccessMessage('Logged out successfully',200);
-
             }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
-                return $this -> returnError($e->getMessage(),400);
+                return  $this -> returnError($e->getMessage(), 400);
             }
         }else{
-           return $this -> returnError('Token Not Provided',400);
+           return  $this -> returnError('Token Not Provided',400);
         }
     }
     /*end logout function*/

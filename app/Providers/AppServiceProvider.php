@@ -29,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
             'Destination' => 'App\Models\Destination',
             'Restaurant' => 'App\Models\Restaurant',
             'Room' => 'App\Models\Room',
+            'users' => 'App\Models\User',
         ]);
         
     }
