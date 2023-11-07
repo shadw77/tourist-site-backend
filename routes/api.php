@@ -151,7 +151,6 @@ Route::get('/searchHotel', [HotelController::class, 'searchHotels']);
 Route::post('/create-time-slot/{serviceType}/{serviceId}', [TimeSlotController::class,'createTimeSlot']);
 Route::get('/searchHotelByTime', [HotelController::class,'searchHotelByTime']);
 
-
 // Route::apiResource('trips', TripController::class);
 Route::apiResource('users', UserController::class);
 // Route::apiResource('restaurants', RestaurantController::class);
