@@ -73,7 +73,7 @@ class Kernel extends HttpKernel
         'admin-access' => \App\Http\Middleware\adminAccess::class,
         'vendor-access' => \App\Http\Middleware\vendorAccess::class,
         'admin-vendor-access' => \App\Http\Middleware\notuserAccess::class,
-        'update-Method'  =>   \App\Http\Middleware\updateMethodVaild::class
+        'update-Method'  =>   \App\Http\Middleware\updateMethodVaild::class,
 
     ];
 }
