@@ -13,12 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
-            $table->string('invoiceid',255);
-            $table->string('paymentid',255);
-            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->timestamps();
+        Schema::table('user_orders', function (Blueprint $table) {
+            $table->string('quantity');
         });
     }
 
@@ -29,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transactions');
+        Schema::table('user_orders', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -14,7 +14,8 @@ class HotelResource extends JsonResource
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
-    {
+    {           
+
         // return parent::toArray($request);
         return [
             'id' => $this->id,
@@ -25,6 +26,8 @@ class HotelResource extends JsonResource
             'thumbnail'=> $this->thumbnail,
             'discount'=> $this->discount,
             "cost"=>$this->cost,
+            "start_date" => $this->timeSlot->first()->start_date ?? null,
+            "end_date" => $this->timeSlot->first()->end_date ?? null,
             "creator_id"=>$this->creator_id,
             "images"=>$this->images,
             "reviews"=>$this->reviews,

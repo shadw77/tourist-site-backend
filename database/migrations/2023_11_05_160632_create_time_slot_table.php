@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('time_slot', function (Blueprint $table) {
             $table->id();
-            $table->string('invoiceid',255);
-            $table->string('paymentid',255);
-            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('service_id');
+            $table->string('service_type');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
+            $table->integer('available_slots');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('time_slot');
     }
 };

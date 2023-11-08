@@ -13,12 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
-            $table->string('invoiceid',255);
-            $table->string('paymentid',255);
-            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->timestamps();
+        Schema::table('hotels', function (Blueprint $table) {
+            $table->boolean('available')->default(true);
         });
     }
 
@@ -29,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transactions');
+        Schema::table('hotels', function (Blueprint $table) {
+            $table->dropColumn('available');
+        });
     }
 };

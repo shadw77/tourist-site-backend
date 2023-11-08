@@ -15,21 +15,32 @@ use App\Notifications\OrderNotification;
 use Illuminate\Support\Facades\Notification;
 use Auth;
 use Log;
+use App\Http\Services\FatoorahServices;
+use App\Models\Transaction;
+use Illuminate\Support\Facades\Redirect;
+
 
 class UserOrderController extends Controller
 
 {
-   
+    private $fatoorahServices;
+
+    public function __construct(FatoorahServices $fatoorahServices)
+    {
+        $this->fatoorahServices = $fatoorahServices;
+    }
+
     public function checkout(Request $request)
     {
         $user = Auth::user();
         $cartItems = $request->input('cartProducts');
 
-        foreach ($cartItems as $cartItem) {        
-            $totalAmount = 0;            
+        foreach ($cartItems as $cartItem) {
+            $totalAmount = 0;
             $totalAmount += $cartItem['quantity'] *$cartItem['item']['cost'];;
             $service_id = $cartItem['item']['id'];
             $service_type  = $cartItem['type'];
+            $quantity = $cartItem['quantity']; 
             if($cartItem['item']['discount']){
                 $totalAmount-=$cartItem['item']['discount'];
             }
@@ -37,7 +48,8 @@ class UserOrderController extends Controller
             $order = new UserOrder([
                 'amount' => $totalAmount,
                 'service_id'=>$service_id,
-                'service_type'=>$service_type
+                'service_type'=>$service_type,
+                'quantity'=>$quantity,
             ]);
 
             $user->orders()->save($order);
@@ -55,15 +67,16 @@ class UserOrderController extends Controller
         if($request->query('userId')){
             $userId = $request->query('userId');
             $orders = UserOrder::where('user_id', $userId)->get();
-            return UserOrderResource::collection($orders);
+            //return UserOrderResource::collection($orders);
         }
-        
-        $orders = UserOrder::all();
+
+        // $orders = UserOrder::all();
+        $orders = UserOrder::orderBy('created_at', 'desc')->paginate(2); 
         return UserOrderResource::collection($orders);
     }
-    
 
-  
+
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -90,14 +103,13 @@ class UserOrderController extends Controller
              $user->orders()->save($order);  
              event(new EventOrder($order,$user,$trip));  
         }
-        elseif($request->get('service_type') == 'Destination'){  
+        elseif($request->get('service_type') == 'Destination'){
             $destination = Destination::find($request->get('service_id'));
             $order->service_id = $destination->id;
             $order->service()->associate($destination);
             $user->orders()->save($order);  
-            
         }
-        elseif($request->get('service_type') == 'Restaurent'){  
+        elseif($request->get('service_type') == 'Restaurent'){
             $restaurant = Restaurant::find($request->get('service_id'));
             $order->service_id = $restaurant->id;
             $order->service()->associate($restaurant);
@@ -106,8 +118,8 @@ class UserOrderController extends Controller
            }
           
         return $order;
-        // return new UserOrderResource($user->orders);
-    
+        return new UserOrderResource($user->orders);
+
     }
    
     public function show(Request $request, $id)
@@ -115,9 +127,9 @@ class UserOrderController extends Controller
         $order = UserOrder::find($id);
         return new UserOrderResource($order);
     }
-    
- 
-    
+
+
+
     public function update(Request $request, $id)
     {
         $order = UserOrder::find($id);
@@ -129,6 +141,55 @@ class UserOrderController extends Controller
     {
         $order = UserOrder::find($id);
         $order->delete();
-        return response()->json(['message' => 'Order deleted successfully']);    }
+        return response()->json(['message' => 'Order deleted successfully']);
+    }
+
+
+    public function confirm_order()
+    {
+
+
+        $order = UserOrder::latest()->first();        
+
+        $data = [
+            'CustomerName' => $order->user->name,
+            'NotificationOption' => 'LNK',
+            'InvoiceValue' => $order->amount,
+            'CustomerEmail' => $order->user->email,
+            'CallBackUrl' => 'http://localhost:8000/api/callback',
+            'ErrorUrl' => 'http://localhost:8000/api/error',
+            'Language' => 'en',
+            'DisplayCurrencyIso' => 'SAR'
+        ];
+        $info = $this->fatoorahServices->sendPayment($data);
+        Transaction::create([
+            'user_id' => $order->user->id,
+            'invoiceid' => $info['Data']['InvoiceId']
+        ]);
+
+        return redirect($info['Data']['InvoiceURL']);
+    }
+    public function paymentCallBack(Request $request)
+    {
+
+        $data = [];
+        $data['Key'] = $request->paymentId;
+        $data['KeyType'] = 'paymentId';
+
+        $paymentData = $this->fatoorahServices->getPaymentStatus($data);
+
+        $usertrans = Transaction::where('invoiceid', $paymentData['Data']['InvoiceId'])->first();
+
+        $usertrans->update(['paymentid' => $request->paymentId]);
+        $redirectUrl = 'http://localhost:4200/';
+        return Redirect::away($redirectUrl);
+        /*$response=response()->json([
+            'status' => 200,
+            'mssg' => "User Has Successfully Logged",
+            "userdata" => $user
+        ]);
+        $redirectUrl = 'http://localhost:4200/?response='.urlencode(json_encode($response));*/
+
+    }
 }
 

@@ -22,7 +22,7 @@ class VerifyToken
     {
         try {
             //if($request->header){}
-            
+
             $token = $request->header('Authorization');
 
             if (!$token) {

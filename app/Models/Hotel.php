@@ -32,7 +32,11 @@ class Hotel extends Model
         return $this->morphToMany(User::class, 'service', 'user_order')
             ->withTimestamps();
     }
-
+    public function timeSlot()
+    {
+        // dd($this->morphMany(TimeSlot::class, 'service'));
+        return $this->morphMany(TimeSlot::class, 'service');
+    }
 
     //relation Hotel with user
     // public function user()
