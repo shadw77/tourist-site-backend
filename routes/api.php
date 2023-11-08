@@ -122,11 +122,11 @@ Route::group(['middleware'=>['api']],function(){
 
 
 
-    Route::post('/checkout', [UserOrderController::class,'checkout']);
-
+ Route::post('/checkout', [UserOrderController::class,'checkout']);
 
 // });
-    });
+    });   
+
     Route::get('destinations',[destinationController::class,'index']);
      Route::get('destinations/{id}',[destinationController::class,'show']);
      Route::delete('destinations/{destination}',[destinationController::class,'destroy']);

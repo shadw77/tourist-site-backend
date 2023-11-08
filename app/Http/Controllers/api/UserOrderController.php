@@ -69,8 +69,8 @@ class UserOrderController extends Controller
             $orders = UserOrder::where('user_id', $userId)->get();
             //return UserOrderResource::collection($orders);
         }
-        // $orders = UserOrder::all();
-        $orders = UserOrder::paginate(2); 
+        $orders = UserOrder::all();
+        $orders = UserOrder::orderBy('created_at', 'desc')->paginate(2); 
         return UserOrderResource::collection($orders);
     }
 
@@ -116,8 +116,8 @@ class UserOrderController extends Controller
             $user->orders()->save($order);
            }
         //    $user->notify(new OrderPlacedNotification($order));
-        return $order;
-        // return new UserOrderResource($user->orders);
+        // return $order;
+        return new UserOrderResource($user->orders);
 
     }
     public function getNotifications()
@@ -143,7 +143,7 @@ class UserOrderController extends Controller
     public function show(Request $request, $id)
     {
         $order = UserOrder::find($id);
-       /// return new UserOrderResource($order);
+        return new UserOrderResource($order);
     }
 
 
