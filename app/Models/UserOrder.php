@@ -10,7 +10,7 @@ use App\Models\Notification;
 class UserOrder extends Model
 {
     use HasFactory;
-    protected $fillable = [
+    public $fillable = [
         'user_id', 'service_id', 'service_type','amount'
     ];
 
