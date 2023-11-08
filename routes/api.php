@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\discover\discoverController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\destination\destinationController;
-
+use Illuminate\Support\Facades\Notification;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\api\RestaurantController;
@@ -50,9 +50,11 @@ use App\Http\Controllers\chagePasswordController;
 //     Route::group([  'middleware'=>['jwt.verify']],function(){
 //         Route::apiResource('destinations',destinationController::class)
 //             ->middleware('admin-access')->only(['store','update','destroy']);
-//         Route::get('destinations/{destination}',[destinationController::class,'show']);
-Route::group(['middleware'=>['api']],function(){
+//  Route::get('destinations/{destination}',[destinationController::class,'show']);
 
+
+
+Route::group(['middleware'=>['api']],function(){
 
     /*start endpoints for authentication*/
     Route::post('register',[Controller::class,'register']);
@@ -110,7 +112,6 @@ Route::group(['middleware'=>['api']],function(){
 
     Route::post('/checkout', [UserOrderController::class,'checkout']);
 
-
 // });
     });
     Route::get('destinations',[destinationController::class,'index']);
@@ -156,6 +157,8 @@ Route::apiResource('users', UserController::class);
 // Route::apiResource('hotels', HotelController::class);
 // Route::post('vendor-hotel/{hotel}',[HotelController::class,'updateImage']);
 Route::apiResource('orders', UserOrderController::class);
+Route::get('ordersdetails/{order}', [UserOrderController::class,'showOrderDetails']);
+
 // Route::apiResource('vendor-hotels', VendorHotelsController::class);
      Route::get('hotels/discounted', [HotelController::class,'getDiscountedHotels']);
      Route::get('trips/discounted',  [TripController::class,'getDiscountedTrips']);
@@ -167,8 +170,8 @@ Route::apiResource('orders', UserOrderController::class);
      Route::post('trips/{trip}', [TripController::class,'update']);
      Route::delete('trips/{trip}',  [TripController::class,'destroy']);
 
-     Route::post('hotels', [HotelController::class,'store']);
      Route::get('hotels',  [HotelController::class,'index']);
+     Route::post('hotels', [HotelController::class,'store']);
      Route::get('hotels/{hotel}',  [HotelController::class,'show']);
      Route::post('hotels/{hotel}', [HotelController::class,'update']);
      Route::delete('hotels/{hotel}',  [HotelController::class,'destroy']);
