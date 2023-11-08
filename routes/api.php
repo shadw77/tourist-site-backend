@@ -172,6 +172,7 @@ Route::apiResource('users', UserController::class);
 // Route::post('vendor-hotel/{hotel}',[HotelController::class,'updateImage']);
 Route::apiResource('orders', UserOrderController::class);
 
+Route::get('orders/discounted', [HotelController::class,'getDiscountedHotels']);
 
 
 

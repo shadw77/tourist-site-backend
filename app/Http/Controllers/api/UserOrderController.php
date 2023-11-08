@@ -69,7 +69,7 @@ class UserOrderController extends Controller
             $orders = UserOrder::where('user_id', $userId)->get();
             //return UserOrderResource::collection($orders);
         }
-        $orders = UserOrder::all();
+        // $orders = UserOrder::all();
         $orders = UserOrder::orderBy('created_at', 'desc')->paginate(2); 
         return UserOrderResource::collection($orders);
     }
@@ -167,7 +167,8 @@ class UserOrderController extends Controller
     {
 
 
-        $order = UserOrder::latest()->first();
+        $order = UserOrder::latest()->first();        
+
         $data = [
             'CustomerName' => $order->user->name,
             'NotificationOption' => 'LNK',
