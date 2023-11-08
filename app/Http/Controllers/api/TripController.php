@@ -80,7 +80,7 @@ class TripController extends Controller
 
     public function store(Request $request)
     {   
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name'=>'required',
             "government"=>'required',
             "duration"=>'required',
