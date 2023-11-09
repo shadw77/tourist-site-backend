@@ -26,7 +26,9 @@ private $headers;
     }
 
     private function buildRequest($uri,$method,$data=[]){
-        $request=new Request($method,$this->base_url . $uri,$this->headers);
+
+        $request=new Request($method,$this->base_url . $uri,$this->headers);       
+        
         if(!$data){
             return false;
         }

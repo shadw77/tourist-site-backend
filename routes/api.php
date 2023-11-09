@@ -7,6 +7,7 @@ use App\Http\Controllers\discover\discoverController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\destination\destinationController;
 use App\Http\Controllers\api\NotifyController;
+use App\Http\Controllers\api\NotifyController;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\api\RestaurantController;
@@ -24,6 +25,11 @@ use App\Http\Controllers\api\VendorHotelsController;
 use App\Http\Controllers\api\ImageController;
 use App\Http\Controllers\PasswordResetRequestController;
 use App\Http\Controllers\chagePasswordController;
+
+use App\Http\Controllers\api\user\HotelUserController;
+use App\Http\Controllers\api\user\DestinationUserController;
+use App\Http\Controllers\api\user\TripUserController;
+use App\Http\Controllers\api\user\RestaurantUserController;
 
 use App\Http\Controllers\api\user\HotelUserController;
 use App\Http\Controllers\api\user\DestinationUserController;
@@ -58,6 +64,7 @@ Route::group(['middleware'=>['api']],function(){
     Route::post('review',[discoverController::class,'store']);
     Route::post('get-review',[discoverController::class,'reviewById']);
     /*end endpoints that handled in detail component*/
+
 
 
     /*start endpoints for discover*/

@@ -3,6 +3,7 @@
 namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\Schema;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -31,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
             'Room' => 'App\Models\Room',
             'users' => 'App\Models\User',
         ]);
+        Schema::defaultStringLength(191);
         
     }
 }

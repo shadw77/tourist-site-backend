@@ -39,6 +39,10 @@ class TripController extends Controller
 
     public function index(Request $request)
     {
+        $user=Auth::guard('api')->user();
+          if($user->role==='vendor'){
+            $hotels = Trip::where('creator_id', $user->id)->paginate(3);
+          }
         $trips = Trip::with('images')->get();
          //$trips=Trip::paginate(2);
 
@@ -80,8 +84,7 @@ class TripController extends Controller
 
     public function store(Request $request)
     {
-        //return $request;
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'name'=>'required',
             "government"=>'required',
             "duration"=>'required',
