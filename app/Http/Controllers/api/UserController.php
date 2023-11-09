@@ -82,6 +82,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $user->review()->delete();
         $user->delete();
         
         return 'deleted';
