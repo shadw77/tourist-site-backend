@@ -8,7 +8,7 @@ use App\Models\RestaurantImage;
 use App\Models\User;
 use App\Models\Review;
 use App\Models\Image;
-
+use App\Models\Image\Notify;
 
 class Restaurant extends Model
 {
@@ -27,7 +27,10 @@ class Restaurant extends Model
     {
         return $this->morphMany(Image::class, 'imageable');
     }
-
+    public function timeSlot()
+    {
+        return $this->morphMany(TimeSlot::class, 'service');
+    }
     //relation Restaurant with user
     // public function user()
     // {
@@ -51,6 +54,9 @@ class Restaurant extends Model
         return $this->morphToMany(User::class, 'service', 'user_order')
             ->withTimestamps();
     }
-
+    public function notify()
+    {
+        return $this->morphMany(Notify::class, 'notifiable');
+    }
 }
 

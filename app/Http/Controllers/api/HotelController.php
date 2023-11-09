@@ -11,14 +11,37 @@ use Illuminate\Validation\Rule;
 use Ramsey\Collection\Collection;
 use App\Http\Requests\StoreHotelRequest;
 use Illuminate\Support\Facades\Storage;
-
+use Auth;
 class HotelController extends Controller
 {
+    public function searchHotelByTime(Request $request)
+    {
+        $keyword = $request->input('search_service');
+        $endDate = $request->input('endDate');
+
+        $timeSlot = $request->input('time_slot');
+
+
+        $hotels = Hotel::
+        whereHas('timeSlot', function ($query) use ($keyword, $endDate) {
+            $query->whereDate('start_date', '<=', $keyword)
+            ->whereDate('end_date', '>=', $endDate)
+            ->whereDate('end_date', '>=', $keyword)
+            ->where('available_slots', '>', 0);
+        })
+        ->get();
+    
+        
+        // dd( $hotels);        
+
+        return HotelResource::collection($hotels);
+    }
+
+
     public function searchHotels(Request $request)
     {
         $query = Hotel::query();
         $data = $request->input('search_service');        
-
         if($data){
             $query->whereRaw("name LIKE '%" .$data."%'");
         }
@@ -27,7 +50,11 @@ class HotelController extends Controller
 
     public function index()
      {    
-          $hotels=Hotel::paginate();
+          $user=Auth::guard('api')->user();
+          $hotels=Hotel::paginate(3);
+          if($user->role==='vendor'){
+            $hotels = Hotel::where('creator_id', $user->id)->paginate(3);
+          }   
           return HotelResource::collection($hotels);
     }
 
@@ -39,7 +66,7 @@ class HotelController extends Controller
      */
    public function store(Request $request)
     {
-       
+        // return $request;
         $validator = Validator::make($request->all(), [
             // 'name' => 'required|min:10',
             // 'street' => 'required',

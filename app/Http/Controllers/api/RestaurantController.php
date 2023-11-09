@@ -31,8 +31,11 @@ class RestaurantController extends Controller
 
     public function index()
     {
-        //
-        $restaurants = Restaurant::paginate(3);
+        $user=Auth::guard('api')->user();
+        if($user->role==='vendor'){
+          $hotels = Restaurant::where('creator_id', $user->id)->paginate(3);
+        } 
+              $restaurants = Restaurant::paginate(3);
                 return RestaurantResource::collection($restaurants);
     }
 

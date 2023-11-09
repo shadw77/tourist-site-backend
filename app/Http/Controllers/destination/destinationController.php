@@ -31,12 +31,16 @@ class destinationController extends Controller
         
         if ($sort == 'rating') {
             $destinations = Destination::orderBy('rating', 'desc')->get();
+            return $destinations;
+
+
         } else {
             $destinations = Destination::all();
+            return $destinations;
+
         }
-        
-        return $destinations;
     }
+
     public function searchDestinations(Request $request)
     {
         $query = Destination::query();

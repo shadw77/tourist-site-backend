@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Image;
 use App\Models\User;
 use App\Models\Review;
+use App\Models\Notify;
 
 class Trip extends Model
 {
@@ -43,6 +44,10 @@ class Trip extends Model
         return $this->morphToMany(User::class, 'service', 'user_order')
             ->withTimestamps();
     }
+    public function timeSlot()
+    {
+        return $this->morphMany(TimeSlot::class, 'service');
+    }
 
     //relation trip with vendors
     public function vendor()
@@ -50,5 +55,8 @@ class Trip extends Model
         return $this->belongsTo(User::class,"creator_id");
     }
 
-
+    public function notify()
+    {
+        return $this->morphMany(Notify::class, 'notifiable');
+    }
 }
