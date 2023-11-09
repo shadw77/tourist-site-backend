@@ -121,13 +121,40 @@ class UserOrderController extends Controller
         return new UserOrderResource($user->orders);
 
     }
+
    
     public function show(Request $request, $id)
     {
         $order = UserOrder::find($id);
         return new UserOrderResource($order);
     }
+    
+    public function showOrderDetails($id)
+{ 
+    $order = UserOrder::find($id);
 
+    switch ($order->service_type) {
+        case 'Trip':
+            $serviceDetails = Trip::find($order->service_id);
+            break;
+        case 'Hotel':
+            $serviceDetails = Hotel::find($order->service_id);
+            break;
+        case 'Destination':
+            $serviceDetails = Destination::find($order->service_id);
+            break;
+        case 'Restaurant':
+            $serviceDetails = Restaurant::find($order->service_id);
+            break;
+        default:
+            $serviceDetails = null; 
+            break;
+    }
+    return response()->json([
+        'order' => $order,
+        'service_details' => $serviceDetails,
+    ]);
+}
 
 
     public function update(Request $request, $id)

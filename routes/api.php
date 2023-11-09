@@ -43,7 +43,6 @@ use App\Http\Controllers\api\user\RestaurantUserController;
 
 Route::group(['middleware'=>['api']],function(){
 
-    /*start endpoints for authentication*/
     Route::post('register',[Controller::class,'register']);
     Route::post('login',[Controller::class,'login']);
     Route::post('sendPasswordResetLink',[PasswordResetRequestController::class,'sendPasswordResetEmail']);
@@ -52,6 +51,7 @@ Route::group(['middleware'=>['api']],function(){
     Route::get('auth/callback', [Controller::class,'githubredirect']);//for github login
     Route::get('google/auth/redirect', [Controller::class,'googleLogin']);//for google login
     Route::get('google/auth/callback', [Controller::class,'googleredirect']);//for google login
+
     /*end endpoints for authentication*/
 
     /*start endpoints that handled in detail component*/
@@ -59,16 +59,12 @@ Route::group(['middleware'=>['api']],function(){
     Route::post('get-review',[discoverController::class,'reviewById']);
     /*end endpoints that handled in detail component*/
 
-
-    /*start endpoints for discover*/
     Route::get('get-nearbyplaces/{city}',[discoverController::class,'index']);
     Route::get('get-review-nearbyplaces/{city}',[discoverController::class,'getReviewNearByPlaces']);
     Route::get('get-topattractions-places',[discoverController::class,'getTopAttractions']);
     Route::get('get-review-topattractions-places',[discoverController::class,'getReviewTopAttractions']);
     Route::get('get-offers-places',[discoverController::class,'getOffers']);
     Route::get('get-review-offers-places',[discoverController::class,'getReviewOffers']);
-    /*end endpoints for discover*/
-
 
     Route::get('/notifications/{id}', [UserOrderController::class, 'getNotifications']);
     Route::get('user-trips',  [TripUserController::class,'index']);
@@ -85,11 +81,9 @@ Route::group(['middleware'=>['api']],function(){
     Route::get('/searchHotel', [HotelController::class, 'searchHotels']);
     Route::post('/create-time-slot/{serviceType}/{serviceId}', [TimeSlotController::class,'createTimeSlot']);
     Route::get('/searchHotelByTime', [HotelController::class,'searchHotelByTime']);
-    Route::apiResource('users', UserController::class);
+
     Route::get('images',  [ImageController::class,'index']);
     Route::get('images/{image}',  [ImageController::class,'show']);
-
-
 
 
     /*start endpoints that user  should be logged and send jwt token to access any of them*/
@@ -100,12 +94,11 @@ Route::group(['middleware'=>['api']],function(){
         Route::post('/checkout', [UserOrderController::class,'checkout']);
         Route::apiResource('orders', UserOrderController::class);
 
-
-        /*start endpoint that deal with payment gateway*/
         Route::get('orders/payment', [UserOrderController::class,'confirm_order']);
         Route::get('callback', [UserOrderController::class, 'paymentCallBack']);
         Route::get('error', function () {
             return view('payment.failed');
+
         });
         /*end endpoint that deal with payment gateway*/
 
@@ -150,6 +143,10 @@ Route::group(['middleware'=>['api']],function(){
             Route::post('images', [ImageController::class,'store']);
             Route::post('images/{image}', [ImageController::class,'updateImage']);
             Route::delete('images/{image}',  [ImageController::class,'destroy']);
+          
+           Route::apiResource('users', UserController::class);
+          Route::apiResource('orders', UserOrderController::class);
+         Route::get('ordersdetails/{order}', [UserOrderController::class,'showOrderDetails']);
 
         });
         /*end endpoints that admin or vendor can access*/
@@ -158,3 +155,4 @@ Route::group(['middleware'=>['api']],function(){
 
 
 });
+

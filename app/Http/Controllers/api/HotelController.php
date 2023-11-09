@@ -161,7 +161,9 @@ class HotelController extends Controller
 
 
     public function destroy(Hotel $hotel)
-    {
+    {     
+        $hotel->images()->delete();
+        $hotel->reviews()->delete();
          $hotel->delete();
          return response("Deleted", 204);
     }

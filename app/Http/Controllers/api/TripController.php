@@ -206,7 +206,10 @@ class TripController extends Controller
     public function destroy(Trip $trip)
     {
         //
+        $trip->images()->delete();
+        $trip->reviews()->delete();
         $trip->delete();
         return 'deleted';
     }
 }
+       
