@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Ramsey\Collection\Collection;
-
 class DestinationController extends Controller
 {
     public function searchDestinations(Request $request)
@@ -26,7 +25,7 @@ class DestinationController extends Controller
     }
     public function index()
     {
-        $destinations = Destination::with('images')->get();
+        $destinations = Destination::with('images')->paginate(3);
         return $destinations;
     }
 
