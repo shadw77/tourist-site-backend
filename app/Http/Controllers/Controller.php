@@ -111,10 +111,13 @@ class Controller extends BaseController
     public function logout(Request $request)
     {
          $token = $request -> header('Authorization');//get token from header request
+         //return $token;
          if($token){
             try {
-                JWTAuth::setToken($token)->invalidate(); //make token destroy and logout
+                JWTAuth::invalidate(JWTAuth::getToken());
                 return $this->returnSuccessMessage('Logged out successfully',200);
+
+                //JWTAuth::setToken($token)->invalidate(); //make token destroy and logout
             }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
                 return  $this -> returnError($e->getMessage(), 400);
             }
@@ -194,7 +197,7 @@ class Controller extends BaseController
 
     /*start testing function*/
     public function testdata(Request $request){
-        return $request->header("authorization");
+        //return $request->header("authorization");
         //return $request;
         $users=User::get();
         return $this->returnData('users', $users,'All Users in database');

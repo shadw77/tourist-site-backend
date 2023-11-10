@@ -96,13 +96,15 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+      
         'trip_uploads'=> [
             'driver' => 'local',
-            'root' => public_path('images/trips_images'),
+            'root' => public_path('images/trip_images'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
         ],
+
     ],
 
     /*

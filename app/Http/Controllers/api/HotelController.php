@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 use Ramsey\Collection\Collection;
 use App\Http\Requests\StoreHotelRequest;
 use Illuminate\Support\Facades\Storage;
-
+use Auth;
 class HotelController extends Controller
 {
     public function searchHotelByTime(Request $request)
@@ -30,9 +30,9 @@ class HotelController extends Controller
             ->where('available_slots', '>', 0);
         })
         ->get();
-    
-        
-        // dd( $hotels);        
+
+
+        // dd( $hotels);
 
         return HotelResource::collection($hotels);
     }
@@ -41,8 +41,7 @@ class HotelController extends Controller
     public function searchHotels(Request $request)
     {
         $query = Hotel::query();
-        $data = $request->input('search_service');        
-
+        $data = $request->input('search_service');
         if($data){
             $query->whereRaw("name LIKE '%" .$data."%'");
         }
@@ -50,8 +49,13 @@ class HotelController extends Controller
     }
 
     public function index()
-     {    
-          $hotels=Hotel::paginate();
+     {
+
+          $user=Auth::guard('api')->user();
+          $hotels=Hotel::paginate(3);
+          if($user->role==='vendor'){
+            $hotels = Hotel::where('creator_id', $user->id)->paginate(3);
+          }
           return HotelResource::collection($hotels);
     }
 
@@ -63,14 +67,14 @@ class HotelController extends Controller
      */
    public function store(Request $request)
     {
-       
+        // return $request;
         $validator = Validator::make($request->all(), [
             // 'name' => 'required|min:10',
             // 'street' => 'required',
             // 'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             // 'images.*' => 'required|image|mimes:jpeg,png,jpg|max:20'
         ]);
-    
+
         if ($validator->fails()) {
             return response($validator->errors()->all(), 422);
         }
@@ -83,20 +87,20 @@ class HotelController extends Controller
             $hotel->thumbnail = $imageName;
             $hotel->save();
         }
-         
+
         if ($request->hasFile('images')) {
             $uploadedImages = $request->file('images');
             foreach ($uploadedImages as $uploadedImage) {
                 $originalFilename = $uploadedImage->getClientOriginalName();
                 $imageName = time() . '_' . $originalFilename;
                 $path = $uploadedImage->storeAs('images', $imageName, 'hotel_uploads');
-                 
+
                 $image = new Image(['image' => $imageName]);
-                
+
                 $hotel->images()->save($image);
             }
         }
-       
+
        return (new HotelResource($hotel))->response()->setStatusCode(201);
     }
 
@@ -120,14 +124,14 @@ class HotelController extends Controller
 
     public function update(Request $request, Hotel $hotel)
     {
-        
+
         $validator = Validator::make($request->all(), [
             // 'name' => 'required|min:10',
             // 'street' => 'required',
             // 'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             // 'images.*' => 'required|image|mimes:jpeg,png,jpg|max:20'
         ]);
-    
+
         if ($validator->fails()) {
             return response($validator->errors()->all(), 422);
         }
@@ -139,26 +143,28 @@ class HotelController extends Controller
             $thumbnail = $image->storeAs('thumbnails', $imageName, 'hotel_uploads');
             $hotel->thumbnail = $imageName;
         }
-         
+
         if ($request->hasFile('images')) {
             $uploadedImages = $request->file('images');
             foreach ($uploadedImages as $uploadedImage) {
                 $originalFilename = $uploadedImage->getClientOriginalName();
                 $imageName = time() . '_' . $originalFilename;
                 $path = $uploadedImage->storeAs('images', $imageName, 'hotel_uploads');
-    
+
                  $image = new Image(['image' => $imageName]);
                 $hotel->images()->save($image);
             }
         }
         $hotel->save();
-        
+
         return (new HotelResource($hotel))->response()->setStatusCode(200);
     }
 
 
     public function destroy(Hotel $hotel)
     {
+        $hotel->images()->delete();
+        $hotel->reviews()->delete();
          $hotel->delete();
          return response("Deleted", 204);
     }

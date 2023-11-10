@@ -20,12 +20,11 @@ class UserOrderResource extends JsonResource
             "service_id"=>$this->service_id,
             "service_type"=>$this->service_type,
             "amount"=>$this->amount,
-            "service_name" => $this->service->name,
-            "discount" => $this->service->discount,
-            "quantity"=>$this->quantity,
-            "service_thumbnail" => $this->service->thumbnail,
             "created_at"=>$this->created_at,
-
+            "service_name" => optional($this->service)->name,
+            "discount" => optional($this->service)->discount,
+            "quantity"=>$this->quantity,
+            "service_thumbnail" => optional($this->service)->thumbnail, 
           
         ];
         // return parent::toArray($request);

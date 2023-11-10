@@ -19,7 +19,7 @@ class VendorHotelsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {       
             $hotels=Hotel::all();
             return HotelResource::collection($hotels);
       }
