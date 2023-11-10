@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Ramsey\Collection\Collection;
+use Illuminate\Support\Facades\Auth;
 class TripController extends Controller
 {
 
@@ -40,10 +41,11 @@ class TripController extends Controller
     public function index(Request $request)
     {
         $user=Auth::guard('api')->user();
+        $trips = Trip::with('images')->paginate(3);
           if($user->role==='vendor'){
-            $hotels = Trip::where('creator_id', $user->id)->paginate(3);
+            $trips = Trip::where('creator_id', $user->id)->paginate(3);
           }
-        $trips = Trip::with('images')->get();
+      
          //$trips=Trip::paginate(2);
 
        return TripResource::collection($trips);

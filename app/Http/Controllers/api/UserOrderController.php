@@ -99,6 +99,7 @@ class UserOrderController extends Controller
         elseif($request->get('service_type') == 'Trip'){
              $trip = Trip::find($request->get('service_id'));
              $order->service_id = $trip->id;
+             $order->amount=$request->get('amount');
              $order->service()->associate($trip);
              $user->orders()->save($order);  
              event(new EventOrder($order,$user,$trip));  
@@ -106,6 +107,7 @@ class UserOrderController extends Controller
         elseif($request->get('service_type') == 'Destination'){
             $destination = Destination::find($request->get('service_id'));
             $order->service_id = $destination->id;
+            $order->amount=$request->get('amount');
             $order->service()->associate($destination);
             $user->orders()->save($order);  
         }
