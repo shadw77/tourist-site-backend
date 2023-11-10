@@ -89,37 +89,37 @@ class UserOrderController extends Controller
          $order = new UserOrder();
         if($request->get('service_type') == "Hotel"){
              $hotel = Hotel::find($request->get('service_id'));
-            $order->service_id = $hotel->id;
-            $order->amount=$request->get('amount');
+             $order->service_id = $hotel->id;
+             $order->amount=$request->get('amount');
              $order->service()->associate($hotel);
             $user->orders()->save($order);
             event(new EventOrder($order,$user,$hotel));
         }
 
-        elseif($request->get('service_type') == 'Trip'){
+        else if($request->get('service_type') === 'Trip'){
              $trip = Trip::find($request->get('service_id'));
+             dd($trip->id);
              $order->service_id = $trip->id;
              $order->amount=$request->get('amount');
              $order->service()->associate($trip);
              $user->orders()->save($order);  
              event(new EventOrder($order,$user,$trip));  
         }
-        elseif($request->get('service_type') == 'Destination'){
+        else if($request->get('service_type') == 'Destination'){
             $destination = Destination::find($request->get('service_id'));
             $order->service_id = $destination->id;
             $order->amount=$request->get('amount');
             $order->service()->associate($destination);
             $user->orders()->save($order);  
         }
-        elseif($request->get('service_type') == 'Restaurent'){
+        else if($request->get('service_type') == 'Restaurent'){
             $restaurant = Restaurant::find($request->get('service_id'));
             $order->service_id = $restaurant->id;
             $order->service()->associate($restaurant);
             $user->orders()->save($order);  
             event(new EventOrder($order,$user,$restaurant));      
            }
-          
-        return $order;
+          return $order;
         return new UserOrderResource($user->orders);
 
     }

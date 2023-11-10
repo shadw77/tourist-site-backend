@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Ramsey\Collection\Collection;
 use Illuminate\Support\Facades\Auth;
+use Auth;
 class TripController extends Controller
 {
 
@@ -57,33 +58,6 @@ class TripController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(Request $request)
-    // {
-    //     $file = $request->file("thumbnail");
-    //     if($request->hasFile('thumbnail')){
-    //         $originalName = $file->getClientOriginalName();
-    //         $filenameonly= pathinfo($originalName,PATHINFO_FILENAME);
-    //         $extenshion = $file->getClientOriginalExtension();
-    //         $compic = str_replace('','_',$filenameonly).'-'.rand().'_'.time().'.'.$extenshion;
-    //         $path = $file->storeAs('public/images/trips',$compic);
-    //         // Storage::disk('google')->put('GP Images', $file);
-    //         $path = Storage::disk('google')->putFile('images/trips', $file, 'public');
-    //     $request->validate([
-    //         'name'=>'required',
-    //         "government"=>'required',
-    //         "duration"=>'required',
-    //         "cost"=>'required',
-    //         "description"=>'required',
-    //         "rating"=>'required',
-    //         "thumbnail"=>'required',
-    //         "creator_id"=>'required',
-    //     ]);
-    //     $trip = Trip::create($request->all());
-    //     $trip->thumbnail=$compic;
-    //     $trip->save();
-    //     return new TripResource($trip);
-    // }}
-
     public function store(Request $request)
     {
 
