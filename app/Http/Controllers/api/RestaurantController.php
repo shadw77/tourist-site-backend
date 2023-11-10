@@ -166,6 +166,8 @@ class RestaurantController extends Controller
      */
     public function destroy(Restaurant $restaurant)
     {
+        $restaurant->images()->delete();
+        $restaurant->reviews()->delete();
            $restaurant->delete();
           return response()->json(['message' => 'Restaurant deleted successfully'], 204);
       

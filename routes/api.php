@@ -52,6 +52,7 @@ Route::group(['middleware'=>['api']],function(){
     Route::get('auth/callback', [Controller::class,'githubredirect']);//for github login
     Route::get('google/auth/redirect', [Controller::class,'googleLogin']);//for google login
     Route::get('google/auth/callback', [Controller::class,'googleredirect']);//for google login
+
     // /end endpoints for authentication/
 
     // /start endpoints that handled in detail component/
@@ -61,14 +62,24 @@ Route::group(['middleware'=>['api']],function(){
 
 
     // /start endpoints for discover/
+
+
+    /*end endpoints for authentication*/
+
+    /*start endpoints that handled in detail component*/
+    Route::post('review',[discoverController::class,'store']);
+    Route::post('get-review',[discoverController::class,'reviewById']);
+    /*end endpoints that handled in detail component*/
+
+
     Route::get('get-nearbyplaces/{city}',[discoverController::class,'index']);
     Route::get('get-review-nearbyplaces/{city}',[discoverController::class,'getReviewNearByPlaces']);
     Route::get('get-topattractions-places',[discoverController::class,'getTopAttractions']);
     Route::get('get-review-topattractions-places',[discoverController::class,'getReviewTopAttractions']);
     Route::get('get-offers-places',[discoverController::class,'getOffers']);
     Route::get('get-review-offers-places',[discoverController::class,'getReviewOffers']);
-    // /end endpoints for discover/
 
+    // /end endpoints for discover/
 
     Route::get('/notifications/{id}', [UserOrderController::class, 'getNotifications']);
     Route::get('user-trips',  [TripUserController::class,'index']);
@@ -85,12 +96,14 @@ Route::group(['middleware'=>['api']],function(){
     Route::get('/searchHotel', [HotelController::class, 'searchHotels']);
     Route::post('/create-time-slot/{serviceType}/{serviceId}', [TimeSlotController::class,'createTimeSlot']);
     Route::get('/searchHotelByTime', [HotelController::class,'searchHotelByTime']);
+
     Route::apiResource('users', UserController::class);
     Route::get('images',  [ImageController::class,'index']);
     Route::get('images/{image}',  [ImageController::class,'show']);
 
 
-
+    Route::get('images',  [ImageController::class,'index']);
+    Route::get('images/{image}',  [ImageController::class,'show']);
 
     // /start endpoints that user  should be logged and send jwt token to access any of them/
      Route::group([ 'middleware'=>['jwt.verify']],function(){
@@ -99,7 +112,6 @@ Route::group(['middleware'=>['api']],function(){
         Route::get('logout',[Controller::class,'logout']);      //function that logout
         Route::post('/checkout', [UserOrderController::class,'checkout']);
         Route::apiResource('orders', UserOrderController::class);
-
 
         // /start endpoint that deal with payment gateway/
         Route::get('orders/payment', [UserOrderController::class,'confirm_order']);
@@ -156,5 +168,66 @@ Route::group(['middleware'=>['api']],function(){
     });
     // /end endpoints that user  should be logged and send jwt token to access any of them/
 
+        Route::get('orders/payment', [UserOrderController::class,'confirm_order']);
+        Route::get('callback', [UserOrderController::class, 'paymentCallBack']);
+        Route::get('error', function () {
+            return view('payment.failed');
+
+        });
+        /*end endpoint that deal with payment gateway*/
+
+
+        /*start endpoints that can only admin access*/
+        Route::group(['middleware'=>['admin-access'] ],function(){
+
+        });
+        /*end endpoints that can only admin access*/
+
+        /*start endpoints that admin or vendor can access*/
+        Route::group(['middleware'=>['admin-vendor-access'] ],function(){
+
+            Route::get('hotels/discounted', [HotelController::class,'getDiscountedHotels']);
+            Route::get('trips/discounted',  [TripController::class,'getDiscountedTrips']);
+            Route::get('restaurants/discounted',  [RestaurantController::class,'getDiscountedRestaurant']);
+
+            Route::get('destinations',[destinationController::class,'index']);
+            Route::get('destinations/{id}',[destinationController::class,'show']);
+            Route::delete('destinations/{destination}',[destinationController::class,'destroy']);
+            Route::post('destinations',[destinationController::class,'store']);
+            Route::post('destinations/{destination}',[destinationController::class,'update']);
+
+            Route::get('trips',  [TripController::class,'index']);
+            Route::post('trips', [TripController::class,'store']);
+            Route::get('trips/{trip}',  [TripController::class,'show']);
+            Route::post('trips/{trip}', [TripController::class,'update']);
+            Route::delete('trips/{trip}',  [TripController::class,'destroy']);
+
+            Route::get('restaurants',  [RestaurantController::class,'index']);
+            Route::get('restaurants/{restaurant}',  [RestaurantController::class,'show']);
+            Route::post('restaurants', [RestaurantController::class,'store']);
+            Route::post('restaurants/{restaurant}', [RestaurantController::class,'update']);
+            Route::delete('restaurants/{restaurant}',  [RestaurantController::class,'destroy']);
+
+            Route::get('hotels',  [HotelController::class,'index']);
+            Route::post('hotels', [HotelController::class,'store']);
+            Route::get('hotels/{hotel}',  [HotelController::class,'show']);
+            Route::post('hotels/{hotel}', [HotelController::class,'update']);
+            Route::delete('hotels/{hotel}',  [HotelController::class,'destroy']);
+
+            Route::post('images', [ImageController::class,'store']);
+            Route::post('images/{image}', [ImageController::class,'updateImage']);
+            Route::delete('images/{image}',  [ImageController::class,'destroy']);
+          
+           Route::apiResource('users', UserController::class);
+          Route::apiResource('orders', UserOrderController::class);
+         Route::get('ordersdetails/{order}', [UserOrderController::class,'showOrderDetails']);
+
+        });
+        /*end endpoints that admin or vendor can access*/
+    });
+    /*end endpoints that user  should be logged and send jwt token to access any of them*/
+
+
+});
 
 });
