@@ -25,6 +25,8 @@ class VerifyToken
 
             $token = $request->header('Authorization');
 
+           // return $token;
+
             if (!$token) {
                 return  $this -> returnError('Token not provided From MiddleWare','401');
             }

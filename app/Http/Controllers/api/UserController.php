@@ -15,7 +15,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {  
         $users = User::all();
         return UserResource::collection($users);
     }
@@ -82,6 +82,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $user->review()->delete();
         $user->delete();
         
         return 'deleted';
