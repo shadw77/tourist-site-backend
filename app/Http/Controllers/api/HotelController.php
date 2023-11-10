@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 use Ramsey\Collection\Collection;
 use App\Http\Requests\StoreHotelRequest;
 use Illuminate\Support\Facades\Storage;
-
+use Auth;
 class HotelController extends Controller
 {
     public function searchHotelByTime(Request $request)
@@ -42,7 +42,6 @@ class HotelController extends Controller
     {
         $query = Hotel::query();
         $data = $request->input('search_service');        
-
         if($data){
             $query->whereRaw("name LIKE '%" .$data."%'");
         }
@@ -51,7 +50,11 @@ class HotelController extends Controller
 
     public function index()
      {    
-          $hotels=Hotel::paginate();
+          $user=Auth::guard('api')->user();
+          $hotels=Hotel::paginate(3);
+          if($user->role==='vendor'){
+            $hotels = Hotel::where('creator_id', $user->id)->paginate(3);
+          }   
           return HotelResource::collection($hotels);
     }
 
@@ -63,7 +66,7 @@ class HotelController extends Controller
      */
    public function store(Request $request)
     {
-       
+        // return $request;
         $validator = Validator::make($request->all(), [
             // 'name' => 'required|min:10',
             // 'street' => 'required',
@@ -158,7 +161,9 @@ class HotelController extends Controller
 
 
     public function destroy(Hotel $hotel)
-    {
+    {     
+        $hotel->images()->delete();
+        $hotel->reviews()->delete();
          $hotel->delete();
          return response("Deleted", 204);
     }

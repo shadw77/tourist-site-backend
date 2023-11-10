@@ -185,6 +185,7 @@ class destinationController extends Controller
     public function destroy(Destination $destination)
     {
         $destination->images()->delete();
+        $destination->reviews()->delete();
         $destination->delete();
         return $this->returnSuccessMessage('destination deleted successfully',201);
     }

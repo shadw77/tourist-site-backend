@@ -27,7 +27,6 @@ class DestinationController extends Controller
     public function index()
     {
         $destinations = Destination::with('images')->get();
-
         return $destinations;
     }
 
