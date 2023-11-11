@@ -62,13 +62,12 @@ Route::group(['middleware'=>['api']],function(){
 
     // /start endpoints for discover/
 
+    // /end endpoints for authentication/
 
-    /*end endpoints for authentication*/
-
-    /*start endpoints that handled in detail component*/
+    // /start endpoints that handled in detail component/
     Route::post('review',[discoverController::class,'store']);
     Route::post('get-review',[discoverController::class,'reviewById']);
-    /*end endpoints that handled in detail component*/
+    // /end endpoints that handled in detail component/
 
 
     Route::get('get-nearbyplaces/{city}',[discoverController::class,'index']);
@@ -95,6 +94,9 @@ Route::group(['middleware'=>['api']],function(){
     Route::get('/searchHotel', [HotelController::class, 'searchHotels']);
     Route::post('/create-time-slot/{serviceType}/{serviceId}', [TimeSlotController::class,'createTimeSlot']);
     Route::get('/searchHotelByTime', [HotelController::class,'searchHotelByTime']);
+    Route::get('/searchTripByTime', [TripController::class,'searchTripByTime']);
+    Route::get('/searchRestaurantByTime', [RestaurantController::class,'searchRestaurantByTime']);
+
 
     Route::apiResource('users', UserController::class);
     Route::get('images',  [ImageController::class,'index']);
@@ -120,15 +122,15 @@ Route::group(['middleware'=>['api']],function(){
         });
         // /end endpoint that deal with payment gateway/
 
-        /*start endpoints that can only admin access*/
+        // /start endpoints that can only admin access/
         Route::group(['middleware'=>['admin-access'] ],function(){
-            Route::apiResource('transaction', TransactionController::class);
+
         });
-        /*end endpoints that can only admin access*/
+        // /end endpoints that can only admin access/
 
-        /*start endpoints that admin or vendor can access*/
+        // /start endpoints that admin or vendor can access/
         Route::group(['middleware'=>['admin-vendor-access'] ],function(){
-
+            Route::apiResource('transaction', TransactionController::class);
             Route::get('hotels/discounted', [HotelController::class,'getDiscountedHotels']);
             Route::get('trips/discounted',  [TripController::class,'getDiscountedTrips']);
             Route::get('restaurants/discounted',  [RestaurantController::class,'getDiscountedRestaurant']);
@@ -161,10 +163,13 @@ Route::group(['middleware'=>['api']],function(){
             Route::delete('images/{image}',  [ImageController::class,'destroy']);
 
            Route::apiResource('users', UserController::class);
+        //   Route::apiResource('orders', UserOrderController::class);
          Route::get('ordersdetails/{order}', [UserOrderController::class,'showOrderDetails']);
+         Route::get('service-user', [UserOrderController::class,'userService']);
+         Route::get('vendor-orders', [UserOrderController::class,'allIndex']);
 
         });
-        /*end endpoints that admin or vendor can access*/
+        // /end endpoints that admin or vendor can access/
     });
     Route::apiResource('orders', UserOrderController::class);
 
@@ -174,8 +179,7 @@ Route::group(['middleware'=>['api']],function(){
         return view('payment.failed');
 
     });
-    /*end endpoints that user  should be logged and send jwt token to access any of them*/
+    // /end endpoints that user  should be logged and send jwt token to access any of them/
 
 
 });
-

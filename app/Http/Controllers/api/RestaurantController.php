@@ -18,6 +18,23 @@ use App\Models\Review;
 use Illuminate\Support\Facades\Storage;
 class RestaurantController extends Controller
 {
+    public function searchRestaurantByTime(Request $request)
+    {
+        $keyword = $request->input('search_service');
+        $endDate = $request->input('endDate');
+        $timeSlot = $request->input('time_slot');
+
+        $restaurants = Restaurant::
+        whereHas('timeSlot', function ($query) use ($keyword, $endDate) {
+            $query->whereDate('start_date', '<=', $keyword)
+            ->whereDate('end_date', '>=', $endDate)
+            ->whereDate('end_date', '>=', $keyword)
+            ->where('available_slots', '>', 0);
+        })
+        ->get();
+        return RestaurantResource::collection($restaurants);
+    }
+
     public function searchRestaurants(Request $request)
     {
         $query = Restaurant::query();
@@ -103,6 +120,10 @@ class RestaurantController extends Controller
         $restaurant = Restaurant::whereNotNull('discount')
                      ->orWhere('discount', '>', 0)
                      ->get();
+                     $user=Auth::guard('api')->user();
+                     if($user->role==="vendor"){
+                        $restaurant = $restaurant->where('creator_id',$user->id);
+                    }
         return response()->json($restaurant);
     }
     /**
