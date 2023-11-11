@@ -76,10 +76,42 @@ class UserOrderController extends Controller
 
         return response()->json(['message' => 'Order placed successfully'], 200);
     }
+    public function userService(){
+        $user = Auth::guard('api')->user();
+        $hotels = Hotel::query()->get()->toArray();
+        $trips = Trip::query()->get()->toArray();
+        $restaurants = Restaurant::query()->get()->toArray();
+    
+        if ($user->role === "vendor") {
+            $hotels = Hotel::query()->where('creator_id', $user->id)->get()->toArray();
+            $trips = Trip::query()->where('creator_id', $user->id)->get()->toArray();
+            $restaurants = Restaurant::query()->where('creator_id', $user->id)->get()->toArray();
+        }
+        // Add type property to each item
+        foreach ($hotels as &$hotel) {
+            $hotel['type'] = "Hotel";
+        }
+    
+        foreach ($trips as &$trip) {
+            $trip['type'] = "Trip";
+        }
+    
+        foreach ($restaurants as &$restaurant) {
+            $restaurant['type'] = "Restaurant";
+        }
+    
+        // Merge the collections
+       // Combine arrays into one
+    $combinedArray = array_merge($hotels, $trips, $restaurants);
 
+    // Return or use the combined array as needed
+    return $combinedArray;
+    }
+    
     public function index(Request $request)
 
     {
+         
         if($request->query('userId')){
             $userId = $request->query('userId');
             $orders = UserOrder::where('user_id', $userId)->get();
@@ -90,7 +122,17 @@ class UserOrderController extends Controller
         $orders = UserOrder::orderBy('created_at', 'desc')->paginate(2); 
         return UserOrderResource::collection($orders);
     }
-
+   public function allIndex(){
+    $user = Auth::guard('api')->user();
+    $user_id= $user->id;
+    // $hotels = Hotel::query()->get()->toArray();
+    // $trips = Trip::query()->get()->toArray();
+    // $restaurants = Restaurant::query()->get()->toArray();
+    $orders = UserOrder::whereHasMorph('service', [Restaurant::class, Trip::class, Hotel::class], function ($query) use ($user_id) {
+        $query->where('creator_id', $user_id);
+    })->get(); 
+    return $orders;
+   }
 
 
     public function store(Request $request)
@@ -114,7 +156,6 @@ class UserOrderController extends Controller
 
         else if($request->get('service_type') === 'Trip'){
              $trip = Trip::find($request->get('service_id'));
-             dd($trip->id);
              $order->service_id = $trip->id;
              $order->amount=$request->get('amount');
              $order->service()->associate($trip);
@@ -186,6 +227,7 @@ class UserOrderController extends Controller
     {
         $order = UserOrder::find($id);
         $order->delete();
+
         return response()->json(['message' => 'Order deleted successfully']);
     }
 
@@ -209,7 +251,9 @@ class UserOrderController extends Controller
         $info = $this->fatoorahServices->sendPayment($data);
         Transaction::create([
             'user_id' => $order->user->id,
-            'invoiceid' => $info['Data']['InvoiceId']
+            'invoiceid' => $info['Data']['InvoiceId'],
+            'creator_id' => $order->service->creator_id
+
         ]);
 
         return redirect($info['Data']['InvoiceURL']);

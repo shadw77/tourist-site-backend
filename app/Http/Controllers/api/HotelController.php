@@ -104,10 +104,15 @@ class HotelController extends Controller
     }
 
     public function getDiscountedHotels()
-    {
-    $hotels = Hotel::whereNotNull('discount')
+    {   
+        $hotels = Hotel::whereNotNull('discount')
                  ->orWhere('discount', '>', 0)
                  ->get();
+        $user=Auth::guard('api')->user();
+        if($user->role==="vendor"){
+            $hotels = $hotels->where('creator_id',$user->id);
+        }
+          
          return response()->json($hotels);
      }
     /**

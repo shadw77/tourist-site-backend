@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Ramsey\Collection\Collection;
 use Illuminate\Support\Facades\Auth;
-use Auth;
 class TripController extends Controller
 {
 
@@ -38,6 +37,11 @@ class TripController extends Controller
         $trips = Trip::whereNotNull('discount')
                      ->orWhere('discount', '>', 0)
                      ->get();
+                     
+                     $user=Auth::guard('api')->user();
+                     if($user->role==="vendor"){
+                        $trips = $trips->where('creator_id',$user->id);
+                    }
         return response()->json($trips);
     }
     /**

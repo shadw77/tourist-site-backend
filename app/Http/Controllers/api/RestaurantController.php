@@ -120,6 +120,10 @@ class RestaurantController extends Controller
         $restaurant = Restaurant::whereNotNull('discount')
                      ->orWhere('discount', '>', 0)
                      ->get();
+                     $user=Auth::guard('api')->user();
+                     if($user->role==="vendor"){
+                        $restaurant = $restaurant->where('creator_id',$user->id);
+                    }
         return response()->json($restaurant);
     }
     /**
