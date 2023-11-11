@@ -61,8 +61,8 @@ class UserOrderController extends Controller
 
             $my_timeSlot =  $cartItem['time_slot'];
 
-            if ($timeSlot) {
-                if($my_timeSlot){
+            if ($timeSlot && $timeSlot->available_slots>0) {
+                if($my_timeSlot ){
                     $timeSlot->available_slots -= intval($my_timeSlot);}
                 else{
                     $timeSlot->available_slots -=1;
