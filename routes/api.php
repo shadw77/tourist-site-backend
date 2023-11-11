@@ -81,6 +81,9 @@ Route::group(['middleware'=>['api']],function(){
     Route::get('/searchHotel', [HotelController::class, 'searchHotels']);
     Route::post('/create-time-slot/{serviceType}/{serviceId}', [TimeSlotController::class,'createTimeSlot']);
     Route::get('/searchHotelByTime', [HotelController::class,'searchHotelByTime']);
+    Route::get('/searchTripByTime', [TripController::class,'searchTripByTime']);
+    Route::get('/searchRestaurantByTime', [RestaurantController::class,'searchRestaurantByTime']);
+
 
     Route::get('images',  [ImageController::class,'index']);
     Route::get('images/{image}',  [ImageController::class,'show']);
@@ -90,7 +93,7 @@ Route::group(['middleware'=>['api']],function(){
      Route::group([ 'middleware'=>['jwt.verify']],function(){
 
         Route::get("get-test-data",[Controller::class,'testdata']);//for test
-        Route::get('logout',[Controller::class,'logout']);      //function that logout
+        Route::post('logout',[Controller::class,'logout']);      //function that logout
         Route::post('/checkout', [UserOrderController::class,'checkout']);
         Route::apiResource('orders', UserOrderController::class);
 
@@ -145,7 +148,7 @@ Route::group(['middleware'=>['api']],function(){
             Route::delete('images/{image}',  [ImageController::class,'destroy']);
           
            Route::apiResource('users', UserController::class);
-          Route::apiResource('orders', UserOrderController::class);
+        //   Route::apiResource('orders', UserOrderController::class);
          Route::get('ordersdetails/{order}', [UserOrderController::class,'showOrderDetails']);
 
         });

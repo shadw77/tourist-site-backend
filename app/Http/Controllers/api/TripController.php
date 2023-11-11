@@ -13,6 +13,24 @@ use Ramsey\Collection\Collection;
 class TripController extends Controller
 {
 
+
+    public function searchTripByTime(Request $request)
+    {
+        $keyword = $request->input('search_service');
+        $endDate = $request->input('endDate');
+        $timeSlot = $request->input('time_slot');
+
+        $trips = Trip::
+        whereHas('timeSlot', function ($query) use ($keyword, $endDate) {
+            $query->whereDate('start_date', '<=', $keyword)
+            ->whereDate('end_date', '>=', $endDate)
+            ->whereDate('end_date', '>=', $keyword)
+            ->where('available_slots', '>', 0);
+        })
+        ->get();
+        return TripResource::collection($trips);
+    }
+
     public function getDiscountedTrips()
     {
         $trips = Trip::whereNotNull('discount')
