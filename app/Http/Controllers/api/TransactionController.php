@@ -19,8 +19,13 @@ class TransactionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {     
         $transactions = Transaction::with('user')->get();
+        $user = Auth::guard('api')->user();
+        if($user->role==="vendor"){
+            $transactions =$transactions->where('creator_id', $user->id);
+        }
+      
         return TransactionResource::collection($transactions);
     }
 
