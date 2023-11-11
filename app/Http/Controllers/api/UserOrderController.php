@@ -10,6 +10,7 @@ use App\Models\Trip;
 use App\Models\Hotel;
 use App\Models\Restaurant;
 use App\Models\Destination;
+use App\Models\TimeSlot;
 use App\Http\Resources\UserOrderResource;
 use App\Notifications\OrderNotification;
 use Illuminate\Support\Facades\Notification;
@@ -54,8 +55,23 @@ class UserOrderController extends Controller
 
             $user->orders()->save($order);
 
-            // Log::info('My Cart: ' . $cartItem['quantity']);
-        }
+            $timeSlot = TimeSlot::where('service_id', $service_id)
+            ->where('service_type', $service_type)
+            ->first();
+
+            $my_timeSlot =  $cartItem['time_slot'];
+
+            if ($timeSlot && $timeSlot->available_slots>0) {
+                if($my_timeSlot ){
+                    $timeSlot->available_slots -= intval($my_timeSlot);}
+                else{
+                    $timeSlot->available_slots -=1;
+                }
+                $timeSlot->save();
+            }}
+
+            // Log::info('time: ' . $my_timeSlot);
+        
 
 
         return response()->json(['message' => 'Order placed successfully'], 200);
