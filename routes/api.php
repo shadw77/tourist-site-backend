@@ -97,7 +97,11 @@ Route::group(['middleware'=>['api']],function(){
         Route::get("get-test-data",[Controller::class,'testdata']);//for test
         Route::post('logout',[Controller::class,'logout']);      //function that logout
         Route::post('/checkout', [UserOrderController::class,'checkout']);
-        // Route::apiResource('orders', UserOrderController::class);
+        Route::apiResource('orders', UserOrderController::class);
+        Route::get('users/{user}', [UserController::class,'show']);
+        Route::put('users/{user}', [UserController::class,'update']);
+
+
 
         // /start endpoint that deal with payment gateway/
         Route::get('orders/payment', [UserOrderController::class,'confirm_order']);
@@ -146,8 +150,12 @@ Route::group(['middleware'=>['api']],function(){
             Route::post('images', [ImageController::class,'store']);
             Route::post('images/{image}', [ImageController::class,'updateImage']);
             Route::delete('images/{image}',  [ImageController::class,'destroy']);
+            Route::post('users', [UserController::class,'store']);
+            Route::delete('users', [UserController::class,'destroy']);
+            Route::get('users', [UserController::class,'index']);
 
-           Route::apiResource('users', UserController::class);
+    
+        //    Route::apiResource('users', UserController::class);
         //   Route::apiResource('orders', UserOrderController::class);
          Route::get('ordersdetails/{order}', [UserOrderController::class,'showOrderDetails']);
          Route::get('service-user', [UserOrderController::class,'userService']);

@@ -119,7 +119,7 @@ class UserOrderController extends Controller
         }
 
         // $orders = UserOrder::all();
-        $orders = UserOrder::orderBy('created_at', 'desc')->paginate(2);
+        $orders = UserOrder::orderBy('created_at', 'desc')->paginate(4); 
         return UserOrderResource::collection($orders);
     }
 

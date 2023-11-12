@@ -25,6 +25,8 @@ class UserOrderResource extends JsonResource
             "discount" => optional($this->service)->discount,
             "quantity"=>$this->quantity,
             "service_thumbnail" => optional($this->service)->thumbnail, 
+            "service_description" => optional($this->service)->description,
+
           
         ];
         // return parent::toArray($request);
