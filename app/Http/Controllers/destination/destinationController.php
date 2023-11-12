@@ -24,11 +24,11 @@ class destinationController extends Controller
         $destinations = Destination::with('images')->get();
          return $this->returnData('destinations',$destinations,'destinations found');
     }
- 
+
     public function getDestinations()
     {
         $sort = request()->get('sort');
-        
+
         if ($sort == 'rating') {
             $destinations = Destination::orderBy('rating', 'desc')->get();
             return $destinations;
@@ -44,14 +44,14 @@ class destinationController extends Controller
     public function searchDestinations(Request $request)
     {
         $query = Destination::query();
-        $data = $request->input('search_service');        
+        $data = $request->input('search_service');
 
         if($data){
             $query->whereRaw("name LIKE '%" .$data."%'");
         }
         return $query->get();
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -60,18 +60,18 @@ class destinationController extends Controller
      */
     public function store(Request $request)
     {
-      
+
 
         $rules=[
             'name'          => 'required|string',
-            'description'   => 'required|string|max:255',
+            'description'   => 'required|string|max:900',
              'creator_id'    => 'required|numeric|exists:users,id',
         ];
 
         $messages=[
             "required"          =>  "This Field Is Required",
             "string"            =>  "This Field Must Be String",
-            "max"               =>  "This Field Can not Exceed 255 Characters",
+            "max"               =>  "This Field Can not Exceed 900 Characters",
             "creator_id.exists" =>  "Creator Should Be Exist"
         ];
 
@@ -83,7 +83,7 @@ class destinationController extends Controller
 
 
         $destination=Destination::create($request->all());
-       
+
         if ($request->hasFile('thumbnail')) {
             $image = $request->file('thumbnail');
             $originalFilename = $image->getClientOriginalName();
@@ -98,13 +98,13 @@ class destinationController extends Controller
                 $originalFilename = $uploadedImage->getClientOriginalName();
                 $imageName = time() . '_' . $originalFilename;
                 $path = $uploadedImage->storeAs('images', $imageName, 'destination_uploads');
-                 
+
                 $image = new Image(['image' => $imageName]);
-                
+
                 $destination->images()->save($image);
             }
         }
-    
+
 
         return $this->returnSuccessMessage("Record Inserted Successfully","201");
 
@@ -133,14 +133,14 @@ class destinationController extends Controller
     {
         $rules=[
             'name'          => 'required|string',
-            'description'   => 'required|string|max:255',
+            'description'   => 'required|string|max:900',
             'creator_id'    => 'required|numeric|exists:users,id',
         ];
 
         $messages=[
             "required"          =>  "This Field Is Required",
             "string"            =>  "This Field Must Be String",
-            "max"               =>  "This Field Can not Exceed 255 Characters",
+            "max"               =>  "This Field Can not Exceed 900 Characters",
             "creator_id.exists" =>  "Creator Should Be Exist"
         ];
 
@@ -166,9 +166,9 @@ class destinationController extends Controller
                 $originalFilename = $uploadedImage->getClientOriginalName();
                 $imageName = time() . '_' . $originalFilename;
                 $path = $uploadedImage->storeAs('images', $imageName, 'destination_uploads');
-                 
+
                 $image = new Image(['image' => $imageName]);
-                
+
                 $destination->images()->save($image);
             }
         }
