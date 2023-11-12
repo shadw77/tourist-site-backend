@@ -152,6 +152,9 @@ Route::group(['middleware'=>['api']],function(){
          Route::get('ordersdetails/{order}', [UserOrderController::class,'showOrderDetails']);
          Route::get('service-user', [UserOrderController::class,'userService']);
          Route::get('vendor-orders', [UserOrderController::class,'allIndex']);
+         Route::get('get-discount', [discoverController::class,'getDiscounted']);
+
+
 
         });
         // /end endpoints that admin or vendor can access/

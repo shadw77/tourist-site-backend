@@ -17,15 +17,16 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('service_id');
-            $table->enum('service_type', ['Trip', 'Restaurant', 'Hotel', 'Destination']);            
+            $table->enum('service_type', ['Trip', 'Restaurant', 'Hotel', 'Destination']);
+            $table->string('quantity');
             $table->string('amount');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->index(['service_id', 'service_type']);            
+            $table->index(['service_id', 'service_type']);
             $table->timestamps();
 
         });
 
-      
+
     }
 
     /**
