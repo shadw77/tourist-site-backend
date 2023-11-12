@@ -41,7 +41,7 @@ class UserOrderController extends Controller
             $totalAmount += $cartItem['quantity'] *$cartItem['item']['cost'];;
             $service_id = $cartItem['item']['id'];
             $service_type  = $cartItem['type'];
-            $quantity = $cartItem['quantity']; 
+            $quantity = $cartItem['quantity'];
             if($cartItem['item']['discount']){
                 $totalAmount-=$cartItem['item']['discount'];
             }
@@ -71,15 +71,47 @@ class UserOrderController extends Controller
             }}
 
             // Log::info('time: ' . $my_timeSlot);
-        
+
 
 
         return response()->json(['message' => 'Order placed successfully'], 200);
+    }
+    public function userService(){
+        $user = Auth::guard('api')->user();
+        $hotels = Hotel::query()->get()->toArray();
+        $trips = Trip::query()->get()->toArray();
+        $restaurants = Restaurant::query()->get()->toArray();
+
+        if ($user->role === "vendor") {
+            $hotels = Hotel::query()->where('creator_id', $user->id)->get()->toArray();
+            $trips = Trip::query()->where('creator_id', $user->id)->get()->toArray();
+            $restaurants = Restaurant::query()->where('creator_id', $user->id)->get()->toArray();
+        }
+        // Add type property to each item
+        foreach ($hotels as &$hotel) {
+            $hotel['type'] = "Hotel";
+        }
+
+        foreach ($trips as &$trip) {
+            $trip['type'] = "Trip";
+        }
+
+        foreach ($restaurants as &$restaurant) {
+            $restaurant['type'] = "Restaurant";
+        }
+
+        // Merge the collections
+       // Combine arrays into one
+    $combinedArray = array_merge($hotels, $trips, $restaurants);
+
+    // Return or use the combined array as needed
+    return $combinedArray;
     }
 
     public function index(Request $request)
 
     {
+
         if($request->query('userId')){
             $userId = $request->query('userId');
             $orders = UserOrder::where('user_id', $userId)->get();
@@ -91,6 +123,17 @@ class UserOrderController extends Controller
         return UserOrderResource::collection($orders);
     }
 
+   public function allIndex(){
+    $orders=UserOrder::get();
+    $user = Auth::guard('api')->user();
+    $user_id= $user->id;
+    if($user->role=== 'vendor'){
+        $orders = UserOrder::whereHasMorph('service', [Restaurant::class, Trip::class, Hotel::class], function ($query) use ($user_id) {
+            $query->where('creator_id', $user_id);
+        })->get();
+    }
+    return $orders;
+   }
 
 
     public function store(Request $request)
@@ -105,48 +148,49 @@ class UserOrderController extends Controller
          $order = new UserOrder();
         if($request->get('service_type') == "Hotel"){
              $hotel = Hotel::find($request->get('service_id'));
-            $order->service_id = $hotel->id;
-            $order->amount=$request->get('amount');
+             $order->service_id = $hotel->id;
+             $order->amount=$request->get('amount');
              $order->service()->associate($hotel);
             $user->orders()->save($order);
             event(new EventOrder($order,$user,$hotel));
         }
 
-        elseif($request->get('service_type') == 'Trip'){
+        else if($request->get('service_type') === 'Trip'){
              $trip = Trip::find($request->get('service_id'));
              $order->service_id = $trip->id;
+             $order->amount=$request->get('amount');
              $order->service()->associate($trip);
-             $user->orders()->save($order);  
-             event(new EventOrder($order,$user,$trip));  
+             $user->orders()->save($order);
+             event(new EventOrder($order,$user,$trip));
         }
-        elseif($request->get('service_type') == 'Destination'){
+        else if($request->get('service_type') == 'Destination'){
             $destination = Destination::find($request->get('service_id'));
             $order->service_id = $destination->id;
+            $order->amount=$request->get('amount');
             $order->service()->associate($destination);
-            $user->orders()->save($order);  
+            $user->orders()->save($order);
         }
-        elseif($request->get('service_type') == 'Restaurent'){
+        else if($request->get('service_type') == 'Restaurent'){
             $restaurant = Restaurant::find($request->get('service_id'));
             $order->service_id = $restaurant->id;
             $order->service()->associate($restaurant);
-            $user->orders()->save($order);  
-            event(new EventOrder($order,$user,$restaurant));      
+            $user->orders()->save($order);
+            event(new EventOrder($order,$user,$restaurant));
            }
-          
-        return $order;
+          return $order;
         return new UserOrderResource($user->orders);
 
     }
 
-   
+
     public function show(Request $request, $id)
     {
         $order = UserOrder::find($id);
         return new UserOrderResource($order);
     }
-    
+
     public function showOrderDetails($id)
-{ 
+{
     $order = UserOrder::find($id);
 
     switch ($order->service_type) {
@@ -163,7 +207,7 @@ class UserOrderController extends Controller
             $serviceDetails = Restaurant::find($order->service_id);
             break;
         default:
-            $serviceDetails = null; 
+            $serviceDetails = null;
             break;
     }
     return response()->json([
@@ -184,6 +228,7 @@ class UserOrderController extends Controller
     {
         $order = UserOrder::find($id);
         $order->delete();
+
         return response()->json(['message' => 'Order deleted successfully']);
     }
 
@@ -192,7 +237,7 @@ class UserOrderController extends Controller
     {
 
 
-        $order = UserOrder::latest()->first();        
+        $order = UserOrder::latest()->first();
 
         $data = [
             'CustomerName' => $order->user->name,
@@ -207,7 +252,9 @@ class UserOrderController extends Controller
         $info = $this->fatoorahServices->sendPayment($data);
         Transaction::create([
             'user_id' => $order->user->id,
-            'invoiceid' => $info['Data']['InvoiceId']
+            'invoiceid' => $info['Data']['InvoiceId'],
+            'creator_id' => $order->service->creator_id
+
         ]);
 
         return redirect($info['Data']['InvoiceURL']);

@@ -14,6 +14,7 @@ use App\Models\Room;
 use App\Models\Image;
 use App\Traits\GeneralTrait;
 use Log;
+use Auth;
 
 class discoverController extends Controller
 {
@@ -259,5 +260,36 @@ class discoverController extends Controller
         return $this->returnData("reviews", $object,'Data Found',200);
     }
     /*end function that get review by id*/
+
+
+    /*start function that get offers based on admin or vendor*/
+    public function getDiscounted()
+    {
+        $user=Auth::guard('api')->user();
+        $hotels = Hotel::whereNotNull('discount')->orWhere('discount', '>', 0)->get()
+        ->map(function($hotel){
+        $hotel->type = 'Hotel';
+            return $hotel;
+        });
+        $restaurants = Restaurant::whereNotNull('discount')->orWhere('discount', '>', 0)->get()
+        ->map(function($restaurant){
+            $restaurant->type = 'Restaurant';
+            return $restaurant;
+        });
+        $trips = Trip::whereNotNull('discount')->orWhere('discount', '>', 0)->get()
+        ->map(function($trip){
+            $trip->type = 'Trip';
+            return $trip;
+        });
+
+        if($user->role==="vendor"){
+            $hotels = $hotels->where('creator_id',$user->id);
+            $restaurants = $restaurants->where('creator_id',$user->id);
+            $trips = $trips->where('creator_id',$user->id);
+        }
+        $combinedArray = $hotels->concat($restaurants)->concat($trips);
+        return $this->returnData("data", $combinedArray,'Data Found',200);
+     }
+    /*end function that get offers based on admin or vendor*/
 
 }

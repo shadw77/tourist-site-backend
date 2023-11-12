@@ -96,6 +96,7 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+      
         'trip_uploads'=> [
             'driver' => 'local',
             'root' => public_path('images/trip_images'),
@@ -103,6 +104,7 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+
     ],
 
     /*

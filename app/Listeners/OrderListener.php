@@ -48,7 +48,7 @@ class OrderListener
         }
         if($service_type=="Trip"){
             $trip=Trip::where("id",$order->service_id)->first();
-            $vendor=User::where("id",$hotel->creator_id)->first();
+            $vendor=User::where("id",$trip->creator_id)->first();
             if($vendor){
                 $notify = new Notify();
                 $notify->user_id = $user->id; 

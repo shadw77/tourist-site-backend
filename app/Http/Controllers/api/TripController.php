@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Ramsey\Collection\Collection;
+use Illuminate\Support\Facades\Auth;
 class TripController extends Controller
 {
 
@@ -35,7 +36,16 @@ class TripController extends Controller
     {
         $trips = Trip::whereNotNull('discount')
                      ->orWhere('discount', '>', 0)
-                     ->get();
+                     ->get()
+                     ->map(function($trip){
+                        $trip->type = 'Trip';
+                        return $trip;
+                    });
+
+                     $user=Auth::guard('api')->user();
+                     if($user->role==="vendor"){
+                        $trips = $trips->where('creator_id',$user->id);
+                    }
         return response()->json($trips);
     }
     /**
@@ -58,10 +68,11 @@ class TripController extends Controller
     public function index(Request $request)
     {
         $user=Auth::guard('api')->user();
+        $trips = Trip::with('images')->paginate(3);
           if($user->role==='vendor'){
-            $hotels = Trip::where('creator_id', $user->id)->paginate(3);
+            $trips = Trip::where('creator_id', $user->id)->paginate(3);
           }
-        $trips = Trip::with('images')->get();
+
          //$trips=Trip::paginate(2);
 
        return TripResource::collection($trips);
@@ -73,33 +84,6 @@ class TripController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(Request $request)
-    // {
-    //     $file = $request->file("thumbnail");
-    //     if($request->hasFile('thumbnail')){
-    //         $originalName = $file->getClientOriginalName();
-    //         $filenameonly= pathinfo($originalName,PATHINFO_FILENAME);
-    //         $extenshion = $file->getClientOriginalExtension();
-    //         $compic = str_replace('','_',$filenameonly).'-'.rand().'_'.time().'.'.$extenshion;
-    //         $path = $file->storeAs('public/images/trips',$compic);
-    //         // Storage::disk('google')->put('GP Images', $file);
-    //         $path = Storage::disk('google')->putFile('images/trips', $file, 'public');
-    //     $request->validate([
-    //         'name'=>'required',
-    //         "government"=>'required',
-    //         "duration"=>'required',
-    //         "cost"=>'required',
-    //         "description"=>'required',
-    //         "rating"=>'required',
-    //         "thumbnail"=>'required',
-    //         "creator_id"=>'required',
-    //     ]);
-    //     $trip = Trip::create($request->all());
-    //     $trip->thumbnail=$compic;
-    //     $trip->save();
-    //     return new TripResource($trip);
-    // }}
-
     public function store(Request $request)
     {
 
@@ -227,7 +211,11 @@ class TripController extends Controller
         $trip->images()->delete();
         $trip->reviews()->delete();
         $trip->delete();
-        return 'deleted';
+
+        return response()->json([
+            "status" =>200,
+            "msgg" =>"deleted successfully"
+        ]);
     }
 }
-       
+

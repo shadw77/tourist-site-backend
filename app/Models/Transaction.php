@@ -12,13 +12,17 @@ class Transaction extends Model
     protected $table="transactions";
 
     protected $fillable = [
-        'invoiceid','paymentid','user_id'
+        'invoiceid','paymentid','user_id','creator_id'
     ];
 
    //relation Transaction with user
    public function user()
    {
        return $this->belongsTo(User::class,"user_id");
+   }
+   public function vendor()
+   {
+       return $this->belongsTo(User::class,"creator_id");
    }
 
 }
