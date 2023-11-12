@@ -15,7 +15,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {  
+    {
         $users = User::all();
         return UserResource::collection($users);
     }
@@ -83,8 +83,12 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->review()->delete();
+        $user->transaction()->delete();
         $user->delete();
-        
-        return 'deleted';
+
+        return response()->json([
+            "status" =>200,
+            "msgg" =>"deleted successfully"
+        ]);
     }
 }

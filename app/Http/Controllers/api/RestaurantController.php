@@ -38,7 +38,7 @@ class RestaurantController extends Controller
     public function searchRestaurants(Request $request)
     {
         $query = Restaurant::query();
-        $data = $request->input('search_service');        
+        $data = $request->input('search_service');
 
         if($data){
             $query->whereRaw("name LIKE '%" .$data."%'");
@@ -51,7 +51,7 @@ class RestaurantController extends Controller
         $user=Auth::guard('api')->user();
         if($user->role==='vendor'){
           $hotels = Restaurant::where('creator_id', $user->id)->paginate(3);
-        } 
+        }
               $restaurants = Restaurant::paginate(3);
                 return RestaurantResource::collection($restaurants);
     }
@@ -63,18 +63,18 @@ class RestaurantController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {    
+    {
         //Validate the incoming request data
         $validator = Validator::make($request->all(), [
-            "name" => "required|max:255", 
-            "email" => "required|email|unique:restaurants", 
+            "name" => "required|max:255",
+            "email" => "required|email|unique:restaurants",
             "rating"=>"required",
-            "street" => "required|max:255", 
-            "government" => "required|max:255", 
-            "phone" => "required", 
+            "street" => "required|max:255",
+            "government" => "required|max:255",
+            "phone" => "required",
             "creator_id" => "required",
             "thumbnail"=>"required"
-        ]); 
+        ]);
         if ($validator->fails()) {
             return response($validator->errors()->all(), 422);
         }
@@ -87,22 +87,22 @@ class RestaurantController extends Controller
             $restaurant->thumbnail = $imageName;
             $restaurant->save();
         }
-         
+
         if ($request->hasFile('images')) {
             $uploadedImages = $request->file('images');
             foreach ($uploadedImages as $uploadedImage) {
                 $originalFilename = $uploadedImage->getClientOriginalName();
                 $imageName = time() . '_' . $originalFilename;
                 $path = $uploadedImage->storeAs('images', $imageName, 'restaurant_uploads');
-                 
+
                 $image = new Image(['image' => $imageName]);
-                
+
                 $restaurant->images()->save($image);
             }
         }
-    
+
         return (new RestaurantResource($restaurant))->response()->setStatusCode(201);
-    
+
     }
 
     /**
@@ -119,7 +119,11 @@ class RestaurantController extends Controller
     {
         $restaurant = Restaurant::whereNotNull('discount')
                      ->orWhere('discount', '>', 0)
-                     ->get();
+                     ->get()
+                     ->map(function($restaurant){
+                        $restaurant->type = 'Restaurant';
+                        return $restaurant;
+                    });
                      $user=Auth::guard('api')->user();
                      if($user->role==="vendor"){
                         $restaurant = $restaurant->where('creator_id',$user->id);
@@ -134,7 +138,7 @@ class RestaurantController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Restaurant $restaurant)
-     {   
+     {
         $validator = Validator::make($request->all(), [
             "name" => "required|max:255",
             "email" => "required|email",
@@ -144,12 +148,12 @@ class RestaurantController extends Controller
             "phone" => "required",
             "thumbnail" => "required",
         ]);
-        
+
         if ($validator->fails()) {
             return response($validator->errors()->all(), 422);
         }
-    
-       
+
+
         // $restaurant->creator_id = Auth::id();
         // $restaurant->user->creator_id = Auth::id();
         // $restaurant->update();
@@ -162,14 +166,14 @@ class RestaurantController extends Controller
             $thumbnail = $image->storeAs('thumbnails', $imageName, 'restaurant_uploads');
              $restaurant->thumbnail = $imageName;
         }
-         
+
         if ($request->hasFile('images')) {
             $uploadedImages = $request->file('images');
             foreach ($uploadedImages as $uploadedImage) {
                 $originalFilename = $uploadedImage->getClientOriginalName();
                 $imageName = time() . '_' . $originalFilename;
                 $path = $uploadedImage->storeAs('images', $imageName, 'restaurant_uploads');
-    
+
                  $image = new Image(['image' => $imageName]);
                 $restaurant->images()->save($image);
             }
@@ -177,7 +181,7 @@ class RestaurantController extends Controller
         $restaurant->save();
         return (new RestaurantResource($restaurant))->response()->setStatusCode(200);
     }
-    
+
 
     /**
      * Remove the specified resource from storage.
@@ -191,6 +195,6 @@ class RestaurantController extends Controller
         $restaurant->reviews()->delete();
            $restaurant->delete();
           return response()->json(['message' => 'Restaurant deleted successfully'], 204);
-      
+
     }
 }

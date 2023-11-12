@@ -59,17 +59,6 @@ Route::group(['middleware'=>['api']],function(){
     Route::post('get-review',[discoverController::class,'reviewById']);
     // /end endpoints that handled in detail component/
 
-
-    // /start endpoints for discover/
-
-    // /end endpoints for authentication/
-
-    // /start endpoints that handled in detail component/
-    Route::post('review',[discoverController::class,'store']);
-    Route::post('get-review',[discoverController::class,'reviewById']);
-    // /end endpoints that handled in detail component/
-
-
     Route::get('get-nearbyplaces/{city}',[discoverController::class,'index']);
     Route::get('get-review-nearbyplaces/{city}',[discoverController::class,'getReviewNearByPlaces']);
     Route::get('get-topattractions-places',[discoverController::class,'getTopAttractions']);
@@ -99,10 +88,6 @@ Route::group(['middleware'=>['api']],function(){
 
 
     Route::apiResource('users', UserController::class);
-    Route::get('images',  [ImageController::class,'index']);
-    Route::get('images/{image}',  [ImageController::class,'show']);
-
-
     Route::get('images',  [ImageController::class,'index']);
     Route::get('images/{image}',  [ImageController::class,'show']);
 
@@ -173,12 +158,7 @@ Route::group(['middleware'=>['api']],function(){
     });
     Route::apiResource('orders', UserOrderController::class);
 
-    Route::get('orders/payment', [UserOrderController::class,'confirm_order']);
-    Route::get('callback', [UserOrderController::class, 'paymentCallBack']);
-    Route::get('error', function () {
-        return view('payment.failed');
 
-    });
     // /end endpoints that user  should be logged and send jwt token to access any of them/
 
 

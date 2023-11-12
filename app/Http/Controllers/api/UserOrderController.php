@@ -41,7 +41,7 @@ class UserOrderController extends Controller
             $totalAmount += $cartItem['quantity'] *$cartItem['item']['cost'];;
             $service_id = $cartItem['item']['id'];
             $service_type  = $cartItem['type'];
-            $quantity = $cartItem['quantity']; 
+            $quantity = $cartItem['quantity'];
             if($cartItem['item']['discount']){
                 $totalAmount-=$cartItem['item']['discount'];
             }
@@ -71,7 +71,7 @@ class UserOrderController extends Controller
             }}
 
             // Log::info('time: ' . $my_timeSlot);
-        
+
 
 
         return response()->json(['message' => 'Order placed successfully'], 200);
@@ -81,7 +81,7 @@ class UserOrderController extends Controller
         $hotels = Hotel::query()->get()->toArray();
         $trips = Trip::query()->get()->toArray();
         $restaurants = Restaurant::query()->get()->toArray();
-    
+
         if ($user->role === "vendor") {
             $hotels = Hotel::query()->where('creator_id', $user->id)->get()->toArray();
             $trips = Trip::query()->where('creator_id', $user->id)->get()->toArray();
@@ -91,15 +91,15 @@ class UserOrderController extends Controller
         foreach ($hotels as &$hotel) {
             $hotel['type'] = "Hotel";
         }
-    
+
         foreach ($trips as &$trip) {
             $trip['type'] = "Trip";
         }
-    
+
         foreach ($restaurants as &$restaurant) {
             $restaurant['type'] = "Restaurant";
         }
-    
+
         // Merge the collections
        // Combine arrays into one
     $combinedArray = array_merge($hotels, $trips, $restaurants);
@@ -107,11 +107,11 @@ class UserOrderController extends Controller
     // Return or use the combined array as needed
     return $combinedArray;
     }
-    
+
     public function index(Request $request)
 
     {
-         
+
         if($request->query('userId')){
             $userId = $request->query('userId');
             $orders = UserOrder::where('user_id', $userId)->get();
@@ -119,18 +119,19 @@ class UserOrderController extends Controller
         }
 
         // $orders = UserOrder::all();
-        $orders = UserOrder::orderBy('created_at', 'desc')->paginate(2); 
+        $orders = UserOrder::orderBy('created_at', 'desc')->paginate(2);
         return UserOrderResource::collection($orders);
     }
+
    public function allIndex(){
+    $orders=UserOrder::get();
     $user = Auth::guard('api')->user();
     $user_id= $user->id;
-    // $hotels = Hotel::query()->get()->toArray();
-    // $trips = Trip::query()->get()->toArray();
-    // $restaurants = Restaurant::query()->get()->toArray();
-    $orders = UserOrder::whereHasMorph('service', [Restaurant::class, Trip::class, Hotel::class], function ($query) use ($user_id) {
-        $query->where('creator_id', $user_id);
-    })->get(); 
+    if($user->role=== 'vendor'){
+        $orders = UserOrder::whereHasMorph('service', [Restaurant::class, Trip::class, Hotel::class], function ($query) use ($user_id) {
+            $query->where('creator_id', $user_id);
+        })->get();
+    }
     return $orders;
    }
 
@@ -159,37 +160,37 @@ class UserOrderController extends Controller
              $order->service_id = $trip->id;
              $order->amount=$request->get('amount');
              $order->service()->associate($trip);
-             $user->orders()->save($order);  
-             event(new EventOrder($order,$user,$trip));  
+             $user->orders()->save($order);
+             event(new EventOrder($order,$user,$trip));
         }
         else if($request->get('service_type') == 'Destination'){
             $destination = Destination::find($request->get('service_id'));
             $order->service_id = $destination->id;
             $order->amount=$request->get('amount');
             $order->service()->associate($destination);
-            $user->orders()->save($order);  
+            $user->orders()->save($order);
         }
         else if($request->get('service_type') == 'Restaurent'){
             $restaurant = Restaurant::find($request->get('service_id'));
             $order->service_id = $restaurant->id;
             $order->service()->associate($restaurant);
-            $user->orders()->save($order);  
-            event(new EventOrder($order,$user,$restaurant));      
+            $user->orders()->save($order);
+            event(new EventOrder($order,$user,$restaurant));
            }
           return $order;
         return new UserOrderResource($user->orders);
 
     }
 
-   
+
     public function show(Request $request, $id)
     {
         $order = UserOrder::find($id);
         return new UserOrderResource($order);
     }
-    
+
     public function showOrderDetails($id)
-{ 
+{
     $order = UserOrder::find($id);
 
     switch ($order->service_type) {
@@ -206,7 +207,7 @@ class UserOrderController extends Controller
             $serviceDetails = Restaurant::find($order->service_id);
             break;
         default:
-            $serviceDetails = null; 
+            $serviceDetails = null;
             break;
     }
     return response()->json([
@@ -236,7 +237,7 @@ class UserOrderController extends Controller
     {
 
 
-        $order = UserOrder::latest()->first();        
+        $order = UserOrder::latest()->first();
 
         $data = [
             'CustomerName' => $order->user->name,
