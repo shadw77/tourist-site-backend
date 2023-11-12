@@ -36,8 +36,12 @@ class TripController extends Controller
     {
         $trips = Trip::whereNotNull('discount')
                      ->orWhere('discount', '>', 0)
-                     ->get();
-                     
+                     ->get()
+                     ->map(function($trip){
+                        $trip->type = 'Trip';
+                        return $trip;
+                    });
+
                      $user=Auth::guard('api')->user();
                      if($user->role==="vendor"){
                         $trips = $trips->where('creator_id',$user->id);
@@ -68,7 +72,7 @@ class TripController extends Controller
           if($user->role==='vendor'){
             $trips = Trip::where('creator_id', $user->id)->paginate(3);
           }
-      
+
          //$trips=Trip::paginate(2);
 
        return TripResource::collection($trips);
@@ -207,7 +211,11 @@ class TripController extends Controller
         $trip->images()->delete();
         $trip->reviews()->delete();
         $trip->delete();
-        return 'deleted';
+
+        return response()->json([
+            "status" =>200,
+            "msgg" =>"deleted successfully"
+        ]);
     }
 }
-       
+

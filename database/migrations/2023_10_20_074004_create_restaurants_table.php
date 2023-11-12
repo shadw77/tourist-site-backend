@@ -23,7 +23,9 @@ return new class extends Migration
             $table->string('phone');
             $table->string('thumbnail');
             $table->string("rating")->nullable();
+            $table->string('cost');
             $table->string("discount")->nullable();
+            $table->boolean('available')->default(true);
             $table->foreignId('creator_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
