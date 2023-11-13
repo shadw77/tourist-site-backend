@@ -31,7 +31,7 @@ class discoverController extends Controller
         $hotelnearbyplaces=Hotel::with(['images', 'reviews.user']);
 
         if ($city !== 'null') {
-            Log::info($city);
+            //Log::info($city);
             $restaurantnearbyplaces = $restaurantnearbyplaces->where('government', $city);
             $tripnearbyplaces = $tripnearbyplaces->where('government', $city);
             $hotelnearbyplaces = $hotelnearbyplaces->where('government', $city);
@@ -39,6 +39,18 @@ class discoverController extends Controller
         $restaurantnearbyplaces = $restaurantnearbyplaces->take($this->numberofRecords)->get();
         $tripnearbyplaces = $tripnearbyplaces->take($this->numberofRecords)->get();
         $hotelnearbyplaces = $hotelnearbyplaces->take($this->numberofRecords)->get();
+
+        //start add type to Objects
+        foreach($restaurantnearbyplaces as $place){
+            $place->type="Restaurant";
+        }
+        foreach($tripnearbyplaces as $place){
+            $place->type="Trip";
+        }
+        foreach($hotelnearbyplaces as $place){
+            $place->type="Hotel";
+        }
+
 
         return $this->returnData(
             "nearbyplaces",
@@ -96,6 +108,19 @@ class discoverController extends Controller
         $hotelTopAttractions=Hotel::where('rating',$this->condition,$this->Rating)->take($this->numberofRecords)->get();
         $restaurantTopAttractions=Restaurant::where('rating',$this->condition,$this->Rating)->take($this->numberofRecords)->get();
         $tripTopAttractions=Trip::where('rating',$this->condition,$this->Rating)->take($this->numberofRecords)->get();
+
+        //start add type to Objects
+        foreach($restaurantTopAttractions as $place){
+            $place->type="Restaurant";
+        }
+        foreach($tripTopAttractions as $place){
+            $place->type="Trip";
+        }
+        foreach($hotelTopAttractions as $place){
+            $place->type="Hotel";
+        }
+
+
         return $this->returnData(
             "topAttractions",
             [
@@ -141,6 +166,18 @@ class discoverController extends Controller
         $hotelOffers=Hotel::where('discount','<>','null')->take($this->numberofRecords)->get();
         $restaurantOffers=Restaurant::where('discount','<>','null')->take($this->numberofRecords)->get();
         $tripOffers=Trip::where('discount','<>','null')->take($this->numberofRecords)->get();
+
+        //start add type to Objects
+        foreach($restaurantOffers as $place){
+            $place->type="Restaurant";
+        }
+        foreach($tripOffers as $place){
+            $place->type="Trip";
+        }
+        foreach($hotelOffers as $place){
+            $place->type="Hotel";
+        }
+
 
         return $this->returnData(
             "topAttractions",

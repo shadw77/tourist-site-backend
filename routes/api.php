@@ -55,7 +55,6 @@ Route::group(['middleware'=>['api']],function(){
     // /end endpoints for authentication/
 
     // /start endpoints that handled in detail component/
-    Route::post('review',[discoverController::class,'store']);
     Route::post('get-review',[discoverController::class,'reviewById']);
     // /end endpoints that handled in detail component/
 
@@ -94,6 +93,8 @@ Route::group(['middleware'=>['api']],function(){
     // /start endpoints that user  should be logged and send jwt token to access any of them/
      Route::group([ 'middleware'=>['jwt.verify']],function(){
 
+
+        Route::post('review',[discoverController::class,'store']);//add comment
         Route::get("get-test-data",[Controller::class,'testdata']);//for test
         Route::post('logout',[Controller::class,'logout']);      //function that logout
         Route::post('/checkout', [UserOrderController::class,'checkout']);
@@ -154,7 +155,7 @@ Route::group(['middleware'=>['api']],function(){
             Route::delete('users', [UserController::class,'destroy']);
             Route::get('users', [UserController::class,'index']);
 
-    
+
         //    Route::apiResource('users', UserController::class);
         //   Route::apiResource('orders', UserOrderController::class);
          Route::get('ordersdetails/{order}', [UserOrderController::class,'showOrderDetails']);

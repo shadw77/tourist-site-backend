@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Nov 13, 2023 at 01:24 PM
+-- Host: 127.0.0.1
+-- Generation Time: Nov 13, 2023 at 01:47 PM
 -- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- PHP Version: 8.1.17
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `ITI_Tourist`
+-- Database: `iti_tourist`
 --
 
 -- --------------------------------------------------------
@@ -180,24 +180,18 @@ INSERT INTO `images` (`id`, `image`, `imageable_id`, `imageable_type`, `created_
 (31, '1699816998_3b2dcf5f4f76f7d462e7d8f4ba6b99a2.jpg', 11, 'Destination', '2023-11-12 17:23:18', '2023-11-12 17:23:18'),
 (32, '1699816998_da60c4e01554a3306a7b9b01cdce259d.jpg', 11, 'Destination', '2023-11-12 17:23:18', '2023-11-12 17:23:18'),
 (33, '1699816998_f20135dd159bf4f54efa2f814e5254b4.jpg', 11, 'Destination', '2023-11-12 17:23:18', '2023-11-12 17:23:18'),
-(34, '1699817912_2019-04-22.jpg', 1, 'Restaurant', '2023-11-12 17:38:32', '2023-11-12 17:38:32'),
-(35, '1699817912_images.jpg', 1, 'Restaurant', '2023-11-12 17:38:32', '2023-11-12 17:38:32'),
-(36, '1699817912_ML7_8865.JPG', 1, 'Restaurant', '2023-11-12 17:38:32', '2023-11-12 17:38:32'),
-(37, '1699817977_106_507077348.jpg', 2, 'Restaurant', '2023-11-12 17:39:37', '2023-11-12 17:39:37'),
-(38, '1699817978_18486414_1357322671018649_5197753448517419126_n.0.0.jpg', 2, 'Restaurant', '2023-11-12 17:39:38', '2023-11-12 17:39:38'),
-(39, '1699817978_el-kababgy-luxor.jpg', 2, 'Restaurant', '2023-11-12 17:39:38', '2023-11-12 17:39:38'),
-(40, '1699818038_finest-foods-in-sharm.jpg', 3, 'Restaurant', '2023-11-12 17:40:38', '2023-11-12 17:40:38'),
-(41, '1699818038_rangoli.jpg', 3, 'Restaurant', '2023-11-12 17:40:38', '2023-11-12 17:40:38'),
-(42, '1699818038_vista-da-varanda.jpg', 3, 'Restaurant', '2023-11-12 17:40:38', '2023-11-12 17:40:38'),
-(43, '1699818122_image0-3.webp', 4, 'Restaurant', '2023-11-12 17:42:02', '2023-11-12 17:42:02'),
-(44, '1699818122_Lazib-inn-fayoum-egypt-Hotel-Restaurant-Restaurant-terrace-1-1024x682-1-e1559694070314.jpg', 4, 'Restaurant', '2023-11-12 17:42:02', '2023-11-12 17:42:02'),
-(45, '1699818123_we-highly-recommend-ibis.jpg', 4, 'Restaurant', '2023-11-12 17:42:03', '2023-11-12 17:42:03'),
-(46, '1699818197_5eff48_30669344f0d54ad7a2342ecbabff00a1~mv2.webp', 5, 'Restaurant', '2023-11-12 17:43:17', '2023-11-12 17:43:17'),
-(47, '1699818197_165528920_496476684713239_3224182009222267644_n-f02f3358-22ee-4723-b39a-13d74e0b8fb8-13897dc6-157f-4ec4-9d83-1990f9dadea5.jpg', 5, 'Restaurant', '2023-11-12 17:43:17', '2023-11-12 17:43:17'),
-(48, '1699818197_IMG_8262-1024x670.jpg', 5, 'Restaurant', '2023-11-12 17:43:17', '2023-11-12 17:43:17'),
-(49, '1699818265_701838ab-f2c9-4666-a5a7-d21801cf8205.jpg', 6, 'Restaurant', '2023-11-12 17:44:25', '2023-11-12 17:44:25'),
-(50, '1699818265_Florence-Hotel-Assiut-Exterior.jpg', 6, 'Restaurant', '2023-11-12 17:44:25', '2023-11-12 17:44:25'),
-(51, '1699818265_restaurant-in-ms-florence.jpg', 6, 'Restaurant', '2023-11-12 17:44:25', '2023-11-12 17:44:25'),
+(34, '1699879222_2019-04-22.jpg', 1, 'Restaurant', '2023-11-12 17:38:32', '2023-11-13 10:40:22'),
+(35, '1699879230_images.jpg', 1, 'Restaurant', '2023-11-12 17:38:32', '2023-11-13 10:40:30'),
+(37, '1699879276_106_507077348.jpg', 2, 'Restaurant', '2023-11-12 17:39:37', '2023-11-13 10:41:16'),
+(38, '1699879284_18486414_1357322671018649_5197753448517419126_n.0.0.jpg', 2, 'Restaurant', '2023-11-12 17:39:38', '2023-11-13 10:41:24'),
+(40, '1699879322_finest-foods-in-sharm.jpg', 3, 'Restaurant', '2023-11-12 17:40:38', '2023-11-13 10:42:02'),
+(41, '1699879330_rangoli.jpg', 3, 'Restaurant', '2023-11-12 17:40:38', '2023-11-13 10:42:10'),
+(43, '1699879396_image0-3.webp', 4, 'Restaurant', '2023-11-12 17:42:02', '2023-11-13 10:43:16'),
+(44, '1699879404_Lazib-inn-fayoum-egypt-Hotel-Restaurant-Restaurant-terrace-1-1024x682-1-e1559694070314.jpg', 4, 'Restaurant', '2023-11-12 17:42:02', '2023-11-13 10:43:24'),
+(46, '1699879457_5eff48_30669344f0d54ad7a2342ecbabff00a1~mv2.webp', 5, 'Restaurant', '2023-11-12 17:43:17', '2023-11-13 10:44:17'),
+(47, '1699879465_165528920_496476684713239_3224182009222267644_n-f02f3358-22ee-4723-b39a-13d74e0b8fb8-13897dc6-157f-4ec4-9d83-1990f9dadea5.jpg', 5, 'Restaurant', '2023-11-12 17:43:17', '2023-11-13 10:44:25'),
+(49, '1699879511_701838ab-f2c9-4666-a5a7-d21801cf8205.jpg', 6, 'Restaurant', '2023-11-12 17:44:25', '2023-11-13 10:45:11'),
+(50, '1699879519_Florence-Hotel-Assiut-Exterior.jpg', 6, 'Restaurant', '2023-11-12 17:44:25', '2023-11-13 10:45:19'),
 (52, '1699819759_1691239566_large_a2 - Copy.jpg.webp', 1, 'Trip', '2023-11-12 18:09:19', '2023-11-12 18:09:19'),
 (53, '1699819759_1691239567_large_57 - Copy.jpg.webp', 1, 'Trip', '2023-11-12 18:09:19', '2023-11-12 18:09:19'),
 (54, '1699819759_large_6X0A1919.JPG.webp', 1, 'Trip', '2023-11-12 18:09:19', '2023-11-12 18:09:19'),
@@ -380,7 +374,13 @@ INSERT INTO `images` (`id`, `image`, `imageable_id`, `imageable_type`, `created_
 (232, '1699874981_hcmp89862_245120.jpeg', 17, 'Restaurant', '2023-11-13 09:29:41', '2023-11-13 09:29:41'),
 (233, '1699874981_hcmp89862_245122.jpeg', 17, 'Restaurant', '2023-11-13 09:29:41', '2023-11-13 09:29:41'),
 (234, '1699874981_istockphoto-1428412216-612x612.jpg', 17, 'Restaurant', '2023-11-13 09:29:41', '2023-11-13 09:29:41'),
-(235, '1699875214_el-gendy-for-seafood.jpg', 18, 'Restaurant', '2023-11-13 09:33:34', '2023-11-13 09:33:34');
+(235, '1699875214_el-gendy-for-seafood.jpg', 18, 'Restaurant', '2023-11-13 09:33:34', '2023-11-13 09:33:34'),
+(236, '1699879241_ML7_8865.JPG', 1, 'Restaurant', '2023-11-13 10:40:41', '2023-11-13 10:40:41'),
+(237, '1699879293_el-kababgy-luxor.jpg', 2, 'Restaurant', '2023-11-13 10:41:33', '2023-11-13 10:41:33'),
+(238, '1699879339_vista-da-varanda.jpg', 3, 'Restaurant', '2023-11-13 10:42:19', '2023-11-13 10:42:19'),
+(239, '1699879417_we-highly-recommend-ibis.jpg', 4, 'Restaurant', '2023-11-13 10:43:37', '2023-11-13 10:43:37'),
+(240, '1699879474_IMG_8262-1024x670.jpg', 5, 'Restaurant', '2023-11-13 10:44:34', '2023-11-13 10:44:34'),
+(241, '1699879528_restaurant-in-ms-florence.jpg', 6, 'Restaurant', '2023-11-13 10:45:28', '2023-11-13 10:45:28');
 
 -- --------------------------------------------------------
 
@@ -477,12 +477,12 @@ CREATE TABLE `restaurants` (
 --
 
 INSERT INTO `restaurants` (`id`, `name`, `description`, `email`, `street`, `government`, `phone`, `thumbnail`, `rating`, `cost`, `discount`, `available`, `creator_id`, `created_at`, `updated_at`) VALUES
-(1, 'bab elhara', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil dicta esse quo, aliquam quaerat autem provident eveniet? Nihil, enim accusantium?', 'redseadivers@example.com', '8 Dive Center Road', 'beni suef', '+20 333 222 111', '1699817911_2019-04-22.jpg', '4', '1000', '10', 1, 2, '2023-11-12 17:38:31', '2023-11-12 17:38:31'),
-(2, 'el-kababgy', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil dicta esse quo, aliquam quaerat autem provident eveniet? Nihil, enim accusantium?', 'nilecruise@example.com', '7 Nile Cruise Avenue', 'Luxor', '+20 333 222 111', '1699817977_106_507077348.jpg', '2', '1500', '10', 1, 2, '2023-11-12 17:39:37', '2023-11-12 17:39:37'),
-(3, 'Rangoli Paradise', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil dicta esse quo, aliquam quaerat autem provident eveniet? Nihil, enim accusantium?', 'redseaparadise@example.com', '12 Paradise Road', 'Sharm El Sheikh', '+20 333 222 111', '1699818037_finest-foods-in-sharm.jpg', '2', '2222', '20', 1, 2, '2023-11-12 17:40:37', '2023-11-12 17:40:37'),
-(4, 'Fayoum Fisherman\'s Grill', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil dicta esse quo, aliquam quaerat autem provident eveniet? Nihil, enim accusantium?', 'fayoumfisherman@example.com', '20 Fayoum Beach Road', 'Fayoum', '+20 333 222 111', '1699818122_image0-3.webp', '4', '1222', '30', 1, 2, '2023-11-12 17:42:02', '2023-11-12 17:42:02'),
-(5, 'Pyramid View Restaurant', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil dicta esse quo, aliquam quaerat autem provident eveniet? Nihil, enim accusantium?', 'pyramidview@example.com', '2 Giza Pyramid Road', 'Giza', '+20 333 222 111', '1699818197_5eff48_30669344f0d54ad7a2342ecbabff00a1~mv2.webp', '4', '6666', '40', 1, 2, '2023-11-12 17:43:17', '2023-11-12 17:43:17'),
-(6, 'Nile Felucca Cafe', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil dicta esse quo, aliquam quaerat autem provident eveniet? Nihil, enim accusantium?', 'feluccacafe@example.com', '10 Felucca Street', 'Asyut', '+20 333 222 111', '1699818265_701838ab-f2c9-4666-a5a7-d21801cf8205.jpg', '3', '4568', '20', 1, 2, '2023-11-12 17:44:25', '2023-11-12 17:44:25'),
+(1, 'bab elhara', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil dicta esse quo, aliquam quaerat autem provident eveniet? Nihil, enim accusantium?', 'redseadivers@example.com', '8 Dive Center Road', 'beni suef', '+20 333 222 111', '1699879207_2019-04-22.jpg', '4', '1000', '10', 1, 2, '2023-11-12 17:38:31', '2023-11-13 10:40:07'),
+(2, 'el-kababgy', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil dicta esse quo, aliquam quaerat autem provident eveniet? Nihil, enim accusantium?', 'nilecruise@example.com', '7 Nile Cruise Avenue', 'Luxor', '+20 333 222 111', '1699879263_106_507077348.jpg', '2', '1500', '10', 1, 2, '2023-11-12 17:39:37', '2023-11-13 10:41:03'),
+(3, 'Rangoli Paradise', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil dicta esse quo, aliquam quaerat autem provident eveniet? Nihil, enim accusantium?', 'redseaparadise@example.com', '12 Paradise Road', 'Sharm El Sheikh', '+20 333 222 111', '1699879309_finest-foods-in-sharm.jpg', '2', '2222', '20', 1, 2, '2023-11-12 17:40:37', '2023-11-13 10:41:49'),
+(4, 'Fayoum Fisherman\'s Grill', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil dicta esse quo, aliquam quaerat autem provident eveniet? Nihil, enim accusantium?', 'fayoumfisherman@example.com', '20 Fayoum Beach Road', 'Fayoum', '+20 333 222 111', '1699879374_image0-3.webp', '4', '1222', '30', 1, 2, '2023-11-12 17:42:02', '2023-11-13 10:42:54'),
+(5, 'Pyramid View Restaurant', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil dicta esse quo, aliquam quaerat autem provident eveniet? Nihil, enim accusantium?', 'pyramidview@example.com', '2 Giza Pyramid Road', 'Giza', '+20 333 222 111', '1699879441_5eff48_30669344f0d54ad7a2342ecbabff00a1~mv2.webp', '4', '6666', '40', 1, 2, '2023-11-12 17:43:17', '2023-11-13 10:44:01'),
+(6, 'Nile Felucca Cafe', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil dicta esse quo, aliquam quaerat autem provident eveniet? Nihil, enim accusantium?', 'feluccacafe@example.com', '10 Felucca Street', 'Asyut', '+20 333 222 111', '1699879496_701838ab-f2c9-4666-a5a7-d21801cf8205.jpg', '3', '4568', '20', 1, 2, '2023-11-12 17:44:25', '2023-11-13 10:44:56'),
 (7, 'Egyptian Delights', 'A popular Cairo restaurant with a 4.5 rating, known for its authentic Egyptian cuisine and stunning Nile River views at 123 Nile Street', 'info@egyptiandelights.com', '123 Nile Street', 'Cairo', '+20 123 456 789', '1699870011_TENDER-Steakhouse-Lounge-2.jpg', '4.5', '1200', '10', 1, 1, '2023-11-13 08:06:50', '2023-11-13 08:06:51'),
 (8, 'Nileview Cafe', 'it offers a 4.3-rated café experience with a scenic sea view along 45 Corniche Avenue', 'nileview@example.com', '45 Corniche AvLocated in Alexandria', 'Alexandria', '+20 987 654 321', '1699870627_8b0f8e6c876297dabd2df47d95e97194.jpg', '4.7', '1200', '20', 1, 1, '2023-11-13 08:17:07', '2023-11-13 08:17:07'),
 (9, 'Luxor Eats', 'Situated in Luxor on 88 Luxor Avenue, this restaurant with a 4.0 rating offers authentic Egyptian flavors in a historical setting', 'luxoreats@example.com', '88 Luxor Avenue', 'Luxor', '+20 111 222 333', '1699870986_a-piece-of-paradise.jpg', '4.9', '1000', '20', 1, 1, '2023-11-13 08:23:06', '2023-11-13 08:23:06'),
@@ -859,7 +859,7 @@ ALTER TABLE `hotels`
 -- AUTO_INCREMENT for table `images`
 --
 ALTER TABLE `images`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=236;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=242;
 
 --
 -- AUTO_INCREMENT for table `migrations`
