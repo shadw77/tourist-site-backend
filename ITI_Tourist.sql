@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Nov 12, 2023 at 10:03 PM
+-- Host: 127.0.0.1:3310
+-- Generation Time: Nov 13, 2023 at 10:46 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `ITI_Tourist`
+-- Database: `iti_tourist`
 --
 
 -- --------------------------------------------------------
@@ -109,6 +109,23 @@ CREATE TABLE `hotels` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `hotels`
+--
+
+INSERT INTO `hotels` (`id`, `name`, `description`, `street`, `government`, `thumbnail`, `rating`, `cost`, `discount`, `available`, `creator_id`, `created_at`, `updated_at`) VALUES
+(1, 'Egyptian Nile Cairo', 'All rooms at the hotel come with air conditioning, a seating area,\r\n        a flat-screen TV with satellite channels, a safety deposit box and a private bathroom with a shower, a hairdryer and slippers. Rooms are equipped with a kettle, while some rooms have a kitchen with a fridge, a microwave and a toaster. At Egyptian Nile Cairo rooms are fitted with bed linen and towels', '69 abdelasis street', 'Cairo', '1699867903_490884915.jpg', NULL, '3059', '5', 1, 2, '2023-11-13 07:31:43', '2023-11-13 07:31:43'),
+(2, 'Hilton Cairo Heliopolis Hotel', 'Hilton Cairo Heliopolis Hotel features a Casino, and a hot tub.\r\n       It has 3 swimming pools surrounded by a landscaped garden. WiFi is available in all\r\n        rooms with charge and free in the Lobby and Restaurant', 'Uruba Street, Heliopolis, Heliopolis, Cairo, Egypt', 'Cairo', '1699867978_491882641.jpg', NULL, '5716', '5', 1, 2, '2023-11-13 07:32:58', '2023-11-13 07:32:58'),
+(3, 'Novotel Cairo Airport', 'Guests can enjoy a workout at the on-site fitness center or a game of tennis on the\r\n     court nearby. Novotel Cairo Airport also offers a business center, a 24-hour front desk and car rental', 'Cairo Airport Road, Heliopolis, 11776', 'Cairo', '1699868051_277751146.jpg', NULL, '2100', '5', 1, 2, '2023-11-13 07:34:11', '2023-11-13 07:34:11'),
+(4, 'Iberotel Luxor', 'A heated pool floating on the Nile is one of the most unique features\r\n     of this 4-star hotel. Overlooking the Theben Hills, Iberotel Luxor also offers a restaurant boat and rooms with private balconies', 'Khaled Ibn El Waleed Street, East Bank, 99999', 'Luxor', '1699868124_333397081.jpg', NULL, '1335', '5', 1, 2, '2023-11-13 07:35:24', '2023-11-13 07:35:24'),
+(5, 'Pyramisa Hotel Luxor', 'A heated pool floating on the Nile is one of the most unique features of this 4-star hotel. Overlooking the Theben Hills, Iberotel Luxor also offers a restaurant boat and rooms with private balconies', 'Khaled Ibn El Walid Stree', 'Luxor', '1699868190_476581584.jpg', NULL, '1000', '5', 1, 2, '2023-11-13 07:36:30', '2023-11-13 07:36:30'),
+(6, 'Porto El Jabal Hotel', 'At the hotel the rooms come with air conditioning, a desk, a flat-screen TV, a private bathroom, bed linen, towels and a terrace with a sea view. All guest rooms will provide guests with a wardrobe and a kettle.', 'Porto El Sokhna, 43514 Ain Sokhna', 'Ain Sokhna', '1699868332_95687809.jpg', NULL, '2209', '8', 1, 2, '2023-11-13 07:38:52', '2023-11-13 07:38:52'),
+(7, 'Swiss Inn Teda Hotel & Aqua Park', 'The Teda Swiss Inn Plaza Hotel is set amidst lush gardens at the entrance of Chinese- Egyptian Economic Zone. Guests can make use of the free WiFi in the entire hotel, the pool and the 24-hour room service.', 'North West Gulf of Suez, Economic Sector', 'Ain Sokhna', '1699868419_49182302 (1).jpg', NULL, '1900', '5', 1, 6, '2023-11-13 07:40:19', '2023-11-13 07:40:19'),
+(8, 'Tanoak Resort', 'The 4-star Tropitel Dahab Oasis is located on the coast of Aqaba Gulf. The hotel has its own private beach, an outdoor swimming pool heated during winter and a diving centre overlooking the Blue Hole diving spot.', 'Azha Resort, Ain Sokhna 34 Km – Suez-Hurghada Road – Red Sea', 'Hurghada', '1699868489_308549179.jpg', NULL, '2809', '5', 1, 6, '2023-11-13 07:41:29', '2023-11-13 07:41:29'),
+(9, 'Golden Hoster Hotel, Alex', 'Guest rooms are equipped with air conditioning, a flat-screen TV with satellite channels, a microwave, a kettle, a shower, free toiletries and a desk. With a private bathroom, rooms at the hotel also offer a city view. At HI Alexandria Apartments, each room comes with a seating area.', '123 Hole Road, Alex', 'Alex', '1699868556_39245097.jpg', NULL, '2209', '5', 1, 6, '2023-11-13 07:42:36', '2023-11-13 07:42:36'),
+(10, 'Blue Beach Club', 'The air-conditioned rooms at Blue Beach Club feature Oriental décor and a modern private bathroom. Each unit is elegantly decorated and has a private balcony or a terrace', 'El Melal Street, 99999 Dahab', 'Dahab', '1699868618_6874499.jpg', NULL, '1800', NULL, 1, 6, '2023-11-13 07:43:38', '2023-11-13 07:43:38'),
+(11, 'Tropitel Dahab Oasis', 'the 4-star Tropitel Dahab Oasis is located on the coast of Aqaba Gulf. The hotel has its own private beach, an outdoor swimming pool heated during winter and a diving centre overlooking the Blue Hole diving spot.', 'Blue Hole Road, Dahab', 'Dahab', '1699868695_39245097.jpg', NULL, '2209', '5', 1, 6, '2023-11-13 07:44:55', '2023-11-13 07:44:55');
 
 -- --------------------------------------------------------
 
@@ -288,7 +305,56 @@ INSERT INTO `images` (`id`, `image`, `imageable_id`, `imageable_type`, `created_
 (156, '1699821589_0c.jpg', 22, 'Trip', '2023-11-12 18:39:49', '2023-11-12 18:39:49'),
 (157, '1699821649_900x600-1-50-8d5df903cab7719643a9f68ac0b5982e.jpg', 23, 'Trip', '2023-11-12 18:40:49', '2023-11-12 18:40:49'),
 (158, '1699821649_1304725889-Sunset-Safari-by-Quad-Bike.jpg', 23, 'Trip', '2023-11-12 18:40:49', '2023-11-12 18:40:49'),
-(159, '1699821649_A-wonderful-view-of-tourists-riding-a-desert-bike-in-Egypt-safari.jpg', 23, 'Trip', '2023-11-12 18:40:49', '2023-11-12 18:40:49');
+(159, '1699821649_A-wonderful-view-of-tourists-riding-a-desert-bike-in-Egypt-safari.jpg', 23, 'Trip', '2023-11-12 18:40:49', '2023-11-12 18:40:49'),
+(160, '1699867903_490168687.jpg', 1, 'Hotel', '2023-11-13 07:31:43', '2023-11-13 07:31:43'),
+(161, '1699867903_490887357.jpg', 1, 'Hotel', '2023-11-13 07:31:43', '2023-11-13 07:31:43'),
+(162, '1699867903_490884915.jpg', 1, 'Hotel', '2023-11-13 07:31:43', '2023-11-13 07:31:43'),
+(163, '1699867903_490569066.jpg', 1, 'Hotel', '2023-11-13 07:31:43', '2023-11-13 07:31:43'),
+(164, '1699867903_490885947.jpg', 1, 'Hotel', '2023-11-13 07:31:43', '2023-11-13 07:31:43'),
+(165, '1699867978_483730770.jpg', 2, 'Hotel', '2023-11-13 07:32:58', '2023-11-13 07:32:58'),
+(166, '1699867978_491882641.jpg', 2, 'Hotel', '2023-11-13 07:32:58', '2023-11-13 07:32:58'),
+(167, '1699867978_491882675.jpg', 2, 'Hotel', '2023-11-13 07:32:58', '2023-11-13 07:32:58'),
+(168, '1699867978_491882685.jpg', 2, 'Hotel', '2023-11-13 07:32:58', '2023-11-13 07:32:58'),
+(169, '1699867978_491975454.jpg', 2, 'Hotel', '2023-11-13 07:32:58', '2023-11-13 07:32:58'),
+(170, '1699868051_25187086.jpg', 3, 'Hotel', '2023-11-13 07:34:11', '2023-11-13 07:34:11'),
+(171, '1699868051_277751146.jpg', 3, 'Hotel', '2023-11-13 07:34:11', '2023-11-13 07:34:11'),
+(172, '1699868051_278181522.jpg', 3, 'Hotel', '2023-11-13 07:34:11', '2023-11-13 07:34:11'),
+(173, '1699868051_278183282.jpg', 3, 'Hotel', '2023-11-13 07:34:11', '2023-11-13 07:34:11'),
+(174, '1699868051_479953632.jpg', 3, 'Hotel', '2023-11-13 07:34:11', '2023-11-13 07:34:11'),
+(175, '1699868124_333394176.jpg', 4, 'Hotel', '2023-11-13 07:35:24', '2023-11-13 07:35:24'),
+(176, '1699868124_333394393.jpg', 4, 'Hotel', '2023-11-13 07:35:24', '2023-11-13 07:35:24'),
+(177, '1699868124_333397071.jpg', 4, 'Hotel', '2023-11-13 07:35:24', '2023-11-13 07:35:24'),
+(178, '1699868124_333397081.jpg', 4, 'Hotel', '2023-11-13 07:35:24', '2023-11-13 07:35:24'),
+(179, '1699868190_333394176.jpg', 5, 'Hotel', '2023-11-13 07:36:30', '2023-11-13 07:36:30'),
+(180, '1699868190_333397071.jpg', 5, 'Hotel', '2023-11-13 07:36:30', '2023-11-13 07:36:30'),
+(181, '1699868190_476581584.jpg', 5, 'Hotel', '2023-11-13 07:36:30', '2023-11-13 07:36:30'),
+(182, '1699868190_476581729.jpg', 5, 'Hotel', '2023-11-13 07:36:30', '2023-11-13 07:36:30'),
+(183, '1699868333_95682456.jpg', 6, 'Hotel', '2023-11-13 07:38:53', '2023-11-13 07:38:53'),
+(184, '1699868333_95684997.jpg', 6, 'Hotel', '2023-11-13 07:38:53', '2023-11-13 07:38:53'),
+(185, '1699868333_95687809.jpg', 6, 'Hotel', '2023-11-13 07:38:53', '2023-11-13 07:38:53'),
+(186, '1699868333_95693035.jpg', 6, 'Hotel', '2023-11-13 07:38:53', '2023-11-13 07:38:53'),
+(187, '1699868333_319433891.jpg', 6, 'Hotel', '2023-11-13 07:38:53', '2023-11-13 07:38:53'),
+(188, '1699868419_49181253.jpg', 7, 'Hotel', '2023-11-13 07:40:19', '2023-11-13 07:40:19'),
+(189, '1699868419_49181312.jpg', 7, 'Hotel', '2023-11-13 07:40:19', '2023-11-13 07:40:19'),
+(190, '1699868419_49181744.jpg', 7, 'Hotel', '2023-11-13 07:40:19', '2023-11-13 07:40:19'),
+(191, '1699868419_49182302 (1).jpg', 7, 'Hotel', '2023-11-13 07:40:19', '2023-11-13 07:40:19'),
+(192, '1699868489_308540956.jpg', 8, 'Hotel', '2023-11-13 07:41:29', '2023-11-13 07:41:29'),
+(193, '1699868489_308546697.jpg', 8, 'Hotel', '2023-11-13 07:41:29', '2023-11-13 07:41:29'),
+(194, '1699868489_308549179.jpg', 8, 'Hotel', '2023-11-13 07:41:29', '2023-11-13 07:41:29'),
+(195, '1699868490_308549500.jpg', 8, 'Hotel', '2023-11-13 07:41:30', '2023-11-13 07:41:30'),
+(196, '1699868490_323463737.jpg', 8, 'Hotel', '2023-11-13 07:41:30', '2023-11-13 07:41:30'),
+(197, '1699868556_39245097.jpg', 9, 'Hotel', '2023-11-13 07:42:36', '2023-11-13 07:42:36'),
+(198, '1699868556_39245986.jpg', 9, 'Hotel', '2023-11-13 07:42:36', '2023-11-13 07:42:36'),
+(199, '1699868556_478882921.jpg', 9, 'Hotel', '2023-11-13 07:42:36', '2023-11-13 07:42:36'),
+(200, '1699868556_479010562.jpg', 9, 'Hotel', '2023-11-13 07:42:36', '2023-11-13 07:42:36'),
+(201, '1699868618_6874499.jpg', 10, 'Hotel', '2023-11-13 07:43:38', '2023-11-13 07:43:38'),
+(202, '1699868618_39245986.jpg', 10, 'Hotel', '2023-11-13 07:43:38', '2023-11-13 07:43:38'),
+(203, '1699868618_39246508.jpg', 10, 'Hotel', '2023-11-13 07:43:38', '2023-11-13 07:43:38'),
+(204, '1699868618_252879798.jpg', 10, 'Hotel', '2023-11-13 07:43:38', '2023-11-13 07:43:38'),
+(205, '1699868695_39245097.jpg', 11, 'Hotel', '2023-11-13 07:44:55', '2023-11-13 07:44:55'),
+(206, '1699868695_39245986.jpg', 11, 'Hotel', '2023-11-13 07:44:55', '2023-11-13 07:44:55'),
+(207, '1699868695_39246508.jpg', 11, 'Hotel', '2023-11-13 07:44:55', '2023-11-13 07:44:55'),
+(208, '1699868695_40342593.jpg', 11, 'Hotel', '2023-11-13 07:44:55', '2023-11-13 07:44:55');
 
 -- --------------------------------------------------------
 
@@ -749,13 +815,13 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `hotels`
 --
 ALTER TABLE `hotels`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `images`
 --
 ALTER TABLE `images`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=160;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=209;
 
 --
 -- AUTO_INCREMENT for table `migrations`
