@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3310
--- Generation Time: Nov 13, 2023 at 10:46 AM
+-- Host: localhost
+-- Generation Time: Nov 13, 2023 at 01:24 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `iti_tourist`
+-- Database: `ITI_Tourist`
 --
 
 -- --------------------------------------------------------
@@ -354,7 +354,33 @@ INSERT INTO `images` (`id`, `image`, `imageable_id`, `imageable_type`, `created_
 (205, '1699868695_39245097.jpg', 11, 'Hotel', '2023-11-13 07:44:55', '2023-11-13 07:44:55'),
 (206, '1699868695_39245986.jpg', 11, 'Hotel', '2023-11-13 07:44:55', '2023-11-13 07:44:55'),
 (207, '1699868695_39246508.jpg', 11, 'Hotel', '2023-11-13 07:44:55', '2023-11-13 07:44:55'),
-(208, '1699868695_40342593.jpg', 11, 'Hotel', '2023-11-13 07:44:55', '2023-11-13 07:44:55');
+(208, '1699868695_40342593.jpg', 11, 'Hotel', '2023-11-13 07:44:55', '2023-11-13 07:44:55'),
+(209, '1699870011_TENDER-Steakhouse-Lounge-2 (1).jpg', 7, 'Restaurant', '2023-11-13 08:06:51', '2023-11-13 08:06:51'),
+(210, '1699870011_TENDER-Steakhouse-Lounge-2.jpg', 7, 'Restaurant', '2023-11-13 08:06:51', '2023-11-13 08:06:51'),
+(211, '1699870627_8b0f8e6c876297dabd2df47d95e97194.jpg', 8, 'Restaurant', '2023-11-13 08:17:07', '2023-11-13 08:17:07'),
+(212, '1699870627_327898951.jpg', 8, 'Restaurant', '2023-11-13 08:17:07', '2023-11-13 08:17:07'),
+(213, '1699870986_a-piece-of-paradise (1).jpg', 9, 'Restaurant', '2023-11-13 08:23:06', '2023-11-13 08:23:06'),
+(214, '1699870986_bedouin-style-sitting.jpg', 9, 'Restaurant', '2023-11-13 08:23:06', '2023-11-13 08:23:06'),
+(215, '1699870986_caption.jpg', 9, 'Restaurant', '2023-11-13 08:23:06', '2023-11-13 08:23:06'),
+(216, '1699871400_images.jpeg', 10, 'Restaurant', '2023-11-13 08:30:00', '2023-11-13 08:30:00'),
+(217, '1699871400_images (1).jpeg', 10, 'Restaurant', '2023-11-13 08:30:00', '2023-11-13 08:30:00'),
+(218, '1699871400_images (2).jpeg', 10, 'Restaurant', '2023-11-13 08:30:00', '2023-11-13 08:30:00'),
+(219, '1699871610_Local-restaurant-in-the-oasis-of-Bahariya.jpg', 11, 'Restaurant', '2023-11-13 08:33:30', '2023-11-13 08:33:30'),
+(220, '1699871610_luxor-restaurants-las-vegas-2.jpg', 11, 'Restaurant', '2023-11-13 08:33:30', '2023-11-13 08:33:30'),
+(222, '1699871917_owoce-morza-to-cos-na (1).jpg', 12, 'Restaurant', '2023-11-13 08:38:37', '2023-11-13 08:38:37'),
+(223, '1699871933_caption.jpg', 12, 'Restaurant', '2023-11-13 08:38:53', '2023-11-13 08:38:53'),
+(224, '1699872080_tanta (1).jpg', 13, 'Restaurant', '2023-11-13 08:41:20', '2023-11-13 08:41:20'),
+(225, '1699872080_tanta-07072022-63.jpg', 13, 'Restaurant', '2023-11-13 08:41:20', '2023-11-13 08:41:20'),
+(226, '1699872080_tavaa-restaurant-bandra-west-mumbai-tandoori-restaurants-lj4fx7vtve-250.jpg', 13, 'Restaurant', '2023-11-13 08:41:20', '2023-11-13 08:41:20'),
+(227, '1699872879_7097cfb3-e464-4468-b241-7df76c298647.jpg', 14, 'Restaurant', '2023-11-13 08:54:39', '2023-11-13 08:54:39'),
+(228, '1699873248_825_greek-club-white-and-blue-restaurant-3.jpg', 14, 'Restaurant', '2023-11-13 09:00:48', '2023-11-13 09:00:48'),
+(229, '1699874199_65353682-b966-4480-9313-76aeccf20f3b.jpg', 15, 'Restaurant', '2023-11-13 09:16:39', '2023-11-13 09:16:39'),
+(230, '1699874199_219803740.jpg', 15, 'Restaurant', '2023-11-13 09:16:39', '2023-11-13 09:16:39'),
+(231, '1699874477_Local-restaurant-in-the-oasis-of-Bahariya.jpg', 16, 'Restaurant', '2023-11-13 09:21:17', '2023-11-13 09:21:17'),
+(232, '1699874981_hcmp89862_245120.jpeg', 17, 'Restaurant', '2023-11-13 09:29:41', '2023-11-13 09:29:41'),
+(233, '1699874981_hcmp89862_245122.jpeg', 17, 'Restaurant', '2023-11-13 09:29:41', '2023-11-13 09:29:41'),
+(234, '1699874981_istockphoto-1428412216-612x612.jpg', 17, 'Restaurant', '2023-11-13 09:29:41', '2023-11-13 09:29:41'),
+(235, '1699875214_el-gendy-for-seafood.jpg', 18, 'Restaurant', '2023-11-13 09:33:34', '2023-11-13 09:33:34');
 
 -- --------------------------------------------------------
 
@@ -456,7 +482,19 @@ INSERT INTO `restaurants` (`id`, `name`, `description`, `email`, `street`, `gove
 (3, 'Rangoli Paradise', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil dicta esse quo, aliquam quaerat autem provident eveniet? Nihil, enim accusantium?', 'redseaparadise@example.com', '12 Paradise Road', 'Sharm El Sheikh', '+20 333 222 111', '1699818037_finest-foods-in-sharm.jpg', '2', '2222', '20', 1, 2, '2023-11-12 17:40:37', '2023-11-12 17:40:37'),
 (4, 'Fayoum Fisherman\'s Grill', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil dicta esse quo, aliquam quaerat autem provident eveniet? Nihil, enim accusantium?', 'fayoumfisherman@example.com', '20 Fayoum Beach Road', 'Fayoum', '+20 333 222 111', '1699818122_image0-3.webp', '4', '1222', '30', 1, 2, '2023-11-12 17:42:02', '2023-11-12 17:42:02'),
 (5, 'Pyramid View Restaurant', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil dicta esse quo, aliquam quaerat autem provident eveniet? Nihil, enim accusantium?', 'pyramidview@example.com', '2 Giza Pyramid Road', 'Giza', '+20 333 222 111', '1699818197_5eff48_30669344f0d54ad7a2342ecbabff00a1~mv2.webp', '4', '6666', '40', 1, 2, '2023-11-12 17:43:17', '2023-11-12 17:43:17'),
-(6, 'Nile Felucca Cafe', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil dicta esse quo, aliquam quaerat autem provident eveniet? Nihil, enim accusantium?', 'feluccacafe@example.com', '10 Felucca Street', 'Asyut', '+20 333 222 111', '1699818265_701838ab-f2c9-4666-a5a7-d21801cf8205.jpg', '3', '4568', '20', 1, 2, '2023-11-12 17:44:25', '2023-11-12 17:44:25');
+(6, 'Nile Felucca Cafe', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil dicta esse quo, aliquam quaerat autem provident eveniet? Nihil, enim accusantium?', 'feluccacafe@example.com', '10 Felucca Street', 'Asyut', '+20 333 222 111', '1699818265_701838ab-f2c9-4666-a5a7-d21801cf8205.jpg', '3', '4568', '20', 1, 2, '2023-11-12 17:44:25', '2023-11-12 17:44:25'),
+(7, 'Egyptian Delights', 'A popular Cairo restaurant with a 4.5 rating, known for its authentic Egyptian cuisine and stunning Nile River views at 123 Nile Street', 'info@egyptiandelights.com', '123 Nile Street', 'Cairo', '+20 123 456 789', '1699870011_TENDER-Steakhouse-Lounge-2.jpg', '4.5', '1200', '10', 1, 1, '2023-11-13 08:06:50', '2023-11-13 08:06:51'),
+(8, 'Nileview Cafe', 'it offers a 4.3-rated café experience with a scenic sea view along 45 Corniche Avenue', 'nileview@example.com', '45 Corniche AvLocated in Alexandria', 'Alexandria', '+20 987 654 321', '1699870627_8b0f8e6c876297dabd2df47d95e97194.jpg', '4.7', '1200', '20', 1, 1, '2023-11-13 08:17:07', '2023-11-13 08:17:07'),
+(9, 'Luxor Eats', 'Situated in Luxor on 88 Luxor Avenue, this restaurant with a 4.0 rating offers authentic Egyptian flavors in a historical setting', 'luxoreats@example.com', '88 Luxor Avenue', 'Luxor', '+20 111 222 333', '1699870986_a-piece-of-paradise.jpg', '4.9', '1000', '20', 1, 1, '2023-11-13 08:23:06', '2023-11-13 08:23:06'),
+(10, 'Aswan Oasis', 'Renowned for Nubian dishes and a riverside location at 10 Nile Road in Aswan, with a 4.2 rating', 'aswanoasis@example.com', '10 Nile Road', 'Aswan', '+20 555 666 777', '1699871400_images.jpeg', '4.2', '500', '10', 1, 1, '2023-11-13 08:30:00', '2023-11-13 08:30:00'),
+(11, 'Salama cafe', 'A hidden gem in Siwa Oasis at 20 Sahara Avenue, rated 4.1, offering an oasis experience with traditional food', 'siwagrill@example.com', '20 Sahara Avenue', 'Siwa Oasis', '+20 999 888 777', '1699871610_img-20180601-110905-largejpg.jpg', '4.5', '700', '15', 1, 1, '2023-11-13 08:33:30', '2023-11-13 08:33:30'),
+(12, 'Granda', 'A seafood paradise in Hurghada with a 4.4 rating, serving fresh seafood by the Red Sea at 5 Red Sea Road', 'redseabreeze@example.com', '5 Red Sea Road', 'Hurghada', '+20 777 666 555', '1699871894_TENDER-Steakhouse-Lounge-2.jpg', '4.4', '600', '10', 1, 1, '2023-11-13 08:38:14', '2023-11-13 08:38:14'),
+(13, 'Delta Diner', 'Located in Tanta at 30 Delta Avenue, this restaurant with a 3.9 rating is known for its tasty Delta dishes and friendly staff', 'deltadiner@example.com', '30 Delta Avenue', 'Tanta', '+20 333 222 111', '1699872080_tanta (1).jpg', '4.5', '1000', '20', 1, 1, '2023-11-13 08:41:20', '2023-11-13 08:41:20'),
+(14, 'Marsa Matrouh Seafood', 'Celebrated for the best seafood in Marsa Matrouh, this 4.6-rated restaurant is situated at 55 Beachfront Avenue', 'marsaseafood@example.com', '55 Beachfront Avenue', 'Marsa Matrouh', '+20 555 444 333', '1699872879_8b0f8e6c876297dabd2df47d95e97194.jpg', '4.6', '800', '10', 1, 1, '2023-11-13 08:54:39', '2023-11-13 08:54:39'),
+(15, 'stereo', 'A delightful restaurant in Mansoura, rated 4.2, known for delicious dishes and friendly service on Mashaya Street', 'stereo@example.com', 'mashaya Street', 'mansoura', '+20 666 777 888', '1699874199_65353682-b966-4480-9313-76aeccf20f3b.jpg', '4.5', '800', '10', 1, 1, '2023-11-13 09:16:39', '2023-11-13 09:16:39'),
+(16, 'Sahara Sweets', 'Located in Siwa Oasis, Sahara Sweets boasts a 4.2 rating and is known for its delicious Siwan pastries. Address: 25 Desert Avenue', 'saharasweets@example.com', '25 Desert Avenue', 'Siwa Oasis', '+20 999 777 888', '1699874477_img-20180601-110905-largejpg.jpg', '4.5', '800', '20', 1, 1, '2023-11-13 09:21:17', '2023-11-13 09:21:17'),
+(17, 'Blue Hole Grill', 'Situated in Dahab, the Blue Hole Grill is celebrated for offering the best seafood in town with a rating of 4.7. Address: 2 Blue Hole Road', 'bluehole@example.com', '2 Blue Hole Road', 'Dahab', '+20 123 456 789\",', '1699874981_hcmp89862_245120.jpeg', '4.1', '400', '20', 1, 1, '2023-11-13 09:29:41', '2023-11-13 09:29:41'),
+(18, 'Elgendy seafood', 'In Port Said, Elgendy Seafood is renowned for its tasty Mediterranean cuisine. The restaurant holds a 4.6 rating. Address: 17 Med Avenue', 'medflavors@example.com', '17 Med Avenue', 'Port Said', '+20 987 654 321', '1699875214_el-gendy-for-seafood.jpg', '4.6', '1000', '10', 1, 1, '2023-11-13 09:33:34', '2023-11-13 09:33:34');
 
 -- --------------------------------------------------------
 
@@ -821,7 +859,7 @@ ALTER TABLE `hotels`
 -- AUTO_INCREMENT for table `images`
 --
 ALTER TABLE `images`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=209;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=236;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -839,7 +877,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `restaurants`
 --
 ALTER TABLE `restaurants`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `reviews`
