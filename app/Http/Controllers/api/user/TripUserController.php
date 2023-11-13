@@ -15,8 +15,8 @@ class TripUserController extends Controller
      */
     public function index()
     {
-        $trips = Trip::with('images')->get();
-         //$trips=Trip::paginate(2);
+        // $trips = Trip::with('images')->get();
+        $trips = Trip::with('images')->paginate(4);
 
        return TripResource::collection($trips);
     }
