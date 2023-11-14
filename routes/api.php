@@ -17,7 +17,7 @@ use App\Http\Controllers\api\HotelImageController;
 use App\Http\Controllers\review\reviewController;
 use App\Http\Controllers\api\TransactionController;
 use App\Http\Controllers\api\UserOrderController;
- //use App\Http\Controllers\api\DestinationController;
+// use App\Http\Controllers\api\use\DestinationUserController;
 // use App\Http\Controllers\destinationController;
 use App\Http\Controllers\api\VendorHotelsController;
 use App\Http\Controllers\api\ImageController;
