@@ -15,7 +15,9 @@ class RestaurantUserController extends Controller
      */
     public function index()
     {
-        $restaurants = Restaurant::paginate(3);
+        // $restaurants = Restaurant::paginate(4);
+        $restaurants = Restaurant::with('images')->paginate(4);
+
         return RestaurantResource::collection($restaurants);
     }
 
