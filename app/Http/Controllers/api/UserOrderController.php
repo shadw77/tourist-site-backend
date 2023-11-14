@@ -119,7 +119,7 @@ class UserOrderController extends Controller
         }
 
         // $orders = UserOrder::all();
-        $orders = UserOrder::orderBy('created_at', 'desc')->paginate(4); 
+        $orders = UserOrder::orderBy('created_at', 'desc')->paginate(4);
         return UserOrderResource::collection($orders);
     }
 
@@ -237,6 +237,7 @@ class UserOrderController extends Controller
     public function confirm_order()
     {
 
+        //return
 
         
         $order = UserOrder::latest()->first();

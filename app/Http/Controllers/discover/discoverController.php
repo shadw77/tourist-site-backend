@@ -24,21 +24,12 @@ class discoverController extends Controller
     private $numberofRecords=2;
 
     /*start function that send nearbyplaces*/
-    public function index($city){
+    public function index(){
         //return $city;
-        $restaurantnearbyplaces=Restaurant::with(['images', 'reviews.user']);
-        $tripnearbyplaces=Trip::with(['images', 'reviews.user']);
-        $hotelnearbyplaces=Hotel::with(['images', 'reviews.user']);
 
-        if ($city !== 'null') {
-            //Log::info($city);
-            $restaurantnearbyplaces = $restaurantnearbyplaces->where('government', $city);
-            $tripnearbyplaces = $tripnearbyplaces->where('government', $city);
-            $hotelnearbyplaces = $hotelnearbyplaces->where('government', $city);
-        }
-        $restaurantnearbyplaces = $restaurantnearbyplaces->get();
-        $tripnearbyplaces = $tripnearbyplaces->get();
-        $hotelnearbyplaces = $hotelnearbyplaces->get();
+        $restaurantnearbyplaces=Restaurant::with(['images', 'reviews.user'])->get();
+        $tripnearbyplaces=Trip::with(['images', 'reviews.user']) ->get();
+        $hotelnearbyplaces=Hotel::with(['images', 'reviews.user'])->get();
 
         //start add type to Objects
         foreach($restaurantnearbyplaces as $place){
@@ -65,22 +56,10 @@ class discoverController extends Controller
     /*end function that send nearbyplaces*/
 
     /*start function that retrieve review that belong to nearbyplaces*/
-    public function getReviewNearByPlaces($city){
-        $tripwithreview=Trip::has('reviews')->with('reviews.user');
-        $restaurantwithreview=Restaurant::has('reviews')->with('reviews.user');
-        $hotelwithreview=Hotel::has('reviews')->with('reviews.user');
-
-        if ($city !== 'null') {
-            $restaurantwithreview = $restaurantwithreview->where('government', $city);
-            $tripwithreview = $tripwithreview->where('government', $city);
-            $hotelwithreview = $hotelwithreview->where('government', $city);
-
-        }
-
-        $tripwithreview = $tripwithreview->take($this->numberofRecords)->get();
-        $restaurantwithreview = $restaurantwithreview->take($this->numberofRecords)->get();
-        $hotelwithreview = $hotelwithreview->take($this->numberofRecords)->get();
-
+    public function getReviewNearByPlaces(){
+        $tripwithreview=Trip::has('reviews')->with('reviews.user')->get();
+        $restaurantwithreview=Restaurant::has('reviews')->with('reviews.user')->get();
+        $hotelwithreview=Hotel::has('reviews')->with('reviews.user')->get();
 
         //start extract reviews from $tripwithreview
         $tripreview = $this->getReview($tripwithreview);
@@ -94,9 +73,9 @@ class discoverController extends Controller
         return $this->returnData(
             "reviews",
             [
-                'tripreview' => array_slice($tripreview, 0, 2),
-                'restaurantreview' => array_slice($restaurantreview, 0, 2),
-                'hotelreview' => array_slice($hotelreview, 0, 2)
+                'tripreview' => $tripreview,
+                'restaurantreview' => $restaurantreview,
+                'hotelreview' => $hotelreview
             ]
             ,'data Found'
         );
@@ -151,9 +130,9 @@ class discoverController extends Controller
         return $this->returnData(
             "reviews",
             [
-                'tripreview' => array_slice($tripreview, 0, 2),
-                'restaurantreview' => array_slice($restaurantreview, 0, 2),
-                'hotelreview' => array_slice($hotelreview, 0, 2)
+                'tripreview' => $tripreview,
+                'restaurantreview' => $restaurantreview,
+                'hotelreview' => $hotelreview
             ]
             ,'Data Found'
         );

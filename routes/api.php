@@ -51,15 +51,17 @@ Route::group(['middleware'=>['api']],function(){
     Route::get('auth/callback', [Controller::class,'githubredirect']);//for github login
     Route::get('google/auth/redirect', [Controller::class,'googleLogin']);//for google login
     Route::get('google/auth/callback', [Controller::class,'googleredirect']);//for google login
-
     // /end endpoints for authentication/
+
+    Route::post('send-message',[Controller::class,'sendMessage']);
+
 
     // /start endpoints that handled in detail component/
     Route::post('get-review',[discoverController::class,'reviewById']);
     // /end endpoints that handled in detail component/
 
-    Route::get('get-nearbyplaces/{city}',[discoverController::class,'index']);
-    Route::get('get-review-nearbyplaces/{city}',[discoverController::class,'getReviewNearByPlaces']);
+    Route::get('get-nearbyplaces',[discoverController::class,'index']);
+    Route::get('get-review-nearbyplaces',[discoverController::class,'getReviewNearByPlaces']);
     Route::get('get-topattractions-places',[discoverController::class,'getTopAttractions']);
     Route::get('get-review-topattractions-places',[discoverController::class,'getReviewTopAttractions']);
     Route::get('get-offers-places',[discoverController::class,'getOffers']);
@@ -98,7 +100,6 @@ Route::group(['middleware'=>['api']],function(){
         // /end endpoint that deal with payment gateway/
     // /start endpoints that user  should be logged and send jwt token to access any of them/
      Route::group([ 'middleware'=>['jwt.verify']],function(){
-
 
         Route::post('review',[discoverController::class,'store']);//add comment
         Route::get("get-test-data",[Controller::class,'testdata']);//for test
