@@ -70,7 +70,21 @@ class UserController extends Controller
             "mobile"=>'required',
             "role"=>'required',
         ]);
-        $user->update($request->all());
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'government' => $request->government,
+            'street' => $request->street,
+            'mobile' => $request->mobile,
+        ];
+        
+        if ($request->filled('password')) {
+            $data['password'] = bcrypt($request->password); // Hash the password
+        }
+        
+        $user->update($data);
+
+
         return new UserResource($user);
     }
 

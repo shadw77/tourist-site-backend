@@ -16,6 +16,9 @@ class DestinationUserController extends Controller
     public function index()
     {
         $destinations = Destination::with('images')->get();
+        foreach($destinations as $destination){
+            $destination->type="Destination";
+        }
         return $destinations;
     }
 

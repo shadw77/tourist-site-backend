@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('invoiceid',255);
-            $table->string('paymentid',255);
+            $table->string('paymentid',255)->nullable();
             $table->foreignId('creator_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();

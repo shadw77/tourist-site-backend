@@ -20,7 +20,7 @@ class discoverController extends Controller
 {
     use GeneralTrait;
     private $condition=">=";
-    private $Rating=2;
+    private $Rating=5;
     private $numberofRecords=2;
 
     /*start function that send nearbyplaces*/
@@ -36,9 +36,9 @@ class discoverController extends Controller
             $tripnearbyplaces = $tripnearbyplaces->where('government', $city);
             $hotelnearbyplaces = $hotelnearbyplaces->where('government', $city);
         }
-        $restaurantnearbyplaces = $restaurantnearbyplaces->take($this->numberofRecords)->get();
-        $tripnearbyplaces = $tripnearbyplaces->take($this->numberofRecords)->get();
-        $hotelnearbyplaces = $hotelnearbyplaces->take($this->numberofRecords)->get();
+        $restaurantnearbyplaces = $restaurantnearbyplaces->get();
+        $tripnearbyplaces = $tripnearbyplaces->get();
+        $hotelnearbyplaces = $hotelnearbyplaces->get();
 
         //start add type to Objects
         foreach($restaurantnearbyplaces as $place){
@@ -105,9 +105,9 @@ class discoverController extends Controller
 
    /*start function that send top attractions*/
    public function getTopAttractions(){
-        $hotelTopAttractions=Hotel::where('rating',$this->condition,$this->Rating)->take($this->numberofRecords)->get();
-        $restaurantTopAttractions=Restaurant::where('rating',$this->condition,$this->Rating)->take($this->numberofRecords)->get();
-        $tripTopAttractions=Trip::where('rating',$this->condition,$this->Rating)->take($this->numberofRecords)->get();
+        $hotelTopAttractions=Hotel::where('rating',$this->condition,$this->Rating)->get();
+        $restaurantTopAttractions=Restaurant::where('rating',$this->condition,$this->Rating)->get();
+        $tripTopAttractions=Trip::where('rating',$this->condition,$this->Rating)->get();
 
         //start add type to Objects
         foreach($restaurantTopAttractions as $place){
@@ -163,9 +163,9 @@ class discoverController extends Controller
 
     /*start function that send offers*/
     public function getOffers(){
-        $hotelOffers=Hotel::where('discount','<>','null')->take($this->numberofRecords)->get();
-        $restaurantOffers=Restaurant::where('discount','<>','null')->take($this->numberofRecords)->get();
-        $tripOffers=Trip::where('discount','<>','null')->take($this->numberofRecords)->get();
+        $hotelOffers=Hotel::where('discount','<>','null')->get();
+        $restaurantOffers=Restaurant::where('discount','<>','null')->get();
+        $tripOffers=Trip::where('discount','<>','null')->get();
 
         //start add type to Objects
         foreach($restaurantOffers as $place){
