@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Redirect;
 use Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ContactUsEmail;
 
 class Controller extends BaseController
 {
@@ -194,6 +196,18 @@ class Controller extends BaseController
     return Redirect::away($redirectUrl);
    }
     /*end login with google function*/
+
+
+   /*start function that send message to admin*/
+    public function sendMessage(Request $request){
+        //return $this->returnData('request', $request->message,"message sent");
+
+        Mail::to("abd00tarek19@gmail.com")->send(new ContactUsEmail($request));
+    }
+   /*end function that send message to admin*/
+
+
+
 
     /*start testing function*/
     public function testdata(Request $request){
