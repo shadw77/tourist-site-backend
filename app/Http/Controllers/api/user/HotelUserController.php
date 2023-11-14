@@ -16,7 +16,7 @@ class HotelUserController extends Controller
      */
     public function index()
     {
-          $hotels=Hotel::paginate();
+          $hotels=Hotel::with('images')->paginate(4);
           return HotelResource::collection($hotels);
     }
 

@@ -91,20 +91,6 @@ Route::group(['middleware'=>['api']],function(){
     Route::apiResource('users', UserController::class);
     Route::get('images',  [ImageController::class,'index']);
     Route::get('images/{image}',  [ImageController::class,'show']);
-
-    // /start endpoints that user  should be logged and send jwt token to access any of them/
-     Route::group([ 'middleware'=>['jwt.verify']],function(){
-
-        Route::post('review',[discoverController::class,'store']);//add comment
-        Route::get("get-test-data",[Controller::class,'testdata']);//for test
-        Route::post('logout',[Controller::class,'logout']);      //function that logout
-        Route::post('/checkout', [UserOrderController::class,'checkout']);
-        Route::apiResource('orders', UserOrderController::class);
-        Route::get('users/{user}', [UserController::class,'show']);
-        Route::put('users/{user}', [UserController::class,'update']);
-
-
-
         // /start endpoint that deal with payment gateway/
         Route::get('orders/payment', [UserOrderController::class,'confirm_order']);
         Route::get('callback', [UserOrderController::class, 'paymentCallBack']);
@@ -112,6 +98,20 @@ Route::group(['middleware'=>['api']],function(){
             return view('payment.failed');
         });
         // /end endpoint that deal with payment gateway/
+    // /start endpoints that user  should be logged and send jwt token to access any of them/
+     Route::group([ 'middleware'=>['jwt.verify']],function(){
+
+        Route::post('review',[discoverController::class,'store']);//add comment
+        Route::get("get-test-data",[Controller::class,'testdata']);//for test
+        Route::post('logout',[Controller::class,'logout']);      //function that logout
+        Route::post('/checkout', [UserOrderController::class,'checkout']);
+        Route::get('users/{user}', [UserController::class,'show']);
+        Route::put('users/{user}', [UserController::class,'update']);
+
+
+
+
+        Route::apiResource('orders', UserOrderController::class);
 
         // /start endpoints that can only admin access/
         Route::group(['middleware'=>['admin-access'] ],function(){
@@ -169,7 +169,7 @@ Route::group(['middleware'=>['api']],function(){
         });
         // /end endpoints that admin or vendor can access/
     });
-    Route::apiResource('orders', UserOrderController::class);
+    // Route::apiResource('orders', UserOrderController::class);
 
 
     // /end endpoints that user  should be logged and send jwt token to access any of them/

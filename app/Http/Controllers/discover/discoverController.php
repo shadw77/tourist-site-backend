@@ -26,6 +26,7 @@ class discoverController extends Controller
     /*start function that send nearbyplaces*/
     public function index(){
         //return $city;
+
         $restaurantnearbyplaces=Restaurant::with(['images', 'reviews.user'])->get();
         $tripnearbyplaces=Trip::with(['images', 'reviews.user']) ->get();
         $hotelnearbyplaces=Hotel::with(['images', 'reviews.user'])->get();
@@ -141,9 +142,9 @@ class discoverController extends Controller
 
     /*start function that send offers*/
     public function getOffers(){
-        $hotelOffers=Hotel::where('discount','<>','null')->take($this->numberofRecords)->get();
-        $restaurantOffers=Restaurant::where('discount','<>','null')->take($this->numberofRecords)->get();
-        $tripOffers=Trip::where('discount','<>','null')->take($this->numberofRecords)->get();
+        $hotelOffers=Hotel::where('discount','<>','null')->get();
+        $restaurantOffers=Restaurant::where('discount','<>','null')->get();
+        $tripOffers=Trip::where('discount','<>','null')->get();
 
         //start add type to Objects
         foreach($restaurantOffers as $place){

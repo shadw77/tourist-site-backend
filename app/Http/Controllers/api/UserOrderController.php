@@ -33,7 +33,7 @@ class UserOrderController extends Controller
 
     public function checkout(Request $request)
     {
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
         $cartItems = $request->input('cartProducts');
 
         foreach ($cartItems as $cartItem) {
@@ -124,6 +124,7 @@ class UserOrderController extends Controller
     }
 
    public function allIndex(){
+
     $orders=UserOrder::get();
     $user = Auth::guard('api')->user();
     $user_id= $user->id;
@@ -238,6 +239,7 @@ class UserOrderController extends Controller
 
         //return
 
+        
         $order = UserOrder::latest()->first();
 
         $data = [
@@ -272,14 +274,12 @@ class UserOrderController extends Controller
         $usertrans = Transaction::where('invoiceid', $paymentData['Data']['InvoiceId'])->first();
 
         $usertrans->update(['paymentid' => $request->paymentId]);
-        $redirectUrl = 'http://localhost:4200/';
-        return Redirect::away($redirectUrl);
-        /*$response=response()->json([
+        $response=response()->json([
             'status' => 200,
-            'mssg' => "User Has Successfully Logged",
-            "userdata" => $user
+            'mssg' => "Successfully Payement",
         ]);
-        $redirectUrl = 'http://localhost:4200/?response='.urlencode(json_encode($response));*/
+        $redirectUrl = 'http://localhost:4200/orders?response='.urlencode(json_encode($response));
+        return Redirect::away($redirectUrl);
 
     }
 }
