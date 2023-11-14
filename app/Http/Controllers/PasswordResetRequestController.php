@@ -37,6 +37,7 @@ class PasswordResetRequestController extends Controller {
          else {
             // If email exists
             //return $request;
+            return $this->sendMail($request->email);
             $this->sendMail($request->email);
 
             return $this->returnSuccessMessage('Check your inbox, we have sent a link to reset email.',200);
