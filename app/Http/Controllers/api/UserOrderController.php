@@ -26,6 +26,7 @@ class UserOrderController extends Controller
 {
     private $fatoorahServices;
 
+    
     public function __construct(FatoorahServices $fatoorahServices)
     {
         $this->fatoorahServices = $fatoorahServices;
@@ -33,17 +34,25 @@ class UserOrderController extends Controller
 
     public function checkout(Request $request)
     {
+        $subtotal = 0;
+        $discount = 0;
+
         $user = Auth::guard('api')->user();
         $cartItems = $request->input('cartProducts');
 
         foreach ($cartItems as $cartItem) {
             $totalAmount = 0;
-            $totalAmount += $cartItem['quantity'] *$cartItem['item']['cost'];;
+            $Amount=0;
+            $totalAmount += $cartItem['quantity'] *$cartItem['item']['cost'];
+            $subtotal += $totalAmount;
+
             $service_id = $cartItem['item']['id'];
             $service_type  = $cartItem['type'];
             $quantity = $cartItem['quantity'];
+
             if($cartItem['item']['discount']){
-                $totalAmount-=$cartItem['item']['discount'];
+                $discount = $cartItem['item']['discount'];
+                // $Amount += $totalAmount -($totalAmount * ($cartItem['item']['discount']/100));
             }
 
             $order = new UserOrder([
@@ -52,7 +61,17 @@ class UserOrderController extends Controller
                 'service_type'=>$service_type,
                 'quantity'=>$quantity,
             ]);
-
+            
+            if($discount){
+                $Amount = $subtotal -($subtotal * (intval($discount)/100));
+            }    
+           else{
+            $Amount = $subtotal ;
+           }        
+            $user->orders()->save($order);
+            $order->update([
+                'amount'=> $Amount
+            ]);
             $user->orders()->save($order);
 
             $timeSlot = TimeSlot::where('service_id', $service_id)
@@ -265,6 +284,7 @@ class UserOrderController extends Controller
     public function paymentCallBack(Request $request)
     {
 
+        
         $data = [];
         $data['Key'] = $request->paymentId;
         $data['KeyType'] = 'paymentId';
