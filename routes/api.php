@@ -156,7 +156,10 @@ Route::group(['middleware'=>['api']],function(){
             Route::delete('users', [UserController::class,'destroy']);
             Route::get('users', [UserController::class,'index']);
 
-
+            Route::get('/hotels/search/{id}', [HotelController::class, 'searchById']);
+            Route::get('/trips/search/{id}', [TripController::class, 'searchById']);
+            Route::get('/users/search/{id}', [UserController::class, 'searchById']);
+            Route::get('/restaurants/search/{id}', [RestaurantController::class, 'searchById']);
         //    Route::apiResource('users', UserController::class);
         //   Route::apiResource('orders', UserOrderController::class);
          Route::get('ordersdetails/{order}', [UserOrderController::class,'showOrderDetails']);

@@ -59,6 +59,17 @@ class HotelController extends Controller
           return HotelResource::collection($hotels);
     }
 
+    public function searchById($id)
+    {
+        $hotel = Hotel::find($id);
+
+        if (!$hotel) {
+            return response()->json(['message' => 'Hotel not found'], 404);
+        }
+
+        return (new HotelResource($hotel))->response()->setStatusCode(201);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

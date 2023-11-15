@@ -55,7 +55,17 @@ class RestaurantController extends Controller
               $restaurants = Restaurant::paginate(3);
                 return RestaurantResource::collection($restaurants);
     }
+    
+    public function searchById($id)
+    {
+        $restaurant = Restaurant::find($id);
 
+        if (!$restaurant) {
+            return response()->json(['message' => 'restaurant not found'], 404);
+        }
+
+        return (new RestaurantResource($restaurant))->response()->setStatusCode(201);
+    }
     /**
      * Store a newly created resource in storage.
      *
