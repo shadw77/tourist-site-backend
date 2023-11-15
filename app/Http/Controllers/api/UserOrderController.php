@@ -170,6 +170,7 @@ class UserOrderController extends Controller
              $hotel = Hotel::find($request->get('service_id'));
              $order->service_id = $hotel->id;
              $order->amount=$request->get('amount');
+             $order->quantity=$request->get('quantity');
              $order->service()->associate($hotel);
             $user->orders()->save($order);
             event(new EventOrder($order,$user,$hotel));
@@ -179,6 +180,7 @@ class UserOrderController extends Controller
              $trip = Trip::find($request->get('service_id'));
              $order->service_id = $trip->id;
              $order->amount=$request->get('amount');
+             $order->quantity=$request->get('quantity');
              $order->service()->associate($trip);
              $user->orders()->save($order);
              event(new EventOrder($order,$user,$trip));
@@ -187,12 +189,15 @@ class UserOrderController extends Controller
             $destination = Destination::find($request->get('service_id'));
             $order->service_id = $destination->id;
             $order->amount=$request->get('amount');
+            $order->quantity=$request->get('quantity');
             $order->service()->associate($destination);
             $user->orders()->save($order);
         }
         else if($request->get('service_type') == 'Restaurent'){
             $restaurant = Restaurant::find($request->get('service_id'));
             $order->service_id = $restaurant->id;
+            $order->amount=$request->get('amount');
+            $order->quantity=$request->get('quantity');
             $order->service()->associate($restaurant);
             $user->orders()->save($order);
             event(new EventOrder($order,$user,$restaurant));

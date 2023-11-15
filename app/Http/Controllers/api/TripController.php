@@ -14,7 +14,16 @@ use Illuminate\Support\Facades\Auth;
 class TripController extends Controller
 {
 
+    public function searchById($id)
+    {
+        $trip = Trip::find($id);
 
+        if (!$trip) {
+            return response()->json(['message' => 'Trip not found'], 404);
+        }
+
+        return (new TripResource($trip))->response()->setStatusCode(201);
+    }
     public function searchTripByTime(Request $request)
     {
         $keyword = $request->input('search_service');

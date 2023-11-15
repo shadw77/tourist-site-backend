@@ -59,6 +59,16 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
+    public function searchById($id)
+    {
+        $user = User::find($id);
+        
+        if (!$user) {
+            return response()->json(['message' => 'user not found'], 404);
+        }
+
+        return  new UserResource($user);
+    }
     public function update(Request $request, User $user)
     {
         $request->validate([
