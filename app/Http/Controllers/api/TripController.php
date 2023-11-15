@@ -77,9 +77,9 @@ class TripController extends Controller
     public function index(Request $request)
     {
         $user=Auth::guard('api')->user();
-        $trips = Trip::with('images')->paginate(3);
+        $trips = Trip::with('images')->paginate(4);
           if($user->role==='vendor'){
-            $trips = Trip::where('creator_id', $user->id)->paginate(3);
+            $trips = Trip::where('creator_id', $user->id)->paginate(4);
           }
 
          //$trips=Trip::paginate(2);
