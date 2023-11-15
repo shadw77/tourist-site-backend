@@ -202,7 +202,13 @@ class Controller extends BaseController
     public function sendMessage(Request $request){
         //return $this->returnData('request', $request->message,"message sent");
 
-        Mail::to("abd00tarek19@gmail.com")->send(new ContactUsEmail($request));
+        Mail::to("shadwaelhady@outlook.com")->send(new ContactUsEmail($request));
+      
+        return   $response=response()->json([
+                    'status' => 200,
+                    'mssg' => "Email Has Successfully send",
+                ]);
+            
     }
    /*end function that send message to admin*/
 
