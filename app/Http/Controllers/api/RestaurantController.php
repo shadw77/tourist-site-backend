@@ -50,7 +50,7 @@ class RestaurantController extends Controller
     {
         $user=Auth::guard('api')->user();
         if($user->role==='vendor'){
-          $hotels = Restaurant::where('creator_id', $user->id)->paginate(3);
+          $hotels = Restaurant::where('creator_id', $user->id)->paginate(4);
         }
               $restaurants = Restaurant::paginate(3);
                 return RestaurantResource::collection($restaurants);

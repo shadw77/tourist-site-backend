@@ -73,7 +73,16 @@ class UserOrderController extends Controller
                 'amount'=> $Amount
             ]);
             $user->orders()->save($order);
-
+           if($request->get('service_type') == "Hotel"){
+            $object = Hotel::find($request->get('service_id'));
+           }
+           else if($request->get('service_type') == "Trip"){
+            $object = Trip::find($request->get('service_id'));
+           }
+           else{
+            $object = Restaurant::find($request->get('service_id'));
+           }
+           event(new EventOrder($order,$user,$object));
             $timeSlot = TimeSlot::where('service_id', $service_id)
             ->where('service_type', $service_type)
             ->first();

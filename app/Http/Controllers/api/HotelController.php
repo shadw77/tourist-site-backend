@@ -52,9 +52,9 @@ class HotelController extends Controller
      {
 
           $user=Auth::guard('api')->user();
-          $hotels=Hotel::paginate(3);
+          $hotels=Hotel::paginate(4);
           if($user->role==='vendor'){
-            $hotels = Hotel::where('creator_id', $user->id)->paginate(3);
+            $hotels = Hotel::where('creator_id', $user->id)->paginate(4);
           }
           return HotelResource::collection($hotels);
     }
